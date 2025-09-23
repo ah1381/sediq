@@ -1562,6 +1562,42 @@ namespace LoanManagement.Domain.Migrations.AppDb
                     b.ToTable("Personnel", "Entity");
                 });
 
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.Authentication", b =>
+                {
+                    b.Property<long>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("RowId");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<long>("RowId"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("Description");
+
+                    b.Property<string>("OwnerProject")
+                        .HasColumnType("text")
+                        .HasColumnName("OwnerProject");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Password");
+
+                    b.Property<long?>("UserType")
+                        .HasColumnType("bigint")
+                        .HasColumnName("UserType");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Username");
+
+                    b.HasKey("RowId");
+
+                    b.ToTable("authentication", "auth");
+                });
+
             modelBuilder.Entity("LoanManagement.Domain.Entities.FundElectionEntity", b =>
                 {
                     b.HasOne("LoanManagement.Domain.Entities.PersonnelEntity", "Candidate")

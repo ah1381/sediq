@@ -1,5 +1,6 @@
 ﻿using LoanManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Raya.Hrm.Shared.Library.Models.Auth;
 
 namespace LoanManagement.Domain.Data
 {
@@ -34,6 +35,38 @@ namespace LoanManagement.Domain.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Authentication>(entity =>
+            {
+                entity.ToTable("authentication", "auth");
+
+                // Use bigserial with Identity always
+                entity.HasKey(e => e.RowId);
+
+                entity.Property(e => e.RowId)
+                    .HasColumnName("RowId")
+                    .UseIdentityAlwaysColumn(); // forces bigserial
+
+                entity.Property(e => e.Username)
+                    .HasColumnName("Username")
+                    .IsRequired();
+
+                entity.Property(e => e.Password)
+                    .HasColumnName("Password")
+                    .IsRequired();
+
+                entity.Property(e => e.Description)
+                    .HasColumnName("Description")
+                    .IsRequired(false); // nullable
+
+                entity.Property(e => e.OwnerProject)
+                    .HasColumnName("OwnerProject")
+                    .IsRequired(false); // nullable
+
+                entity.Property(e => e.UserType)
+                    .HasColumnName("UserType")
+                    .IsRequired(false); // optional
+            });
 
             // PersonnelEntity
             modelBuilder.Entity<PersonnelEntity>(entity =>

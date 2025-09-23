@@ -10,6 +10,11 @@ namespace LoanManagement.Service.Handler.Commands.Personnel
     {
         public PersonnelDto Personnel { get; set; }
 
+        public CreatePersonnelCommand()
+        {
+
+        }
+
         public CreatePersonnelCommand(PersonnelDto personnel)
         {
             Personnel = personnel;
@@ -59,6 +64,11 @@ namespace LoanManagement.Service.Handler.Commands.Personnel
     public class UpdatePersonnelCommand : IRequest<PersonnelDto>
     {
         public PersonnelDto Personnel { get; set; }
+
+        public UpdatePersonnelCommand()
+        {
+
+        }
 
         public UpdatePersonnelCommand(PersonnelDto personnel)
         {
@@ -111,8 +121,10 @@ namespace LoanManagement.Service.Handler.Commands.Personnel
 
     public class DeletePersonnelCommand : IRequest<bool>
     {
-        public int RowId { get; set; }
-
+        public long RowId { get; set; }
+        public DeletePersonnelCommand()
+        {
+        }
         public DeletePersonnelCommand(int rowId)
         {
             RowId = rowId;
