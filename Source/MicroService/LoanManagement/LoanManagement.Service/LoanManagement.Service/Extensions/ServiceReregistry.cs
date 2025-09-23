@@ -25,6 +25,10 @@ namespace LoanManagement.Service.Extensions
             var errorConfig = configuration.GetSection("Error").Get<ErrorConfig>();
             var requestConfig = configuration.GetSection("Request").Get<RequestConfig>();
 
+
+            // Consumer (Background service)
+            services.AddHostedService<KafkaConsumerService>();
+
             // Error services
             if (errorConfig is { LogInKafka: true })
                 services.AddSingleton<IKafkaErrorService, KafkaService>();
