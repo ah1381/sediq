@@ -16,6 +16,7 @@ builder.Services
     .AddApplicationServices(builder.Configuration)
     .AddWebApiDependencies(builder.Configuration);
 
+
 // Add JWT Authentication
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
 
