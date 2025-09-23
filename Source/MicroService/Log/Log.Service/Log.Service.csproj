@@ -11,11 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\DTOs\" />
-    <Folder Include="Models\Mappings\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Log.Domain\Log.Domain.csproj" />
   </ItemGroup>
 
