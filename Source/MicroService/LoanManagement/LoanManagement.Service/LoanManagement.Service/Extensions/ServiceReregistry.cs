@@ -27,7 +27,7 @@ namespace LoanManagement.Service.Extensions
 
 
             // Consumer (Background service)
-            services.AddHostedService<KafkaConsumerService>();
+            //services.AddHostedService<KafkaConsumerService>();
 
             // Error services
             if (errorConfig is { LogInKafka: true })

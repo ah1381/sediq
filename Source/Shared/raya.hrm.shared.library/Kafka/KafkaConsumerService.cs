@@ -33,7 +33,6 @@ namespace Raya.Hrm.Shared.Library.Kafka
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Kafka Consumer started...");
 
             while (!stoppingToken.IsCancellationRequested)
             {

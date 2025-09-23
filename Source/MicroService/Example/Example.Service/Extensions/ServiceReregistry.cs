@@ -26,7 +26,7 @@ namespace Example.Service.Extensions
             var requestConfig = configuration.GetSection("Request").Get<RequestConfig>();
 
             // Consumer (Background service)
-            services.AddHostedService<KafkaConsumerService>();
+            //services.AddHostedService<KafkaConsumerService>();
 
             // Error services
             if (errorConfig is { LogInKafka: true })

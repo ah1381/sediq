@@ -10,4 +10,8 @@ builder.AddProject<Projects.LoanManagement_WebApi>("loanmanagement-web-api");
 
 
 
+builder.AddProject<Projects.Log_Web_Api>("log-web-api");
+
+
+
 builder.Build().Run();

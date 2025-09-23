@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36212.18 d17.14
+VisualStudioVersion = 17.14.36212.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aspire", "Aspire", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -30,6 +30,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagement.Service", "Source\MicroService\LoanManagement\LoanManagement.Service\LoanManagement.Service\LoanManagement.Service.csproj", "{EEB072EC-F27D-4EC0-9F46-F0E0D0CA06F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagement.WebApi", "Source\MicroService\LoanManagement\LoanManagement.WebApi\LoanManagement.WebApi\LoanManagement.WebApi.csproj", "{E022507C-AD0B-4B79-8875-0C4373369042}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Log", "Log", "{F8164391-56E7-4616-88BA-8BCBDCC10DB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Domain", "Log.Domain\Log.Domain.csproj", "{6AC2461C-89D8-461C-A71F-1AA78FAB9EDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Service", "Log.Service\Log.Service.csproj", "{60243172-52ED-4374-A0BC-DFBAFE5B8DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Web.Api", "Log.Web.Api\Log.Web.Api.csproj", "{EB190534-5B3E-90C9-FDF4-1E14F7871AD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +81,18 @@ Global
 		{E022507C-AD0B-4B79-8875-0C4373369042}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E022507C-AD0B-4B79-8875-0C4373369042}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E022507C-AD0B-4B79-8875-0C4373369042}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AC2461C-89D8-461C-A71F-1AA78FAB9EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC2461C-89D8-461C-A71F-1AA78FAB9EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC2461C-89D8-461C-A71F-1AA78FAB9EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC2461C-89D8-461C-A71F-1AA78FAB9EDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60243172-52ED-4374-A0BC-DFBAFE5B8DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60243172-52ED-4374-A0BC-DFBAFE5B8DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60243172-52ED-4374-A0BC-DFBAFE5B8DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60243172-52ED-4374-A0BC-DFBAFE5B8DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB190534-5B3E-90C9-FDF4-1E14F7871AD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB190534-5B3E-90C9-FDF4-1E14F7871AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB190534-5B3E-90C9-FDF4-1E14F7871AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB190534-5B3E-90C9-FDF4-1E14F7871AD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +109,10 @@ Global
 		{C50F45A0-4ABA-42B3-BA91-4B1A7EE6A167} = {3E06C9A9-4CB9-4359-934C-476DF1646F82}
 		{EEB072EC-F27D-4EC0-9F46-F0E0D0CA06F0} = {3E06C9A9-4CB9-4359-934C-476DF1646F82}
 		{E022507C-AD0B-4B79-8875-0C4373369042} = {3E06C9A9-4CB9-4359-934C-476DF1646F82}
+		{F8164391-56E7-4616-88BA-8BCBDCC10DB5} = {546BD583-00A7-4829-9ECB-9361A9624AED}
+		{6AC2461C-89D8-461C-A71F-1AA78FAB9EDF} = {F8164391-56E7-4616-88BA-8BCBDCC10DB5}
+		{60243172-52ED-4374-A0BC-DFBAFE5B8DBD} = {F8164391-56E7-4616-88BA-8BCBDCC10DB5}
+		{EB190534-5B3E-90C9-FDF4-1E14F7871AD9} = {F8164391-56E7-4616-88BA-8BCBDCC10DB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C26554A-0982-406F-80A2-59EC8B822D12}

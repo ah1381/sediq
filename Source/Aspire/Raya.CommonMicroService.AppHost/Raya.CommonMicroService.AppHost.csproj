@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Log.Web.Api\Log.Web.Api.csproj" />
     <ProjectReference Include="..\..\MicroService\Example\Example.Web.Api\Example.Web.Api.csproj" />
     <ProjectReference Include="..\..\MicroService\LoanManagement\LoanManagement.WebApi\LoanManagement.WebApi\LoanManagement.WebApi.csproj" />
   </ItemGroup>
