@@ -10,6 +10,10 @@ namespace LoanManagement.Service.Handler.Queries.Personnel
     {
         public long Id { get; set; }
 
+        public GetPersonnelByIdQuery()
+        {
+
+        }
         public GetPersonnelByIdQuery(long id)
         {
             Id = id;

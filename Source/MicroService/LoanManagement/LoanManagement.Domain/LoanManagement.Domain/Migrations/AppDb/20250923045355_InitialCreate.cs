@@ -14,10 +14,31 @@ namespace LoanManagement.Domain.Migrations.AppDb
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
+                name: "auth");
+
+            migrationBuilder.EnsureSchema(
                 name: "LON");
 
             migrationBuilder.EnsureSchema(
                 name: "Entity");
+
+            migrationBuilder.CreateTable(
+                name: "authentication",
+                schema: "auth",
+                columns: table => new
+                {
+                    RowId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    OwnerProject = table.Column<string>(type: "text", nullable: true),
+                    UserType = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_authentication", x => x.RowId);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Fund",
@@ -990,6 +1011,10 @@ namespace LoanManagement.Domain.Migrations.AppDb
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "authentication",
+                schema: "auth");
+
             migrationBuilder.DropTable(
                 name: "FundElection",
                 schema: "LON");

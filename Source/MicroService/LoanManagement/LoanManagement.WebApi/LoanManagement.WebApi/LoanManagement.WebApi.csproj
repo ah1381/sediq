@@ -27,10 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Aspire\Raya.CommonMicroServices.ServiceDefaults\Raya.CommonMicroServices.ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\..\..\Shared\raya.hrm.shared.library\Raya.Hrm.Shared.Library.csproj" />
     <ProjectReference Include="..\..\LoanManagement.Service\LoanManagement.Service\LoanManagement.Service.csproj" />
