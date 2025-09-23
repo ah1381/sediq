@@ -14,5 +14,6 @@ namespace Raya.Hrm.Shared.Library.Models.Configs
         public string SaslMechanism { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
+        public string GroupId { get; set; }
     }
 }
