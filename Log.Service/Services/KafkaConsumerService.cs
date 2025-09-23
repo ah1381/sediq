@@ -2,6 +2,7 @@
 using Log.Domain.Entities;
 using Log.Service.Handler.Commands;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Raya.Hrm.Shared.Library.Models.Raya.Hrm.Shared.Library.Models;
@@ -10,12 +11,12 @@ using System.Text.Json;
 public class KafkaConsumerService : BackgroundService
 {
     private readonly KafkaConsumerSettings _settings;
-    private readonly IMediator _mediator;
+    private readonly IServiceProvider _serviceProvider;
 
-    public KafkaConsumerService(IOptions<KafkaConsumerSettings> options, IMediator mediator)
+    public KafkaConsumerService(IOptions<KafkaConsumerSettings> options, IServiceProvider serviceProvider)
     {
         _settings = options.Value;
-        _mediator = mediator;
+        _serviceProvider = serviceProvider;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -28,7 +29,7 @@ public class KafkaConsumerService : BackgroundService
         };
 
         using var consumer = new ConsumerBuilder<Ignore, string>(config).Build();
-        consumer.Subscribe(_settings.Topics); // ← اینجا لیست تاپیک‌ها رو میدی
+        consumer.Subscribe(_settings.Topics);
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -36,11 +37,17 @@ public class KafkaConsumerService : BackgroundService
 
             if (result?.Message?.Value != null)
             {
-                var errorLog = JsonSerializer.Deserialize<ErrorModelMongoDb>(result.Message.Value);
+                var errorLog = JsonSerializer.Deserialize<ErrorModelMongo>(result.Message.Value);
 
                 if (errorLog != null)
-                    await _mediator.Send(new CreateErrorLogCommand(errorLog), stoppingToken);
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                    await mediator.Send(new CreateErrorLogCommand(errorLog), stoppingToken);
+                }
             }
         }
     }
+
 }

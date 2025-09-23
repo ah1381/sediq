@@ -18,9 +18,9 @@ namespace LoanManagement.Service.Services.RequestDataService
         IKafkaRequestService kafkaService,
         IRequestInDbService InDbService,
         IRequestLogToFIle toFile,
-        IRequestMongoService requestMongoService,
+        //IRequestMongoService requestMongoService,
         IOptions<RequestConfig> RequestConfig,
-        IOptions<MongoDbConfig> mongoConfig,
+        //IOptions<MongoDbConfig> mongoConfig,
         LoggingDbContext loggingDbContext // Added DbContext for separate DB
         ) : IRequestDataService
     {
@@ -81,7 +81,7 @@ namespace LoanManagement.Service.Services.RequestDataService
                     status = model.status
                 };
 
-                await requestMongoService.LogRequestAsync(mongoModel);
+                //await requestMongoService.LogRequestAsync(mongoModel);
             }
 
             // 🔹 Insert into separate PostgreSQL DB

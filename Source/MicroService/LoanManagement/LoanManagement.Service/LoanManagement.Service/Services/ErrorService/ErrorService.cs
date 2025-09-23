@@ -19,9 +19,9 @@ namespace LoanManagement.Service.Services.ErrorService
         IKafkaErrorService kafkaErrorService,
         IErrorLogInDbService errorInDbService,
         IErrorLogToFIle errorToFile,
-        IErrorMongoService errorMongoService,
+        //IErrorMongoService errorMongoService,
         IOptions<ErrorConfig> errorConfig,
-        IOptions<MongoDbConfig> mongoConfig,
+        //IOptions<MongoDbConfig> mongoConfig,
         LoggingDbContext loggingDbContext // Added DbContext for separate DB
         ) : IErrorService
     {
@@ -78,7 +78,7 @@ namespace LoanManagement.Service.Services.ErrorService
                     Ex = model.Ex
                 };
 
-                await errorMongoService.LogErrorAsync(mongoModel);
+                //await errorMongoService.LogErrorAsync(mongoModel);
             }
 
             // 🔹 Insert into separate PostgreSQL DB

@@ -11,7 +11,6 @@ namespace Log.Domain.Interfaces
 {
     public interface IErrorLogRepository
     {
-        Task InsertAsync(ErrorModelMongo log);
         Task<IEnumerable<ErrorModelMongo>> GetLogsAsync(string? serviceName, string? logType);
     }
 }

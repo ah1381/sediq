@@ -85,7 +85,7 @@ namespace Raya.Hrm.Shared.Library.Kafka
                     }
                 }
 
-                await _producer.ProduceAsync(_config.RequestTopic, new Message<string, string>
+                await _producer.ProduceAsync(_config.ErrorTopic, new Message<string, string>
                 {
                     Key = model.Key,
                     Value = model.Message,

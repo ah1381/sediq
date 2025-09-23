@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Raya.Hrm.Shared.Library.Models.Auth;
 using System.Security.Claims;
+using ZstdSharp;
 
 namespace Example.WebApi.Controllers
 {
@@ -22,7 +23,7 @@ namespace Example.WebApi.Controllers
             var a = User.Claims.Select(x => x.Value == "Admin");
 
             // var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-
+            throw new Exception($"Custom error triggered {request.Username}!");
 
             var username = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var requestModel = new CreateUserInfo()

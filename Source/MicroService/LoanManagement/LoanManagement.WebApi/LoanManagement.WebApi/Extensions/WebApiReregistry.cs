@@ -58,24 +58,24 @@ namespace LoanManagement.WebApi.Extensions
             services.Configure<JwtConfig>(configuration.GetSection("Jwt"));
 
             // MongoDB
-            services.Configure<MongoDbConfig>(configuration.GetSection("MongoDb"));
+            //services.Configure<MongoDbConfig>(configuration.GetSection("MongoDb"));
 
-            services.AddSingleton<IMongoClient>(sp =>
-            {
-                var mongoConfig = sp.GetRequiredService<IOptions<MongoDbConfig>>().Value;
-                return new MongoClient(mongoConfig.ConnectionString);
-            });
+            //services.AddSingleton<IMongoClient>(sp =>
+            //{
+            //    var mongoConfig = sp.GetRequiredService<IOptions<MongoDbConfig>>().Value;
+            //    return new MongoClient(mongoConfig.ConnectionString);
+            //});
 
-            services.AddScoped<IMongoDatabase>(sp =>
-            {
-                var mongoConfig = sp.GetRequiredService<IOptions<MongoDbConfig>>().Value;
-                var client = sp.GetRequiredService<IMongoClient>();
-                return client.GetDatabase(mongoConfig.ConnectionString);
-            });
+            //services.AddScoped<IMongoDatabase>(sp =>
+            //{
+            //    var mongoConfig = sp.GetRequiredService<IOptions<MongoDbConfig>>().Value;
+            //    var client = sp.GetRequiredService<IMongoClient>();
+            //    return client.GetDatabase(mongoConfig.ConnectionString);
+            //});
 
             // Register Mongo logging services
-            services.AddSingleton<IErrorMongoService, ErrorMongoService>();
-            services.AddSingleton<IRequestMongoService, RequestMongoService>();
+            //services.AddSingleton<IErrorMongoService, ErrorMongoService>();
+            //services.AddSingleton<IRequestMongoService, RequestMongoService>();
 
             // MediatR
             services.AddMediatR(cfg =>
