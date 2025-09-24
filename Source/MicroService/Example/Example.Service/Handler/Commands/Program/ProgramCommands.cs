@@ -37,10 +37,10 @@ namespace Example.Service.Handler.Commands.Program
 
             };
 
-            var result = await _repository.AddAsync(request.RequestModel);
+            //var result = await _repository.AddAsync(request.RequestModel);
             res.IsSuccess = true;
             res.ResponseType = 0;
-            res.Data = result;
+            //res.Data = result;
             return res;
         }
     }
