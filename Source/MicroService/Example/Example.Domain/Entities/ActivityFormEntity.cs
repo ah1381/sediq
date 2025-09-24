@@ -24,11 +24,9 @@ namespace Example.Domain.Entities
         [Display(Name = "برنامه انتخاب شده")]
         public ProgramEntity SelectedProgram { get; set; }
 
-        [Display(Name = "لیست دانش آموزان انتخاب شده")]
-        public List<int> SelectedStudentIds { get; set; } = new List<int>();
+        [Display(Name = " دانش آموزان انتخاب شده")]
+        public int SelectedStudentId { get; set; }
 
-        [Display(Name = "دانش آموزان انتخاب شده")]
-        public List<StudentEntity> SelectedStudents { get; set; } = new List<StudentEntity>();
-    }
+        }
 
 }

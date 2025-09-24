@@ -8,7 +8,7 @@ namespace Example.Service.Models.DTOs
 {
     public class ProgramResponseDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public DateTime From { get; set; }
         public DateTime To { get; set; }
@@ -23,7 +23,7 @@ namespace Example.Service.Models.DTOs
 
     public class ProgramEditDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public DateTime From { get; set; }
         public DateTime To { get; set; }
@@ -31,6 +31,6 @@ namespace Example.Service.Models.DTOs
 
     public class ProgramDeleteDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }

@@ -39,7 +39,6 @@ namespace Example.Service.Models.Mappings
             CreateMap<PhoneNumberEntity, PhoneNumberEditDto>().ForMember(dest => dest.Ownership, opt => opt.MapFrom(src => src.Ownership.ToString()));
             #endregion
 
-
         }
 
     }

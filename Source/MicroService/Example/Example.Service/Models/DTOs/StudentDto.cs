@@ -8,7 +8,7 @@ namespace Example.Service.Models.DTOs
 {
     public class StudentResponseDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public int StudentCode { get; set; }
         public string FullName { get; set; }
         public string NationalCode { get; set; }
@@ -30,7 +30,7 @@ namespace Example.Service.Models.DTOs
 
     public class StudentEditDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FieldOfStudy { get; set; }
@@ -39,6 +39,6 @@ namespace Example.Service.Models.DTOs
 
     public class StudentDeleteDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }

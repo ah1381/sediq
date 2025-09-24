@@ -8,7 +8,7 @@ namespace Example.Service.Models.DTOs
 {
     public class PhoneNumberResponseDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Number { get; set; }
         public string Ownership { get; set; }
     }
@@ -21,13 +21,13 @@ namespace Example.Service.Models.DTOs
 
     public class PhoneNumberEditDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Number { get; set; }
         public string Ownership { get; set; }
     }
 
     public class PhoneNumberDeleteDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }

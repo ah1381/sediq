@@ -23,8 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handler\Commands\ActivityForm\" />
-    <Folder Include="Handler\Commands\Student\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

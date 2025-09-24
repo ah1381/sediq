@@ -8,31 +8,31 @@ namespace Example.Service.Models.DTOs
 {
     public class ActivityFormResponseDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime ActivityDate { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int SelectedProgramId { get; set; }
+        public long SelectedProgramId { get; set; }
         public string SelectedProgramName { get; set; }
-        public List<int> SelectedStudentIds { get; set; } = new List<int>();
+        public List<long> SelectedStudentIds { get; set; } = new List<long>();
     }
 
     public class ActivityFormCreateDto
     {
         public DateTime ActivityDate { get; set; }
-        public int SelectedProgramId { get; set; }
-        public List<int> SelectedStudentIds { get; set; } = new List<int>();
+        public long SelectedProgramId { get; set; }
+        public List<long> SelectedStudentIds { get; set; } = new List<long>();
     }
 
     public class ActivityFormEditDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime ActivityDate { get; set; }
-        public int SelectedProgramId { get; set; }
-        public List<int> SelectedStudentIds { get; set; } = new List<int>();
+        public long SelectedProgramId { get; set; }
+        public List<long> SelectedStudentIds { get; set; } = new List<long>();
     }
 
     public class ActivityFormDeleteDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }
