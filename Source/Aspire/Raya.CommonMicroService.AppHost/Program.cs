@@ -6,8 +6,8 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnCh
 
 
 builder.AddProject<Projects.Example_Web_Api>("example-web-api");
-builder.AddProject<Projects.LoanManagement_WebApi>("loanmanagement-web-api");
 builder.AddProject<Projects.Log_Web_Api>("log-web-api");
+builder.AddProject<Projects.LoanManagement_WebApi>("loanmanagement-web-api");
 
 
 builder.Build().Run();

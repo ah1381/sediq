@@ -4,10 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace LoanManagement.Domain.Migrations
+namespace LoanManagement.Domain.Migrations.LoggingDb
 {
     /// <inheritdoc />
-    public partial class InitLogging : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

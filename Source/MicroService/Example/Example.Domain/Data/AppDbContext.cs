@@ -27,10 +27,10 @@ namespace Example.Domain.Data
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
 
                 entity.Property(e => e.RandId).IsRequired(false).HasMaxLength(36);
-                entity.Property(e => e.CreatedAt).IsRequired(false);
-                entity.Property(e => e.UpdatedAt).IsRequired(false);
-                entity.Property(e => e.RevSeq).IsRequired(false);
-                entity.Property(e => e.Status).IsRequired(false);
+                entity.Property(e => e.CreatedAt);
+                entity.Property(e => e.UpdatedAt);
+                entity.Property(e => e.RevSeq);
+                entity.Property(e => e.Status);
             });
 
             //modelBuilder.Entity<ErrorModel>(entity =>

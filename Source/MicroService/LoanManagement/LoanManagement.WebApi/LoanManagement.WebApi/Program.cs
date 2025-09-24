@@ -78,7 +78,7 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Example API V1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "LoanManagement API V1");
     c.RoutePrefix = string.Empty;
     app.Logger.LogInformation("Swagger UI enabled at root URL");
 });

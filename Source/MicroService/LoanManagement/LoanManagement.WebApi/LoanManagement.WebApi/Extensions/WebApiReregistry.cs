@@ -282,7 +282,7 @@ namespace LoanManagement.WebApi.Extensions
             {
                 c.SwaggerDoc("v1", new()
                 {
-                    Title = "Example API",
+                    Title = "LoanManagement API",
                     Version = "v1",
                     Description = "A Clean Architecture API with CQRS, EF Core, Dapper, MediatR, and MongoDB"
                 });

@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Log.Web.Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ErrorLogController : ControllerBase
+
+    public class ErrorLogController : BaseController
     {
         private readonly IMediator _mediator;
 

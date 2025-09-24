@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace LoanManagement.Domain.Migrations.AppDb
+namespace LoanManagement.Domain.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace LoanManagement.Domain.Migrations
+namespace LoanManagement.Domain.Migrations.LoggingDb
 {
     [DbContext(typeof(LoggingDbContext))]
-    [Migration("20250922124137_InitLogging")]
-    partial class InitLogging
+    [Migration("20250924050410_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

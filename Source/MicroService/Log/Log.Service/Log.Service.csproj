@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\raya.hrm.shared.library\Raya.Hrm.Shared.Library.csproj" />
     <ProjectReference Include="..\Log.Domain\Log.Domain.csproj" />
   </ItemGroup>
 

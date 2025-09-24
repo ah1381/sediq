@@ -43,7 +43,6 @@ public class KafkaConsumerService : BackgroundService
                 {
                     using var scope = _serviceProvider.CreateScope();
                     var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-
                     await mediator.Send(new CreateErrorLogCommand(errorLog), stoppingToken);
                 }
             }
