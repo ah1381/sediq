@@ -22,4 +22,10 @@
     <ProjectReference Include="..\Example.Domain\Example.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handler\Commands\ActivityForm\" />
+    <Folder Include="Handler\Commands\Student\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

@@ -17,13 +17,6 @@ namespace Example.Domain.Extensions
                 options.UseNpgsql(connectionString);
             });
 
-            var connectionStringLog = configuration.GetConnectionString("LoggingDatabase");
-
-            services.AddDbContext<LoggingDbContext>(options =>
-            {
-                options.UseNpgsql(connectionStringLog);
-            });
-
 
             services.AddScoped<DbContext, AppDbContext>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
