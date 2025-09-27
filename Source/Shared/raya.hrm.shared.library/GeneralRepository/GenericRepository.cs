@@ -41,7 +41,6 @@ namespace Raya.Hrm.Shared.Library.GeneralRepository
                 baseEntity.UpdatedAt = DateTime.UtcNow;
                 baseEntity.Status = 1; // Active
                 baseEntity.RevSeq = 1; // Initial revision
-                baseEntity.RandId = Guid.NewGuid().ToString(); // Unique identifier
             }
 
             await _context.Set<T>().AddAsync(entity);

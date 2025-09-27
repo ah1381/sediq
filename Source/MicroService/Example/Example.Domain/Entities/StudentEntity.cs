@@ -43,15 +43,10 @@ namespace Example.Domain.Entities
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
-        [Display(Name = "شماره تلفن‌ها")]
-        public List<PhoneNumberEntity> PhoneNumbers { get; set; } = new List<PhoneNumberEntity>();
 
         [Display(Name = "رشته تحصیلی")]
         public string FieldOfStudy { get; set; } = string.Empty;
 
-        [Display(Name = "آدرس عکس")]
-        [DataType(DataType.ImageUrl)]
-        public string PhotoUrl { get; set; } = string.Empty;
 
         [Display(Name = "جنسیت")]
         public Gender Gender { get; set; }
@@ -64,6 +59,13 @@ namespace Example.Domain.Entities
 
         [Display(Name = "توضیحات اضافی")]
         public string Notes { get; set; } = string.Empty;
+        
+        [Display(Name = "عکس ها")]
+        public List<ImagesEntity> Photos { get; set; } = new();
+
+        [Display(Name = "شماره تلفن‌ها")]
+        public List<PhoneNumberEntity> PhoneNumbers { get; set; } = new();
+        public List<ActivityFormEntity> ActivityForms { get; set; } = new();
     }
 
 

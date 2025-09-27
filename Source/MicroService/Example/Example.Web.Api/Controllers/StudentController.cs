@@ -1,25 +1,22 @@
-﻿using Example.Service.Handler.Commands.ActivityForm;
-using Example.Service.Handler.Commands.ActivityForm;
-using Example.Service.Handler.Queries.ActivityForm;
-using Example.Service.Handler.Queries.ActivityForm;
+﻿using Example.Service.Handler.Commands.Student;
+using Example.Service.Handler.Queries.Student;
 using Example.Service.Models.DTOs;
-using Example.Web.Api.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Example.WebApi.Controllers
+namespace Example.Web.Api.Controllers
 {
-    public class ActivityController : BaseController
+    public class StudentController : BaseController
     {
         private readonly IMediator _mediator;
 
-        public ActivityController(IMediator mediator)
+        public StudentController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ActivityFormCreateDto command)
+        public async Task<IActionResult> Create([FromBody] StudentCreateDto command)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -29,7 +26,7 @@ namespace Example.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] ActivityFormEditDto command)
+        public async Task<IActionResult> Edit([FromBody] StudentEditDto command)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -41,7 +38,7 @@ namespace Example.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var query = new GetActivityFormQuery { Id = id };
+            var query = new GetStudentQuery { Id = id };
             var result = await _mediator.Send(query);
             return result == null ? NotFound() : Ok(result);
         }
@@ -49,7 +46,7 @@ namespace Example.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var command = new DeleteActivityFormCommand { RequestModel = new ActivityFormDeleteDto { Id = id } };
+            var command = new DeleteStudentCommand { RequestModel = new StudentDeleteDto { Id = id } };
             await _mediator.Send(command);
             return NoContent();
         }

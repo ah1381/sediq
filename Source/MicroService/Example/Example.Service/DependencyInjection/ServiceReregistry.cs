@@ -8,7 +8,7 @@ using Raya.Hrm.Shared.Library.Models.Base;
 using Raya.Hrm.Shared.Library.Models.Configs;
 using System.Reflection;
 
-namespace Example.Service.Extensions
+namespace Example.Service.DependencyInjection
 {
     public static class ServiceReregistry
     {
@@ -18,6 +18,7 @@ namespace Example.Service.Extensions
            
             services.Configure<ServicesDbConfig>(configuration.GetSection("ServicesConnectionStrings"));
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

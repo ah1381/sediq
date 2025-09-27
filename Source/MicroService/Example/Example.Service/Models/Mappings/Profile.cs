@@ -15,7 +15,7 @@ namespace Example.Service.Models.Mappings
             CreateMap<ActivityFormEntity, ActivityFormResponseDto>().ForMember(dest => dest.SelectedProgramName, opt => opt.MapFrom(src => src.SelectedProgram != null ? src.SelectedProgram.Name : string.Empty));
             CreateMap<ActivityFormCreateDto, ActivityFormEntity>();
             CreateMap<ActivityFormEditDto, ActivityFormEntity>();
-            CreateMap<ActivityFormEntity, ActivityFormEditDto>().ForMember(dest => dest.SelectedStudentIds, opt => opt.MapFrom(src => src.SelectedStudentIds));
+            CreateMap<ActivityFormEntity, ActivityFormEditDto>().ForMember(dest => dest.SelectedStudentIds, opt => opt.MapFrom(src => src.SelectedStudentId));
             #endregion
 
             #region Student maps

@@ -1,6 +1,6 @@
-using Example.Domain.Extensions;
-using Example.Service.Extensions;
-using Example.Web.Api.Extensions.Example.Web.Api.Extensions;
+using Example.Domain.DependencyInjection;
+using Example.Service.DependencyInjection;
+using Example.Web.Api.DependencyInjection;
 using Example.Web.Api.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -72,7 +72,7 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // Middleware
-app.UseMiddleware<ErrorHandlingMiddleware>();
+//app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

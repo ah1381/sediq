@@ -19,14 +19,13 @@ namespace Example.Domain.Entities
         public DateTime CreatedAt { get; set; }
 
         [Display(Name = "برنامه انتخابی")]
-        public int SelectedProgramId { get; set; }
-
-        [Display(Name = "برنامه انتخاب شده")]
+        public long SelectedProgramId { get; set; }
         public ProgramEntity SelectedProgram { get; set; }
 
-        [Display(Name = " دانش آموزان انتخاب شده")]
-        public int SelectedStudentId { get; set; }
+        [Display(Name = " دانش آموز انتخاب شده")]
+        public long SelectedStudentId { get; set; }
+        public StudentEntity Student { get; set; }
 
-        }
+    }
 
 }

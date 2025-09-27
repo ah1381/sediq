@@ -21,5 +21,7 @@ namespace Example.Domain.Entities
         [DataType(DataType.Date)]
         public DateTime To { get; set; }
 
+        public List<ActivityFormEntity> activityForms { get; set; } = new();
+
     }
 }

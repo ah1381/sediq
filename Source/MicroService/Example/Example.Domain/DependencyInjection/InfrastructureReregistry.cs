@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Raya.Hrm.Shared.Library.GeneralRepository;
 
-namespace Example.Domain.Extensions
+namespace Example.Domain.DependencyInjection
 {
     public static class InfrastructureReregistry
     {
@@ -14,7 +14,7 @@ namespace Example.Domain.Extensions
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(connectionString);
+                options.UseSqlServer(connectionString);
             });
 
 

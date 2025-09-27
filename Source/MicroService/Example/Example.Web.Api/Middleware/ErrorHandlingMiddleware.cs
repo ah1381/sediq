@@ -1,5 +1,4 @@
-﻿using Example.Service.Services.ErrorService;
-using Example.Service.Services.RequestDataService;
+﻿
 using Microsoft.Extensions.Options;
 using Raya.Hrm.Shared.Library.Consts;
 using Raya.Hrm.Shared.Library.Models;
@@ -39,7 +38,7 @@ namespace Example.Web.Api.Middleware
             catch (Exception ex)
             {
                 using var scope = _serviceProvider.CreateScope(); // 🔹 create scope
-                var errorLogger = scope.ServiceProvider.GetRequiredService<IErrorService>();
+                //var errorLogger = scope.ServiceProvider.GetRequiredService<IErrorService>();
 
                 string? clientIp = $"{context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}";
                 string? serverIp = $"{context.Connection.LocalIpAddress}:{context.Connection.LocalPort}";
@@ -68,7 +67,7 @@ namespace Example.Web.Api.Middleware
                     Status = "Failed"
                 };
 
-                await errorLogger.ErrorLog(error);
+                //await errorLogger.ErrorLog(error);
 
                 context.Response.StatusCode = 500;
                 await context.Response.WriteAsync("Internal server error");
@@ -82,7 +81,7 @@ namespace Example.Web.Api.Middleware
             context.Request.Body.Position = 0;
 
             using var scope = _serviceProvider.CreateScope(); // 🔹 create scope
-            var requestDataLogger = scope.ServiceProvider.GetRequiredService<IRequestDataService>();
+            //var requestDataLogger = scope.ServiceProvider.GetRequiredService<IRequestDataService>();
 
             var log = new RequestDataModel
             {
@@ -117,7 +116,7 @@ namespace Example.Web.Api.Middleware
                 status = "Pending"
             };
 
-            await requestDataLogger.RequestLog(log);
+            //await requestDataLogger.RequestLog(log);
             context.Items["RequestId"] = log.request_id;
 
             return body; // return requestBody for error logging

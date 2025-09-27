@@ -14,6 +14,7 @@ namespace Example.Domain.Data
         public DbSet<PhoneNumberEntity> PhoneNumbers { get; set; }
         public DbSet<ProgramEntity> Programs { get; set; }
         public DbSet<StudentEntity> Students { get; set; }
+        public DbSet<ImagesEntity> Images { get; set; }
         public DbSet<Authentication> Authentications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,6 +50,61 @@ namespace Example.Domain.Data
                     .HasColumnName("UserType")
                     .IsRequired(false);
             });
+
+            modelBuilder.Entity<PhoneNumberEntity>()
+              .HasOne(p => p.Student)
+              .WithMany(s => s.PhoneNumbers)
+              .HasForeignKey(p => p.StudentId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            // Student ↔ Images (یک به چند)
+            modelBuilder.Entity<ImagesEntity>()
+                .HasOne(i => i.Student)
+                .WithMany(s => s.Photos)
+                .HasForeignKey(i => i.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ActivityForm ↔ Student (چند به یک)
+            modelBuilder.Entity<ActivityFormEntity>()
+                .HasOne(a => a.Student)
+                .WithMany(s => s.ActivityForms)
+                .HasForeignKey(a => a.SelectedStudentId)
+                .OnDelete(DeleteBehavior.Restrict); // هر فرم فقط یک دانش‌آموز
+
+            // ActivityForm ↔ Program (چند به یک)
+            modelBuilder.Entity<ActivityFormEntity>()
+                .HasOne(a => a.SelectedProgram)
+                .WithMany(p => p.activityForms)
+                .HasForeignKey(a => a.SelectedProgramId)
+                .OnDelete(DeleteBehavior.Restrict); // هر فرم فقط یک برنامه
+
+            // تنظیمات کلید اصلی و Identity برای BaseEntity
+            modelBuilder.Entity<StudentEntity>()
+                .Property(s => s.RowId)
+                .UseIdentityAlwaysColumn();
+
+            modelBuilder.Entity<ProgramEntity>()
+                .Property(p => p.RowId)
+                .UseIdentityAlwaysColumn();
+
+            modelBuilder.Entity<ActivityFormEntity>()
+                .Property(a => a.RowId)
+                .UseIdentityAlwaysColumn();
+
+            modelBuilder.Entity<PhoneNumberEntity>()
+                .Property(p => p.RowId)
+                .UseIdentityAlwaysColumn();
+
+            modelBuilder.Entity<ImagesEntity>()
+                .Property(i => i.RowId)
+                .UseIdentityAlwaysColumn();
+
+
+            modelBuilder.Entity<StudentEntity>().HasKey(s => s.RowId);
+            modelBuilder.Entity<ProgramEntity>().HasKey(p => p.RowId);
+            modelBuilder.Entity<ActivityFormEntity>().HasKey(a => a.RowId);
+            modelBuilder.Entity<PhoneNumberEntity>().HasKey(p => p.RowId);
+            modelBuilder.Entity<ImagesEntity>().HasKey(i => i.RowId);
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿namespace Raya.Hrm.Shared.Library.ModelS
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Raya.Hrm.Shared.Library.ModelS
 {
     public abstract class BaseEntity
     {
+        [Key]
         public long RowId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
