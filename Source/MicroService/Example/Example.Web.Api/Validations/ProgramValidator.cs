@@ -12,11 +12,9 @@ namespace Example.Web.Api.Validations
                 .MaximumLength(100).WithMessage("نام برنامه نمی‌تواند بیش از 100 کاراکتر باشد.");
 
             RuleFor(x => x.From)
-                .NotEmpty().WithMessage("تاریخ شروع برنامه الزامی است.")
                 .LessThanOrEqualTo(x => x.To).WithMessage("تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد.");
 
             RuleFor(x => x.To)
-                .NotEmpty().WithMessage("تاریخ پایان برنامه الزامی است.")
                 .GreaterThanOrEqualTo(x => x.From).WithMessage("تاریخ پایان نمی‌تواند قبل از تاریخ شروع باشد.");
         }
     }
@@ -33,11 +31,9 @@ namespace Example.Web.Api.Validations
                 .MaximumLength(100).WithMessage("نام برنامه نمی‌تواند بیش از 100 کاراکتر باشد.");
 
             RuleFor(x => x.From)
-                .NotEmpty().WithMessage("تاریخ شروع برنامه الزامی است.")
                 .LessThanOrEqualTo(x => x.To).WithMessage("تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد.");
 
             RuleFor(x => x.To)
-                .NotEmpty().WithMessage("تاریخ پایان برنامه الزامی است.")
                 .GreaterThanOrEqualTo(x => x.From).WithMessage("تاریخ پایان نمی‌تواند قبل از تاریخ شروع باشد.");
         }
     }

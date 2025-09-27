@@ -18,20 +18,14 @@ namespace Example.Web.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] StudentCreateDto command)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var newId = await _mediator.Send(command);
+            var newId = await _mediator.Send(new CreateStudentCommand { RequestModel = command});
             return Ok(new { Id = newId });
         }
 
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] StudentEditDto command)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var newId = await _mediator.Send(command);
+            var newId = await _mediator.Send(new EditStudentCommand { RequestModel = command });
             return Ok(new { Id = newId });
         }
 

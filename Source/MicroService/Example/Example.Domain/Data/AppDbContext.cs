@@ -49,6 +49,18 @@ namespace Example.Domain.Data
                 entity.Property(e => e.UserType)
                     .HasColumnName("UserType")
                     .IsRequired(false);
+
+
+
+                entity.HasData(new Authentication
+                {
+                    RowId = 1, // میتونی 1 هم بذاری اگر دیتابیس خالیه
+                    Username = "ADMIN",
+                    Password = "bJKg0LB4QfRPW8dIbQqLyg==",
+                    Description = "1",
+                    OwnerProject = "AllProjectOwner",
+                    UserType = 1
+                });
             });
 
             modelBuilder.Entity<PhoneNumberEntity>()

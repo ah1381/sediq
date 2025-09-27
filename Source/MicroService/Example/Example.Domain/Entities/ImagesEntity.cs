@@ -14,6 +14,9 @@ namespace Example.Domain.Entities
         [DataType(DataType.ImageUrl)]
         public string PhotoUrl { get; set; } = string.Empty;
 
+        [Display(Name = "توضیحات عکس")]
+        public string Description { get; set; } = string.Empty;
+
         public long StudentId { get; set; }
         public StudentEntity Student { get; set; }
     }

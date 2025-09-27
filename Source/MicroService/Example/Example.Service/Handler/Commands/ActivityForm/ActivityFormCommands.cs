@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Example.Service.Handler.Commands.ActivityForm
 {
+
     #region Create
     public class CreateActivityFormCommand : IRequest<CustomActionResult<long>>
     {
@@ -74,14 +75,22 @@ namespace Example.Service.Handler.Commands.ActivityForm
             {
                 IsSuccess = false,
                 ResponseType = -2,
-
             };
 
-            await _repository.UpdateAsync(_Mapper.Map<ActivityFormEntity>(request.RequestModel));
-            var result = await _repository.GetByIdAsync(request.RequestModel.Id);
+            var entity = await _repository.GetByIdAsync(request.RequestModel.Id);
+            if (entity == null)
+            {
+                res.ResponseType = -1; // Not found
+                return res;
+            }
+
+            // Map fields from DTO to entity
+            _Mapper.Map(request.RequestModel, entity); // Mapping existing entity
+            await _repository.UpdateAsync(entity);
+
             res.IsSuccess = true;
             res.ResponseType = 0;
-            res.Data = _Mapper.Map<ActivityFormResponseDto>(result);
+            res.Data = _Mapper.Map<ActivityFormResponseDto>(entity);
             return res;
         }
     }
@@ -120,4 +129,5 @@ namespace Example.Service.Handler.Commands.ActivityForm
         }
     }
     #endregion
+
 }

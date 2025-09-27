@@ -31,13 +31,13 @@ namespace Example.Domain.Entities
 
         [Display(Name = "تاریخ عضویت")]
         [DataType(DataType.Date)]
-        public DateTime MembershipDate { get; set; }
+        public DateTime? MembershipDate { get; set; }
 
         [Display(Name = "نام پدر")]
         public string FatherName { get; set; } = string.Empty;
 
         [Display(Name = "شغل پدر")]
-        public string FatherJob { get; set; } = string.Empty;
+        public string? FatherJob { get; set; } = string.Empty;
 
         [Display(Name = "تاریخ تولد")]
         [DataType(DataType.Date)]
@@ -45,26 +45,28 @@ namespace Example.Domain.Entities
 
 
         [Display(Name = "رشته تحصیلی")]
-        public string FieldOfStudy { get; set; } = string.Empty;
+        public string? FieldOfStudy { get; set; } = string.Empty;
 
+        [Display(Name = "پایه تحصیلی")]
+        public string? YearStudy { get; set; } = string.Empty;
 
         [Display(Name = "جنسیت")]
         public Gender Gender { get; set; }
 
         [Display(Name = "آدرس")]
-        public string Address { get; set; } = string.Empty;
+        public string? Address { get; set; } = string.Empty;
 
         [Display(Name = "وضعیت تحصیلی")]
-        public string EducationStatus { get; set; } = string.Empty;
+        public string? EducationStatus { get; set; } = string.Empty;
 
         [Display(Name = "توضیحات اضافی")]
-        public string Notes { get; set; } = string.Empty;
+        public string? Notes { get; set; } = string.Empty;
         
         [Display(Name = "عکس ها")]
-        public List<ImagesEntity> Photos { get; set; } = new();
+        public List<ImagesEntity?> Photos { get; set; } = new();
 
         [Display(Name = "شماره تلفن‌ها")]
-        public List<PhoneNumberEntity> PhoneNumbers { get; set; } = new();
+        public List<PhoneNumberEntity?> PhoneNumbers { get; set; } = new();
         public List<ActivityFormEntity> ActivityForms { get; set; } = new();
     }
 

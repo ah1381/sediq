@@ -16,7 +16,7 @@ namespace Example.Service.DependencyInjection
         {
             // Bind Config
            
-            services.Configure<ServicesDbConfig>(configuration.GetSection("ServicesConnectionStrings"));
+            services.Configure<ServicesDbConfig>(configuration.GetSection("ConnectionStrings"));
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IAuthService, AuthService>();
 

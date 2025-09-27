@@ -13,10 +13,10 @@ namespace Example.Service.Handler.Queries.ActivityForm
 
     public class GetActivityFormHandler : IRequestHandler<GetActivityFormQuery, ActivityFormResponseDto?>
     {
-        private readonly IGenericRepository<ProgramEntity> _repository;
+        private readonly IGenericRepository<ActivityFormEntity> _repository;
         private readonly IMapper _mapper;
 
-        public GetActivityFormHandler(IGenericRepository<ProgramEntity> repository, IMapper mapper)
+        public GetActivityFormHandler(IGenericRepository<ActivityFormEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

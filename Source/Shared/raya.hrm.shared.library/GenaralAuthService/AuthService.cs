@@ -24,7 +24,7 @@ namespace Raya.Hrm.Shared.Library.GenaralAuthService
         public async Task<int> StoreUserAsync(CreateUserInfo model)
         {
 
-            using var connection = CreateConnection();
+            using var connection = CreateConnection("sql");
             const string sql = @"
             INSERT INTO auth.authentication ( ""Username"", ""Password"", ""OwnerProject"",""UserType"") 
             VALUES (@Username, @Password, @OwnerProject, @UserType)";
@@ -43,7 +43,7 @@ namespace Raya.Hrm.Shared.Library.GenaralAuthService
 
         public async Task<LoginResponseFromDbModel?> GetUser(string username)
         {
-            using var connection = CreateConnection();
+            using var connection = CreateConnection("sql");
             var parameters = new DynamicParameters();
             username = username?.ToUpper();
             var queryBuilder = new StringBuilder(
@@ -57,7 +57,7 @@ namespace Raya.Hrm.Shared.Library.GenaralAuthService
 
         public async Task<LoginResponseFromDbModel?> GetUserForLogin(string username)
         {
-            using var connection = CreateConnection();
+            using var connection = CreateConnection("sql");
             var parameters = new DynamicParameters();
             username = username.ToUpper();
             var queryBuilder = new StringBuilder(

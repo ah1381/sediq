@@ -1,5 +1,6 @@
 ﻿using Example.Service.Handler.Commands.ActivityForm;
 using Example.Service.Handler.Commands.ActivityForm;
+using Example.Service.Handler.Commands.Student;
 using Example.Service.Handler.Queries.ActivityForm;
 using Example.Service.Handler.Queries.ActivityForm;
 using Example.Service.Models.DTOs;
@@ -21,20 +22,14 @@ namespace Example.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ActivityFormCreateDto command)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var newId = await _mediator.Send(command);
+            var newId = await _mediator.Send(new CreateActivityFormCommand { RequestModel = command });
             return Ok(new { Id = newId });
         }
 
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] ActivityFormEditDto command)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var newId = await _mediator.Send(command);
+            var newId = await _mediator.Send(new EditActivityFormCommand { RequestModel = command });
             return Ok(new { Id = newId });
         }
 

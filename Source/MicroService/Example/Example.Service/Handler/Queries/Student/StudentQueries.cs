@@ -13,10 +13,10 @@ namespace Example.Service.Handler.Queries.Student
 
         public class GetStudentHandler : IRequestHandler<GetStudentQuery, StudentResponseDto?>
         {
-            private readonly IGenericRepository<ProgramEntity> _repository;
+            private readonly IGenericRepository<StudentEntity> _repository;
             private readonly IMapper _mapper;
 
-            public GetStudentHandler(IGenericRepository<ProgramEntity> repository, IMapper mapper)
+            public GetStudentHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
             {
                 _repository = repository;
                 _mapper = mapper;

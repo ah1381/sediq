@@ -28,17 +28,13 @@ namespace Example.Web.Api.Validations
             RuleFor(x => x.MembershipDate)
                 .LessThanOrEqualTo(DateTime.Now).WithMessage("تاریخ عضویت نمی‌تواند بعد از امروز باشد.");
 
-            RuleFor(x => x.FieldOfStudy)
-                .NotEmpty().WithMessage("رشته تحصیلی الزامی است.");
-
             RuleFor(x => x.Gender)
                 .IsInEnum().WithMessage("جنسیت معتبر نیست.");
 
-            RuleForEach(x => x.Photos)
-                .NotEmpty().WithMessage("آدرس عکس نمی‌تواند خالی باشد.");
 
             RuleForEach(x => x.PhoneNumbers)
                 .SetValidator(new PhoneNumberCreateValidator());
+
         }
     }
 
@@ -67,14 +63,10 @@ namespace Example.Web.Api.Validations
             RuleFor(x => x.MembershipDate)
                 .LessThanOrEqualTo(DateTime.Now).WithMessage("تاریخ عضویت نمی‌تواند بعد از امروز باشد.");
 
-            RuleFor(x => x.FieldOfStudy)
-                .NotEmpty().WithMessage("رشته تحصیلی الزامی است.");
 
             RuleFor(x => x.Gender)
                 .IsInEnum().WithMessage("جنسیت معتبر نیست.");
 
-            RuleForEach(x => x.Photos)
-                .NotEmpty().WithMessage("آدرس عکس نمی‌تواند خالی باشد.");
           
             RuleForEach(x => x.PhoneNumbers)
                 .SetValidator(new PhoneNumberEditValidator());

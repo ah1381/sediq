@@ -56,9 +56,9 @@ namespace Example.Web.Api.DependencyInjection
             {
                 c.SwaggerDoc("v1", new()
                 {
-                    Title = "Example API",
+                    Title = "sediq API",
                     Version = "v1",
-                    Description = "A Clean Architecture API with CQRS, EF Core, Dapper, MediatR, and MongoDB"
+                    Description = "A Clean Architecture API with CQRS, EF Core, MediatR, automapper ,mocroservice"
                 });
             });
 

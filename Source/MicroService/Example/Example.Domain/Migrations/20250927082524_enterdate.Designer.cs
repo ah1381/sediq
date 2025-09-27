@@ -4,6 +4,7 @@ using Example.Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Example.Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250927082524_enterdate")]
+    partial class enterdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace Example.Domain.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<short>("RevSeq")
+                    b.Property<short?>("RevSeq")
                         .HasColumnType("smallint");
 
                     b.Property<long>("SelectedProgramId")
@@ -74,15 +77,11 @@ namespace Example.Domain.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhotoUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("RevSeq")
+                    b.Property<short?>("RevSeq")
                         .HasColumnType("smallint");
 
                     b.Property<short>("Status")
@@ -120,7 +119,7 @@ namespace Example.Domain.Migrations
                     b.Property<int>("Ownership")
                         .HasColumnType("int");
 
-                    b.Property<short>("RevSeq")
+                    b.Property<short?>("RevSeq")
                         .HasColumnType("smallint");
 
                     b.Property<short>("Status")
@@ -151,20 +150,20 @@ namespace Example.Domain.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("From")
+                    b.Property<DateTime>("From")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("RevSeq")
+                    b.Property<short?>("RevSeq")
                         .HasColumnType("smallint");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
-                    b.Property<DateTime?>("To")
+                    b.Property<DateTime>("To")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -185,6 +184,7 @@ namespace Example.Domain.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("BirthDate")
@@ -194,9 +194,11 @@ namespace Example.Domain.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EducationStatus")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FatherJob")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FatherName")
@@ -204,6 +206,7 @@ namespace Example.Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FieldOfStudy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -217,7 +220,7 @@ namespace Example.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("MembershipDate")
+                    b.Property<DateTime>("MembershipDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NationalCode")
@@ -225,9 +228,10 @@ namespace Example.Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("RevSeq")
+                    b.Property<short?>("RevSeq")
                         .HasColumnType("smallint");
 
                     b.Property<short>("Status")
@@ -238,9 +242,6 @@ namespace Example.Domain.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("YearStudy")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RowId");
 

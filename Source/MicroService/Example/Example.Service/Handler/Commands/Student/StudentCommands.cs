@@ -74,14 +74,22 @@ namespace Example.Service.Handler.Commands.Student
             {
                 IsSuccess = false,
                 ResponseType = -2,
-
             };
 
-            await _repository.UpdateAsync(_Mapper.Map<StudentEntity>(request.RequestModel));
-            var result = await _repository.GetByIdAsync(request.RequestModel.Id);
+            var entity = await _repository.GetByIdAsync(request.RequestModel.Id);
+            if (entity == null)
+            {
+                res.ResponseType = -1; // Not found
+                return res;
+            }
+
+            // Map fields from DTO to entity
+            _Mapper.Map(request.RequestModel, entity); // Mapping existing entity
+            await _repository.UpdateAsync(entity);
+
             res.IsSuccess = true;
             res.ResponseType = 0;
-            res.Data = _Mapper.Map<StudentResponseDto>(result);
+            res.Data = _Mapper.Map<StudentResponseDto>(entity);
             return res;
         }
     }
