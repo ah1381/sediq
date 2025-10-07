@@ -22,7 +22,10 @@ namespace Example.Service.Models.DTOs
         public string SelectedProgramName { get; set; }
 
         [Display(Name = "لیست دانش‌آموزان انتخاب شده")]
-        public List<long> SelectedStudentIds { get; set; } = new List<long>();
+        public long SelectedStudentIds { get; set; }
+
+        [Display(Name = "نام دانشآموزان")]
+        public string StudentNames { get; set; } 
     }
 
     public class ActivityFormCreateDto

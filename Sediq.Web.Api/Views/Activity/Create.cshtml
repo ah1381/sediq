@@ -1,0 +1,84 @@
+@model Example.Service.Models.DTOs.ActivityFormCreateDto
+
+@{
+    ViewData["Title"] = "ثبت فعالیت جدید";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <i class="fas fa-tasks"></i>
+                    ثبت فعالیت جدید
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ActivityDate" class="form-label">تاریخ انجام فعالیت</label>
+                            <input asp-for="ActivityDate" type="date" class="form-control" />
+                            <span asp-validation-for="ActivityDate" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="SelectedProgramId" class="form-label">برنامه مورد نظر</label>
+                            <select asp-for="SelectedProgramId" class="form-select" asp-items="ViewBag.Programs">
+                                <option value="">برنامه را انتخاب کنید</option>
+                            </select>
+                            <span asp-validation-for="SelectedProgramId" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">دانشآموزان شرکت کننده</label>
+                            <div class="border rounded p-3" style="max-height: 300px; overflow-y: auto;">
+                                @if (ViewBag.Students != null)
+                                {
+                                    @foreach (var student in (IEnumerable<SelectListItem>)ViewBag.Students)
+                                    {
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" name="SelectedStudentIds" value="@student.Value" id="student_@student.Value">
+                                            <label class="form-check-label" for="student_@student.Value">
+                                                @student.Text
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <span asp-validation-for="SelectedStudentIds" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="List" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-list"></i>
+                                لیست فعالیتها
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save"></i>
+                                ثبت فعالیت
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // انتخاب همه دانشآموزان
+        function selectAll() {
+            const checkboxes = document.querySelectorAll('input[name="SelectedStudentIds"]');
+            checkboxes.forEach(cb => cb.checked = true);
+        }
+        
+        // لغو انتخاب همه
+        function deselectAll() {
+            const checkboxes = document.querySelectorAll('input[name="SelectedStudentIds"]');
+            checkboxes.forEach(cb => cb.checked = false);
+        }
+    </script>
+}

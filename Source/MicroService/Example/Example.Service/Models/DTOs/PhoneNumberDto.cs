@@ -13,11 +13,10 @@ namespace Example.Service.Models.DTOs
         public string Number { get; set; }
 
         [Display(Name = "مالکیت")]
-        public string Ownership { get; set; }
+        public PhoneOwnership Ownership { get; set; }
 
         [Display(Name = "کد دانش آموزی")]
         public int StudentId { get; set; }
-        public StudentEntity Student { get; set; }
     }
 
     public class PhoneNumberCreateDto
@@ -28,7 +27,7 @@ namespace Example.Service.Models.DTOs
 
         [Display(Name = "مالکیت")]
         [Required(ErrorMessage = "انتخاب مالکیت الزامی است")]
-        public string Ownership { get; set; }
+        public PhoneOwnership Ownership { get; set; }
 
         [Display(Name = "کد دانش آموزی")]
         public int StudentId { get; set; }
@@ -46,7 +45,7 @@ namespace Example.Service.Models.DTOs
 
         [Display(Name = "مالکیت")]
         [Required(ErrorMessage = "انتخاب مالکیت الزامی است")]
-        public string Ownership { get; set; }
+        public PhoneOwnership Ownership { get; set; }
 
         [Display(Name = "کد دانش آموزی")]
         public int StudentId { get; set; }

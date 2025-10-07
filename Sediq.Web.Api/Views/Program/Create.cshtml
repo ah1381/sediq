@@ -1,0 +1,61 @@
+@model Example.Service.Models.DTOs.ProgramCreateDto
+
+@{
+    ViewData["Title"] = "ایجاد برنامه جدید";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <i class="fas fa-plus-circle"></i>
+                    ایجاد برنامه جدید
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">نام برنامه</label>
+                            <input asp-for="Name" class="form-control" placeholder="نام برنامه را وارد کنید" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="From" class="form-label">تاریخ شروع</label>
+                                    <input asp-for="From" type="date" class="form-control" />
+                                    <span asp-validation-for="From" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="To" class="form-label">تاریخ پایان</label>
+                                    <input asp-for="To" type="date" class="form-control" />
+                                    <span asp-validation-for="To" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="List" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-list"></i>
+                                لیست برنامهها
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                ذخیره برنامه
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

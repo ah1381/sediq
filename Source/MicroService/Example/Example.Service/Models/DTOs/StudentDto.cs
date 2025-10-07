@@ -52,8 +52,7 @@ namespace Example.Service.Models.DTOs
         public List<string> Photos { get; set; } = new();
 
         [Display(Name = "شماره تلفن‌ها")]
-        public List<PhoneNumberEntity> PhoneNumbers { get; set; } = new();
-        public List<ActivityFormEntity> ActivityForms { get; set; } = new();
+        public List<PhoneNumberResponseDto> PhoneNumbers { get; set; } = new();
     }
 
     public class StudentCreateDto

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Raya.Hrm.Shared.Library.ModelS;
 using System.Data;
+using System.Linq.Expressions;
 
 namespace Raya.Hrm.Shared.Library.GeneralRepository
 {
@@ -50,6 +51,25 @@ namespace Raya.Hrm.Shared.Library.GeneralRepository
             return (entity as BaseEntity)?.RowId ?? 0;
         }
 
+        public async Task<List<long>> AddListAsync(List<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                if (entity is BaseEntity baseEntity)
+                {
+                    baseEntity.CreatedAt = DateTime.UtcNow;
+                    baseEntity.UpdatedAt = DateTime.UtcNow;
+                    baseEntity.Status = 1;
+                    baseEntity.RevSeq = 1;
+                }
+            }
+
+            await _context.Set<T>().AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+
+            return entities.Cast<BaseEntity>().Select(e => e.RowId).ToList();
+        }
+
 
         public async Task UpdateAsync(T entity)
         {
@@ -82,5 +102,11 @@ namespace Raya.Hrm.Shared.Library.GeneralRepository
         {
             return await _connection.QueryAsync<T>(sql, parameters);
         }
+
+        public IQueryable<T> GetQueryable()
+        {
+            return _context.Set<T>().Where(e => e.Status != 0);
+        }
+
     }
 }

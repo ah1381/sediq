@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Sediq.Web.Api\Sediq.Web.Api.csproj" />
     <ProjectReference Include="..\..\MicroService\Example\Example.Web.Api\Example.Web.Api.csproj" />
   </ItemGroup>
 

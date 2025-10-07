@@ -12,7 +12,7 @@ namespace Example.Web.Api.Validations
                 .MaximumLength(20).WithMessage("شماره تلفن نمی‌تواند بیشتر از 20 کاراکتر باشد.");
 
             RuleFor(x => x.Ownership)
-                .NotEmpty().WithMessage("انتخاب مالکیت الزامی است.");
+                .IsInEnum().WithMessage("انتخاب مالکیت الزامی است.");
 
             RuleFor(x => x.StudentId)
                 .GreaterThan(0).WithMessage("شناسه دانش‌آموز معتبر نیست.");
@@ -31,7 +31,7 @@ namespace Example.Web.Api.Validations
                 .MaximumLength(20).WithMessage("شماره تلفن نمی‌تواند بیشتر از 20 کاراکتر باشد.");
 
             RuleFor(x => x.Ownership)
-                .NotEmpty().WithMessage("انتخاب مالکیت الزامی است.");
+                .IsInEnum().WithMessage("انتخاب مالکیت الزامی است.");
 
             RuleFor(x => x.StudentId)
                 .GreaterThan(0).WithMessage("شناسه دانش‌آموز معتبر نیست.");

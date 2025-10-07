@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "خوش آمدید";
+}
+
+<div class="hero-section fade-in-up">
+    <div class="container">
+        <h1>به سیستم مدیریت صدیق خوش آمدید</h1>
+        <p>سیستم جامع مدیریت دانشآموزان، برنامهها و فعالیتهای آموزشی</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card fade-in-up">
+                <div class="card-body">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h4>مدیریت برنامهها</h4>
+                    <p>ایجاد و مدیریت برنامههای آموزشی با امکان تعیین تاریخ شروع و پایان</p>
+                    <a asp-controller="Program" asp-action="Create" class="btn btn-primary">شروع کنید</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card fade-in-up">
+                <div class="card-body">
+                    <i class="fas fa-user-graduate"></i>
+                    <h4>مدیریت دانشآموزان</h4>
+                    <p>ثبت اطلاعات کامل دانشآموزان شامل اطلاعات شخصی و تماس</p>
+                    <a asp-controller="Student" asp-action="Create" class="btn btn-success">ثبت دانشآموز</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card fade-in-up">
+                <div class="card-body">
+                    <i class="fas fa-tasks"></i>
+                    <h4>مدیریت فعالیتها</h4>
+                    <p>ثبت و پیگیری فعالیتهای آموزشی و انتساب دانشآموزان به برنامهها</p>
+                    <a asp-controller="Activity" asp-action="Create" class="btn btn-warning">ثبت فعالیت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i>
+                    آمار سیستم
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <h3 class="text-primary">0</h3>
+                            <p>برنامه فعال</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-success">0</h3>
+                            <p>دانشآموز ثبت شده</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-warning">0</h3>
+                            <p>فعالیت انجام شده</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

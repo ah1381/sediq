@@ -38,13 +38,19 @@ namespace Example.Service.Handler.Commands.ActivityForm
             {
                 IsSuccess = false,
                 ResponseType = -2,
-
             };
 
-            var result = await _repository.AddAsync(_Mapper.Map<ActivityFormEntity>(request.RequestModel));
+            var entities = request.RequestModel.SelectedStudentIds.Select(studentId => new ActivityFormEntity
+            {
+                ActivityDate = request.RequestModel.ActivityDate,
+                SelectedProgramId = request.RequestModel.SelectedProgramId,
+                SelectedStudentId =studentId
+            }).ToList();
+
+            var results = await _repository.AddListAsync(entities);
             res.IsSuccess = true;
             res.ResponseType = 0;
-            res.Data = result;
+            res.Data = results.FirstOrDefault();
             return res;
         }
     }
