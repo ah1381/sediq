@@ -1,6 +1,7 @@
 using Example.Domain.DependencyInjection;
 using Example.Service.DependencyInjection;
 using FluentValidation.AspNetCore;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +9,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
+// Add MediatR
+builder.Services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssembly(typeof(Example.Service.Handler.Commands.Program.CreateProgramCommand).Assembly);
+});
+
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(Example.Service.Models.Mappings.Profiles));
+
+// Add custom services
 
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
+
+// Ensure database is created
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<Example.Domain.Data.AppDbContext>();
+    context.Database.EnsureCreated();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

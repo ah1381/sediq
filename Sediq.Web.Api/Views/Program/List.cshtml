@@ -1,0 +1,76 @@
+@model IEnumerable<Example.Service.Models.DTOs.ProgramResponseDto>
+
+@{
+    ViewData["Title"] = "لیست برنامهها";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fas fa-list"></i>
+            لیست برنامهها
+        </h2>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            برنامه جدید
+        </a>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="card fade-in-up">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>شناسه</th>
+                                <th>نام برنامه</th>
+                                <th>تاریخ شروع</th>
+                                <th>تاریخ پایان</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.From.ToString("yyyy/MM/dd")</td>
+                                    <td>@item.To.ToString("yyyy/MM/dd")</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i>
+                                                ویرایش
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                                حذف
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card fade-in-up">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">هیچ برنامه‌ای یافت نشد</h4>
+                <p class="text-muted">برای شروع، اولین برنامه خود را ایجاد کنید</p>
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    ایجاد برنامه جدید
+                </a>
+            </div>
+        </div>
+    }
+</div>

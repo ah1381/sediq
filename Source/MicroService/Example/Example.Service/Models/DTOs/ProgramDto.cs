@@ -31,13 +31,11 @@ namespace Example.Service.Models.DTOs
 
         [Display(Name = "تاریخ شروع")]
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "تاریخ شروع الزامی است")]
-        public DateTime From { get; set; }
+        public DateTime? From { get; set; }
 
         [Display(Name = "تاریخ پایان")]
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "تاریخ پایان الزامی است")]
-        public DateTime To { get; set; }
+        public DateTime? To { get; set; }
     }
 
     public class ProgramEditDto
@@ -52,13 +50,11 @@ namespace Example.Service.Models.DTOs
 
         [Display(Name = "تاریخ شروع")]
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "تاریخ شروع الزامی است")]
-        public DateTime From { get; set; }
+        public DateTime? From { get; set; }
 
         [Display(Name = "تاریخ پایان")]
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "تاریخ پایان الزامی است")]
-        public DateTime To { get; set; }
+        public DateTime? To { get; set; }
     }
 
     public class ProgramDeleteDto
