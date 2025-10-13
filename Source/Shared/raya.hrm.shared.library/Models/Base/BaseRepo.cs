@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Raya.Hrm.Shared.Library.Models.Base
 {
-    public abstract class BaseRepository(string connectionString)
+    public abstract class BaseRepository(string connectionString, string? ConnectionType)
     {
         protected string CountQuery = "select count(*) from ";
         protected string QueryStart = "select * from ";
 
         //protected IDbConnection DbConnection;
-        protected IDbConnection CreateConnection(string? ConnectionType = "")
+        protected IDbConnection CreateConnection()
         {
             if (ConnectionType == "sql")
             {

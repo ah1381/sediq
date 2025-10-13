@@ -1,60 +1,46 @@
-﻿using Example.Domain.Entities;
-using System;
+using Example.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace Example.Service.Models.DTOs
 {
-    public class PhoneNumberResponseDto
+    public class PhoneNumberBase
     {
-        [Display(Name = "شناسه")]
-        public long Id { get; set; }
-
         [Display(Name = "شماره تلفن")]
-        public string Number { get; set; }
+        public string Number { get; set; } = string.Empty;
 
         [Display(Name = "مالکیت")]
         public PhoneOwnership Ownership { get; set; }
 
-        [Display(Name = "کد دانش آموزی")]
-        public int StudentId { get; set; }
+
     }
 
-    public class PhoneNumberCreateDto
+    public class PhoneNumberCreateModel : PhoneNumberBase
     {
-        [Display(Name = "شماره تلفن")]
-        [Required(ErrorMessage = "وارد کردن شماره تلفن الزامی است")]
-        public string Number { get; set; }
-
-        [Display(Name = "مالکیت")]
-        [Required(ErrorMessage = "انتخاب مالکیت الزامی است")]
-        public PhoneOwnership Ownership { get; set; }
-
-        [Display(Name = "کد دانش آموزی")]
-        public int StudentId { get; set; }
     }
 
-    public class PhoneNumberEditDto
+    public class PhoneNumberUpdateModel : PhoneNumberBase
     {
-        [Display(Name = "شناسه")]
-        [Required(ErrorMessage = "شناسه الزامی است")]
-        public long Id { get; set; }
-
-        [Display(Name = "شماره تلفن")]
-        [Required(ErrorMessage = "وارد کردن شماره تلفن الزامی است")]
-        public string Number { get; set; }
-
-        [Display(Name = "مالکیت")]
-        [Required(ErrorMessage = "انتخاب مالکیت الزامی است")]
-        public PhoneOwnership Ownership { get; set; }
-
+        public long? RowId { get; set; }
+        public string? RandId { get; set; }
         [Display(Name = "کد دانش آموزی")]
-        public int StudentId { get; set; }
+        public long StudentId { get; set; }
     }
 
-    public class PhoneNumberDeleteDto
+    public class PhoneNumberDeleteModel
     {
-        [Display(Name = "شناسه")]
-        [Required(ErrorMessage = "شناسه الزامی است")]
-        public long Id { get; set; }
+        public long RowId { get; set; }
+    }
+
+    public class PhoneNumberResponseDto : PhoneNumberBase
+    {
+        public long RowId { get; set; }
+        public string? RandId { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public short? RevSeq { get; set; }
+        public short? Status { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
+        [Display(Name = "کد دانش آموزی")]
+        public long StudentId { get; set; }
     }
 }

@@ -1,16 +1,12 @@
-﻿using Example.Domain.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Example.Service.Models.DTOs
 {
-    public class ProgramResponseDto
+    public class ProgramBase
     {
-        [Display(Name = "شناسه")]
-        public long Id { get; set; }
-
         [Display(Name = "نام برنامه")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Display(Name = "تاریخ شروع")]
         [DataType(DataType.Date)]
@@ -19,48 +15,31 @@ namespace Example.Service.Models.DTOs
         [Display(Name = "تاریخ پایان")]
         [DataType(DataType.Date)]
         public DateTime To { get; set; }
-
-        public List<ActivityFormEntity> activityForms { get; set; } = new();
     }
 
-    public class ProgramCreateDto
+    public class ProgramCreateModel : ProgramBase
     {
-        [Display(Name = "نام برنامه")]
-        [Required(ErrorMessage = "وارد کردن نام برنامه الزامی است")]
-        public string Name { get; set; }
-
-        [Display(Name = "تاریخ شروع")]
-        [DataType(DataType.Date)]
-        public DateTime? From { get; set; }
-
-        [Display(Name = "تاریخ پایان")]
-        [DataType(DataType.Date)]
-        public DateTime? To { get; set; }
     }
 
-    public class ProgramEditDto
+    public class ProgramUpdateModel : ProgramBase
     {
-        [Display(Name = "شناسه")]
-        [Required(ErrorMessage = "شناسه الزامی است")]
-        public long Id { get; set; }
-
-        [Display(Name = "نام برنامه")]
-        [Required(ErrorMessage = "وارد کردن نام برنامه الزامی است")]
-        public string Name { get; set; }
-
-        [Display(Name = "تاریخ شروع")]
-        [DataType(DataType.Date)]
-        public DateTime? From { get; set; }
-
-        [Display(Name = "تاریخ پایان")]
-        [DataType(DataType.Date)]
-        public DateTime? To { get; set; }
+        public long? RowId { get; set; }
+        public string? RandId { get; set; }
     }
 
-    public class ProgramDeleteDto
+    public class ProgramDeleteModel
     {
-        [Display(Name = "شناسه")]
-        [Required(ErrorMessage = "شناسه الزامی است")]
-        public long Id { get; set; }
+        public long RowId { get; set; }
+    }
+
+    public class ProgramResponseDto : ProgramBase
+    {
+        public long RowId { get; set; }
+        public string? RandId { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public short? RevSeq { get; set; }
+        public short? Status { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
     }
 }

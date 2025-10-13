@@ -3,10 +3,11 @@ using Example.Service.Handler.Queries.Student;
 using Example.Service.Models.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Sediq.Web.Api.Controllers;
 
 namespace Sediq.Web.Api.Controllers
 {
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -15,31 +16,43 @@ namespace Sediq.Web.Api.Controllers
             _mediator = mediator;
         }
 
-        public IActionResult Create()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            return View();
+            var result = await _mediator.Send(new GetStudentById { Id = id });
+            return result != null ? Ok(result) : NotFound();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _mediator.Send(new GetAllStudentsQuery());
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(StudentCreateDto model)
+        public async Task<IActionResult> Create([FromBody] StudentCreateModel dto)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await _mediator.Send(new CreateStudentCommand { RequestModel = model });
-                if (result.IsSuccess)
-                {
-                    TempData["Success"] = "دانشآموز با موفقیت ایجاد شد";
-                    return RedirectToAction("Create");
-                }
-                ModelState.AddModelError("", "خطا در ایجاد دانشآموز");
-            }
-            return View(model);
+            var command = new CreateStudentCommand { RequestModel = dto };
+            var result = await _mediator.Send(command);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
 
-        public async Task<IActionResult> List()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] StudentUpdateModel dto)
         {
-            var result = await _mediator.Send(new GetAllStudentsQuery());
-            return View(result);
+            dto.RowId = id;
+            var result = await _mediator.Send(new UpdateStudentCommand(dto));
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _mediator.Send(new DeleteStudentCommand { Id = id });
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
     }
 }
+
+

@@ -17,8 +17,15 @@ namespace Example.Domain.Entities
     }
     public class StudentEntity : BaseEntity
     {
-        [Display(Name = "کد دانش آموز")]
-        public int StudentCode { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+
+        [Display(Name = "کد شرکت کننده")]
+        public string StudentCode { get; set; }
+
+        [Display(Name = "صدیق")]
+        public long SediqCode{ get; set; }
 
         [Display(Name = "نام")]
         public string FirstName { get; set; } = string.Empty;
@@ -43,7 +50,6 @@ namespace Example.Domain.Entities
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
-
         [Display(Name = "رشته تحصیلی")]
         public string? FieldOfStudy { get; set; } = string.Empty;
 
@@ -64,10 +70,13 @@ namespace Example.Domain.Entities
         
         [Display(Name = "عکس ها")]
         public List<ImagesEntity?> Photos { get; set; } = new();
-
         [Display(Name = "شماره تلفن‌ها")]
-        public List<PhoneNumberEntity?> PhoneNumbers { get; set; } = new();
-        public List<ActivityFormEntity> ActivityForms { get; set; } = new();
+        public virtual List<PhoneNumberEntity?> PhoneNumbers { get; set; } = new();
+
+        [Display(Name = "صدیق")]
+        public virtual SediqEntity sediq { get; set; }
+        public virtual List<ActivityFormEntity> ActivityForms { get; set; } = new();
+        public virtual List<ScoreFormEntity> ScoreForms { get; set; } = new();
     }
 
 

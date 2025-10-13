@@ -1,133 +1,112 @@
-﻿using Example.Domain.Entities;
+using AutoMapper;
+using Example.Domain.Entities;
 using Example.Service.Models.DTOs;
 using MediatR;
-using Raya.Hrm.Shared.Library.GenaralAuthService;
 using Raya.Hrm.Shared.Library.GeneralRepository;
 using Raya.Hrm.Shared.Library.Models.Base;
-using Raya.Hrm.Shared.Library.Utilities.Securities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Example.Domain.Entities;
-using AutoMapper;
+using Raya.Hrm.Shared.Library.Utilities;
 
 namespace Example.Service.Handler.Commands.Program
 {
-    #region Create
-    public class CreateProgramCommand : IRequest<CustomActionResult<long>>
+    #region create
+    public class CreateProgramCommand : IRequest<CustomActionResult<ProgramResponseDto>>
     {
-        public ProgramCreateDto RequestModel { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
     }
 
-    public class CreateProgramCommandHandler : IRequestHandler<CreateProgramCommand, CustomActionResult<long>>
+    public class CreateProgramHandler : IRequestHandler<CreateProgramCommand, CustomActionResult<ProgramResponseDto>>
     {
         private readonly IGenericRepository<ProgramEntity> _repository;
-        private readonly IMapper _Mapper;
+        private readonly IMapper _mapper;
 
-
-        public CreateProgramCommandHandler(IGenericRepository<ProgramEntity> repository, IMapper mapper)
+        public CreateProgramHandler(IGenericRepository<ProgramEntity> repository, IMapper mapper)
         {
             _repository = repository;
-            _Mapper = mapper;
-
-
+            _mapper = mapper;
         }
-        public async Task<CustomActionResult<long>> Handle(CreateProgramCommand request, CancellationToken cancellationToken)
+
+        public async Task<CustomActionResult<ProgramResponseDto>> Handle(CreateProgramCommand request, CancellationToken cancellationToken)
         {
-            var res = new CustomActionResult<long>
+            var entity = new ProgramEntity
             {
-                IsSuccess = false,
-                ResponseType = -2,
-
+                Name = request.Name,
+                From = request.From,
+                To = request.To
             };
-
-            var result = await _repository.AddAsync(_Mapper.Map<ProgramEntity>(request.RequestModel));
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = result;
-            return res;
+            var saveEntity = await _repository.AddAsync(entity);
+            var result = _mapper.Map<ProgramResponseDto>(saveEntity);
+            return Result.Created(result, "Program created successfully");
         }
     }
     #endregion
 
-    #region Edit
-    public class EditProgramCommand : IRequest<CustomActionResult<ProgramResponseDto>>
+    #region update
+    public class UpdateProgramCommand : IRequest<CustomActionResult<ProgramResponseDto>>
     {
-        public ProgramEditDto RequestModel { get; set; }
+        public ProgramUpdateModel Program { get; set; }
+
+        public UpdateProgramCommand()
+        {
+        }
+
+        public UpdateProgramCommand(ProgramUpdateModel program)
+        {
+            Program = program;
+        }
     }
 
-    public class EditProgramCommandHandler : IRequestHandler<EditProgramCommand, CustomActionResult<ProgramResponseDto>>
+    public class UpdateProgramCommandHandler : IRequestHandler<UpdateProgramCommand, CustomActionResult<ProgramResponseDto>>
     {
         private readonly IGenericRepository<ProgramEntity> _repository;
-        private readonly IMapper _Mapper;
+        private readonly IMapper _mapper;
 
-
-        public EditProgramCommandHandler(IGenericRepository<ProgramEntity> repository, IMapper mapper)
+        public UpdateProgramCommandHandler(IGenericRepository<ProgramEntity> repository, IMapper mapper)
         {
             _repository = repository;
-            _Mapper = mapper;
-
-
+            _mapper = mapper;
         }
-        public async Task<CustomActionResult<ProgramResponseDto>> Handle(EditProgramCommand request, CancellationToken cancellationToken)
-        {
-            var res = new CustomActionResult<ProgramResponseDto>
-            {
-                IsSuccess = false,
-                ResponseType = -2,
-            };
 
-            var entity = await _repository.GetByIdAsync(request.RequestModel.Id);
-            if (entity == null)
+        public async Task<CustomActionResult<ProgramResponseDto>> Handle(UpdateProgramCommand request, CancellationToken cancellationToken)
+        {
+            var entity = await _repository.GetByIdAsync(request.Program.RowId.Value);
+            if (entity.IsNull())
             {
-                res.ResponseType = -1; // Not found
-                return res;
+                return Result.NotFound<ProgramResponseDto>($"Program with RowId {request.Program.RowId} not found.");
             }
 
-            // Map fields from DTO to entity
-            _Mapper.Map(request.RequestModel, entity); // Mapping existing entity
+            _mapper.Map(request.Program, entity);
             await _repository.UpdateAsync(entity);
-
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = _Mapper.Map<ProgramResponseDto>(entity);
-            return res;
+            var result = _mapper.Map<ProgramResponseDto>(entity);
+            return Result.Ok(result, "Program updated successfully");
         }
     }
     #endregion
 
-    #region Delete
+    #region delete
     public class DeleteProgramCommand : IRequest<CustomActionResult<bool>>
     {
-        public ProgramDeleteDto RequestModel { get; set; }
+        public int Id { get; set; }
     }
 
-    public class DeleteProgramCommandHandler : IRequestHandler<DeleteProgramCommand, CustomActionResult<bool>>
+    public class DeleteProgramHandler : IRequestHandler<DeleteProgramCommand, CustomActionResult<bool>>
     {
         private readonly IGenericRepository<ProgramEntity> _repository;
-        private readonly IMapper _Mapper;
 
-
-        public DeleteProgramCommandHandler(IGenericRepository<ProgramEntity> repository, IMapper mapper)
+        public DeleteProgramHandler(IGenericRepository<ProgramEntity> repository)
         {
             _repository = repository;
-            _Mapper = mapper;
         }
+
         public async Task<CustomActionResult<bool>> Handle(DeleteProgramCommand request, CancellationToken cancellationToken)
         {
-            var res = new CustomActionResult<bool>
-            {
-                IsSuccess = false,
-                ResponseType = -2,
-            };
+            var entity = await _repository.GetByIdAsync(request.Id);
+            if (entity == null)
+                return new CustomActionResult<bool> { Data = false, ResponseType = 404, ResponseDesc = "Program not found", IsSuccess = false };
 
-            await _repository.DeleteAsync(request.RequestModel.Id);
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = true;
-            return res;
+            await _repository.DeleteAsync(request.Id);
+            return Result.Ok<bool>(true, "Program deleted successfully");
         }
     }
     #endregion

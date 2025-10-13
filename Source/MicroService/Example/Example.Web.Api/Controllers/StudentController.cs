@@ -1,56 +1,56 @@
-﻿using Example.Service.Handler.Commands.Student;
+using Example.Service.Handler.Commands.Student;
 using Example.Service.Handler.Queries.Student;
 using Example.Service.Models.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Example.Web.Api.Controllers
+namespace Example.Web.Api.Controllers;
+
+
+
+public class StudentController : BaseController
 {
-    public class StudentController : BaseController
+    private readonly IMediator _mediator;
+
+    public StudentController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public StudentController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(int id)
+    {
+        var result = await _mediator.Send(new GetStudentById { Id = id });
+        return result != null ? Ok(result) : NotFound();
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] StudentCreateDto command)
-        {
-            var newId = await _mediator.Send(new CreateStudentCommand { RequestModel = command});
-            return Ok(new { Id = newId });
-        }
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _mediator.Send(new GetAllStudentsQuery());
+        return result.IsSuccess ? Ok(result) : BadRequest(result);
+    }
 
-        [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] StudentEditDto command)
-        {
-            var newId = await _mediator.Send(new EditStudentCommand { RequestModel = command });
-            return Ok(new { Id = newId });
-        }
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] StudentCreateModel dto)
+    {
+            var command = new CreateStudentCommand { RequestModel = dto };
+            var result = await _mediator.Send(command);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var query = new GetStudentQuery { Id = id };
-            var result = await _mediator.Send(query);
-            return result == null ? NotFound() : Ok(result);
-        }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] StudentUpdateModel dto)
+    {
+        dto.RowId = id;
+        var result = await _mediator.Send(new UpdateStudentCommand(dto));
+        return result.IsSuccess ? Ok(result) : BadRequest(result);
+    }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var command = new DeleteStudentCommand { RequestModel = new StudentDeleteDto { Id = id } };
-            await _mediator.Send(command);
-            return NoContent();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
-        {
-            var query = new GetAllStudentsQuery { PageNumber = pageNumber, PageSize = pageSize };
-            var result = await _mediator.Send(query);
-            return Ok(result);
-        }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _mediator.Send(new DeleteStudentCommand { Id = id });
+        return result.IsSuccess ? Ok(result) : BadRequest(result);
     }
 }

@@ -8,5 +8,6 @@
         public string Description { get; set; }
         public string OwnerProject { get; set; }
         public long? UserType { get; set; }
+        public List<Role> Roles { get; set; }
     }
 }

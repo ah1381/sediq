@@ -22,6 +22,7 @@ namespace Example.Domain.Entities
         public DateTime? To { get; set; }
 
         public List<ActivityFormEntity> activityForms { get; set; } = new();
+        public List<ScoreFormEntity> ScoreForms { get; set; } = new();
 
     }
 }

@@ -51,6 +51,33 @@
                                 <li><a class="dropdown-item" asp-controller="Activity" asp-action="List">لیست فعالیت‌ها</a></li>
                             </ul>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                مدت زمان
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="DurationDate" asp-action="Create">ثبت مدت زمان</a></li>
+                                <li><a class="dropdown-item" asp-controller="DurationDate" asp-action="List">لیست مدت زمان</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                نمرات
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="ScoreForm" asp-action="Create">ثبت نمره</a></li>
+                                <li><a class="dropdown-item" asp-controller="ScoreForm" asp-action="List">لیست نمرات</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                صدیق
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="sediq" asp-action="Create">ثبت صدیق</a></li>
+                                <li><a class="dropdown-item" asp-controller="sediq" asp-action="List">لیست صدیق</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

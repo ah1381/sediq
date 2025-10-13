@@ -22,11 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\raya.hrm.shared.library\Raya.Hrm.Shared.Library.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\..\..\Shared\raya.hrm.shared.library\Raya.Hrm.Shared.Library.csproj" />
   </ItemGroup>
 
 </Project>

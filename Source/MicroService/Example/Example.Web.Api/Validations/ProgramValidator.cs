@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Example.Web.Api.Validations
 {
-    public class ProgramCreateValidator : AbstractValidator<ProgramCreateDto>
+    public class ProgramCreateValidator : AbstractValidator<ProgramCreateModel>
     {
         public ProgramCreateValidator()
         {
@@ -19,11 +19,11 @@ namespace Example.Web.Api.Validations
         }
     }
 
-    public class ProgramEditValidator : AbstractValidator<ProgramEditDto>
+    public class ProgramEditValidator : AbstractValidator<ProgramUpdateModel>
     {
         public ProgramEditValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.RowId)
                 .GreaterThan(0).WithMessage("شناسه برنامه معتبر نیست.");
 
             RuleFor(x => x.Name)
@@ -38,11 +38,11 @@ namespace Example.Web.Api.Validations
         }
     }
 
-    public class ProgramDeleteValidator : AbstractValidator<ProgramDeleteDto>
+    public class ProgramDeleteValidator : AbstractValidator<ProgramDeleteModel>
     {
         public ProgramDeleteValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.RowId)
                 .GreaterThan(0).WithMessage("شناسه برنامه معتبر نیست.");
         }
     }

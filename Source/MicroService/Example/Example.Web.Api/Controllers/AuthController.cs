@@ -5,39 +5,54 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Raya.Hrm.Shared.Library.Models.Auth;
 using System.Security.Claims;
-using ZstdSharp;
 
-namespace Example.WebApi.Controllers
+namespace Example.Web.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : Controller
+    public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
         public AuthController(IMediator mediator) => _mediator = mediator;
 
-        [HttpPost]
+        [HttpPost("create-user")]
         [Authorize]
         public async Task<IActionResult> CreateUser(CreateUserRequest request)
         {
-            var a = User.Claims.Select(x => x.Value == "Admin");
-
-            // var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-            //throw new Exception($"Custom error triggered {request.Username}!");
-
-            var username = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var requestModel = new CreateUserInfo()
+            try
             {
-                CurrentUser = username,
-                Username = request.Username,
-                Password = request.Password
-            };
+                var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(username))
+                    return Unauthorized("User not authenticated");
 
-            return Ok(await _mediator.Send(new CreateUserCommand() { RequestModel = requestModel }));
+                var requestModel = new CreateUserInfo()
+                {
+                    CurrentUser = username,
+                    Username = request.Username,
+                    Password = request.Password
+                };
+
+                var result = await _mediator.Send(new CreateUserCommand() { RequestModel = requestModel });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error creating user: {ex.Message}");
+            }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> LoginUser(LoginRequestModel request) =>
-            Ok(await _mediator.Send(new LoginQuery() { RequestModel = request }));
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginRequestModel request)
+        {
+            try
+            {
+                var result = await _mediator.Send(new LoginQuery() { RequestModel = request });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Login failed: {ex.Message}");
+            }
+        }
     }
 }

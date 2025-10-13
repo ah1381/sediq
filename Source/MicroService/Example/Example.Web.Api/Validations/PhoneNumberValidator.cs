@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Example.Web.Api.Validations
 {
-    public class PhoneNumberCreateValidator : AbstractValidator<PhoneNumberCreateDto>
+    public class PhoneNumberCreateValidator : AbstractValidator<PhoneNumberCreateModel>
     {
         public PhoneNumberCreateValidator()
         {
@@ -14,16 +14,15 @@ namespace Example.Web.Api.Validations
             RuleFor(x => x.Ownership)
                 .IsInEnum().WithMessage("انتخاب مالکیت الزامی است.");
 
-            RuleFor(x => x.StudentId)
-                .GreaterThan(0).WithMessage("شناسه دانش‌آموز معتبر نیست.");
+
         }
     }
 
-    public class PhoneNumberEditValidator : AbstractValidator<PhoneNumberEditDto>
+    public class PhoneNumberEditValidator : AbstractValidator<PhoneNumberUpdateModel>
     {
         public PhoneNumberEditValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.RowId)
                 .GreaterThan(0).WithMessage("شناسه شماره تلفن معتبر نیست.");
 
             RuleFor(x => x.Number)
@@ -38,11 +37,11 @@ namespace Example.Web.Api.Validations
         }
     }
 
-    public class PhoneNumberDeleteValidator : AbstractValidator<PhoneNumberDeleteDto>
+    public class PhoneNumberDeleteValidator : AbstractValidator<PhoneNumberDeleteModel>
     {
         public PhoneNumberDeleteValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.RowId)
                 .GreaterThan(0).WithMessage("شناسه شماره تلفن معتبر نیست.");
         }
     }

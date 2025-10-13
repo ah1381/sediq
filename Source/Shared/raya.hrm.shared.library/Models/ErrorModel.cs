@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Raya.Hrm.Shared.Library.Models.Exception;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Raya.Hrm.Shared.Library.Models
 {
@@ -73,7 +69,7 @@ namespace Raya.Hrm.Shared.Library.Models
         public string? Status { get; set; }
 
         // not mapped props
-        [NotMapped] public Exception? Ex { get; set; }
+        [NotMapped] public BpcValidationException? Ex { get; set; }
         [NotMapped] public string? ConnectionType { get; set; }
     }
 

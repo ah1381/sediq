@@ -71,22 +71,21 @@ builder.Services.AddSwaggerGen(c =>
 // Build app
 var app = builder.Build();
 
-// Middleware
-//app.UseMiddleware<ErrorHandlingMiddleware>();
-
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+// Configure middleware pipeline
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Example API V1");
-    c.RoutePrefix = string.Empty;
-    app.Logger.LogInformation("Swagger UI enabled at root URL");
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sediq API V1");
+        c.RoutePrefix = string.Empty;
+    });
+}
 
-// Enable Authentication & Authorization
+// Middleware order is important
+app.UseCors("AllowSpecificOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors("AllowSpecificOrigins");
 
 app.MapControllers();
 

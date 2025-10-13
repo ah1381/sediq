@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Raya.Hrm.Shared.Library.GeneralErrorService
+namespace Raya.Hrm.Shared.Library.GeneralRequestService
 {
     public interface IRequestInDbService
     {
@@ -22,7 +22,7 @@ namespace Raya.Hrm.Shared.Library.GeneralErrorService
     {
 
         public RequestInDbService(IOptions<ServicesDbConfig> dbSettings, IOptions<RequestConfig> requestSettings)
-            : base(dbSettings.Value.DefaultConnection)
+            : base(dbSettings.Value.DefaultConnection, dbSettings.Value.ConnectionType)
         {
 
 
@@ -38,7 +38,7 @@ namespace Raya.Hrm.Shared.Library.GeneralErrorService
         {
             try
             {
-                using var connection = CreateConnection(model.ConnectionType);
+                using var connection = CreateConnection();
                 //_ = await connection.ExecuteAsync(
                 //                   $"""
                 //    INSERT INTO "error".request_logs 

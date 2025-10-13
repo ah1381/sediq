@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Raya.Hrm.Shared.Library.GeneralErrorService
+namespace Raya.Hrm.Shared.Library.GeneralRequestService
 {
     public interface IRequestLogToFIle
     {

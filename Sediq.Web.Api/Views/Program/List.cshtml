@@ -1,14 +1,14 @@
 @model IEnumerable<Example.Service.Models.DTOs.ProgramResponseDto>
 
 @{
-    ViewData["Title"] = "لیست برنامهها";
+    ViewData["Title"] = "لیست برنامه ها";
 }
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>
             <i class="fas fa-list"></i>
-            لیست برنامهها
+            لیست برنامه ها
         </h2>
         <a asp-action="Create" class="btn btn-primary">
             <i class="fas fa-plus"></i>
@@ -35,7 +35,7 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@item.Id</td>
+                                    <td>@item.RowId</td>
                                     <td>@item.Name</td>
                                     <td>@item.From.ToString("yyyy/MM/dd")</td>
                                     <td>@item.To.ToString("yyyy/MM/dd")</td>

@@ -9,5 +9,7 @@ namespace Raya.Hrm.Shared.Library.Models.Configs
     public record ServicesDbConfig
     {
         public string DefaultConnection { get; set; }
+        public string ConnectionType{ get; set; }
+
     }
 }

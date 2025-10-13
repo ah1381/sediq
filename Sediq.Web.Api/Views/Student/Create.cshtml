@@ -1,7 +1,7 @@
-@model Example.Service.Models.DTOs.StudentCreateDto
+@model Example.Service.Models.DTOs.StudentCreateModel
 
 @{
-    ViewData["Title"] = "ثبت دانشآموز جدید";
+    ViewData["Title"] = "ثبت شرکت کننده جدید";
 }
 
 <div class="container">
@@ -10,20 +10,13 @@
             <div class="card fade-in-up">
                 <div class="card-header">
                     <i class="fas fa-user-plus"></i>
-                    ثبت دانشآموز جدید
+                    ثبت شرکت کننده جدید
                 </div>
                 <div class="card-body">
                     <form asp-action="Create" method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                         
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="StudentCode" class="form-label">کد دانشآموز</label>
-                                    <input asp-for="StudentCode" class="form-control" placeholder="کد دانشآموز" />
-                                    <span asp-validation-for="StudentCode" class="text-danger"></span>
-                                </div>
-                            </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="NationalCode" class="form-label">کد ملی</label>
@@ -126,11 +119,11 @@
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a asp-action="List" class="btn btn-secondary me-md-2">
                                 <i class="fas fa-list"></i>
-                                لیست دانشآموزان
+                                لیست شرکت کنندگان
                             </a>
                             <button type="submit" class="btn btn-success">
                                 <i class="fas fa-save"></i>
-                                ثبت دانشآموز
+                                ثبت شرکت کننده
                             </button>
                         </div>
                     </form>

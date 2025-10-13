@@ -1,0 +1,51 @@
+@model Example.Service.Models.DTOs.sediqCreateModel
+@{
+    ViewData["Title"] = "ثبت صدیق";
+}
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="fas fa-plus-circle"></i>
+            ثبت صدیق جدید
+        </h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" id="sediqCreateForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="sediqName" class="form-label">نام</label>
+                <input asp-for="sediqName" class="form-control" />
+                <span asp-validation-for="sediqName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="sediqCode" class="form-label">شماره صدیق</label>
+                <input asp-for="sediqCode" class="form-control" />
+                <span asp-validation-for="sediqCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="form-label">توضیحات</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i>
+                    ذخیره
+                </button>
+                <a asp-action="List" class="btn btn-secondary">
+                    <i class="fas fa-arrow-right"></i>
+                    بازگشت به لیست
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

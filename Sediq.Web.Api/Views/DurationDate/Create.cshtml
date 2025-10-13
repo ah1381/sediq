@@ -1,0 +1,57 @@
+@model Example.Service.Models.DTOs.DurationDateEntityCreateModel
+@{
+    ViewData["Title"] = "افزودن بازه زمانی جدید";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">افزودن بازه زمانی جدید</h3>
+                </div>
+                <form asp-action="Create" method="post">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Name" class="form-label">نام بازه زمانی</label>
+                                    <input asp-for="Name" class="form-control" placeholder="نام بازه زمانی را وارد کنید" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="StartDur" class="form-label">تاریخ شروع</label>
+                                    <input asp-for="StartDur" type="date" class="form-control" />
+                                    <span asp-validation-for="StartDur" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="EndDur" class="form-label">تاریخ پایان</label>
+                                    <input asp-for="EndDur" type="date" class="form-control" />
+                                    <span asp-validation-for="EndDur" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> ذخیره
+                        </button>
+                        <a href="@Url.Action("List")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> بازگشت
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

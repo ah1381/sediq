@@ -1,139 +1,114 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Example.Domain.Entities;
 using Example.Service.Models.DTOs;
 using MediatR;
 using Raya.Hrm.Shared.Library.GeneralRepository;
 using Raya.Hrm.Shared.Library.Models.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Raya.Hrm.Shared.Library.Utilities;
 
 namespace Example.Service.Handler.Commands.ActivityForm
 {
-
-    #region Create
-    public class CreateActivityFormCommand : IRequest<CustomActionResult<long>>
+    #region create
+    public class CreateActivityFormCommand : IRequest<CustomActionResult<ActivityFormResponseDto>>
     {
-        public ActivityFormCreateDto RequestModel { get; set; }
+        public DateOnly ActivityDate { get; set; }
+        public long SelectedProgramId { get; set; }
+        public List<long> SelectedStudentIds { get; set; } = new();
     }
 
-    public class CreateActivityFormCommandHandler : IRequestHandler<CreateActivityFormCommand, CustomActionResult<long>>
+    public class CreateActivityFormHandler : IRequestHandler<CreateActivityFormCommand, CustomActionResult<ActivityFormResponseDto>>
     {
         private readonly IGenericRepository<ActivityFormEntity> _repository;
-        private readonly IMapper _Mapper;
+        private readonly IMapper _mapper;
 
-
-        public CreateActivityFormCommandHandler(IGenericRepository<ActivityFormEntity> repository, IMapper mapper)
+        public CreateActivityFormHandler(IGenericRepository<ActivityFormEntity> repository, IMapper mapper)
         {
             _repository = repository;
-            _Mapper = mapper;
-
-
+            _mapper = mapper;
         }
-        public async Task<CustomActionResult<long>> Handle(CreateActivityFormCommand request, CancellationToken cancellationToken)
-        {
-            var res = new CustomActionResult<long>
-            {
-                IsSuccess = false,
-                ResponseType = -2,
-            };
 
-            var entities = request.RequestModel.SelectedStudentIds.Select(studentId => new ActivityFormEntity
+        public async Task<CustomActionResult<ActivityFormResponseDto>> Handle(CreateActivityFormCommand request, CancellationToken cancellationToken)
+        {
+            var entities = request.SelectedStudentIds.Select(studentId => new ActivityFormEntity
             {
-                ActivityDate = request.RequestModel.ActivityDate,
-                SelectedProgramId = request.RequestModel.SelectedProgramId,
-                SelectedStudentId =studentId
+                ActivityDate = request.ActivityDate,
+                SelectedProgramId = request.SelectedProgramId,
+                SelectedStudentId = studentId
             }).ToList();
 
             var results = await _repository.AddListAsync(entities);
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = results.FirstOrDefault();
-            return res;
+            var result = _mapper.Map<ActivityFormResponseDto>(results.FirstOrDefault());
+            return Result.Created(result, "Activity form created successfully");
         }
     }
     #endregion
 
-    #region Edit
-    public class EditActivityFormCommand : IRequest<CustomActionResult<ActivityFormResponseDto>>
+    #region update
+    public class UpdateActivityFormCommand : IRequest<CustomActionResult<ActivityFormResponseDto>>
     {
-        public ActivityFormEditDto RequestModel { get; set; }
+        public ActivityFormUpdateModel ActivityForm { get; set; }
+
+        public UpdateActivityFormCommand()
+        {
+        }
+
+        public UpdateActivityFormCommand(ActivityFormUpdateModel activityForm)
+        {
+            ActivityForm = activityForm;
+        }
     }
 
-    public class EditActivityFormCommandHandler : IRequestHandler<EditActivityFormCommand, CustomActionResult<ActivityFormResponseDto>>
+    public class UpdateActivityFormCommandHandler : IRequestHandler<UpdateActivityFormCommand, CustomActionResult<ActivityFormResponseDto>>
     {
         private readonly IGenericRepository<ActivityFormEntity> _repository;
-        private readonly IMapper _Mapper;
+        private readonly IMapper _mapper;
 
-
-        public EditActivityFormCommandHandler(IGenericRepository<ActivityFormEntity> repository, IMapper mapper)
+        public UpdateActivityFormCommandHandler(IGenericRepository<ActivityFormEntity> repository, IMapper mapper)
         {
             _repository = repository;
-            _Mapper = mapper;
-
-
+            _mapper = mapper;
         }
-        public async Task<CustomActionResult<ActivityFormResponseDto>> Handle(EditActivityFormCommand request, CancellationToken cancellationToken)
-        {
-            var res = new CustomActionResult<ActivityFormResponseDto>
-            {
-                IsSuccess = false,
-                ResponseType = -2,
-            };
 
-            var entity = await _repository.GetByIdAsync(request.RequestModel.Id);
-            if (entity == null)
+        public async Task<CustomActionResult<ActivityFormResponseDto>> Handle(UpdateActivityFormCommand request, CancellationToken cancellationToken)
+        {
+            var entity = await _repository.GetByIdAsync(request.ActivityForm.RowId.Value);
+            if (entity.IsNull())
             {
-                res.ResponseType = -1; // Not found
-                return res;
+                return Result.NotFound<ActivityFormResponseDto>($"Activity form with RowId {request.ActivityForm.RowId} not found.");
             }
 
-            // Map fields from DTO to entity
-            _Mapper.Map(request.RequestModel, entity); // Mapping existing entity
+            _mapper.Map(request.ActivityForm, entity);
             await _repository.UpdateAsync(entity);
-
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = _Mapper.Map<ActivityFormResponseDto>(entity);
-            return res;
+            var result = _mapper.Map<ActivityFormResponseDto>(entity);
+            return Result.Ok(result, "Activity form updated successfully");
         }
     }
     #endregion
 
-    #region Delete
+    #region delete
     public class DeleteActivityFormCommand : IRequest<CustomActionResult<bool>>
     {
-        public ActivityFormDeleteDto RequestModel { get; set; }
+        public int Id { get; set; }
     }
 
-    public class DeleteActivityFormCommandHandler : IRequestHandler<DeleteActivityFormCommand, CustomActionResult<bool>>
+    public class DeleteActivityFormHandler : IRequestHandler<DeleteActivityFormCommand, CustomActionResult<bool>>
     {
         private readonly IGenericRepository<ActivityFormEntity> _repository;
-        private readonly IMapper _Mapper;
 
-
-        public DeleteActivityFormCommandHandler(IGenericRepository<ActivityFormEntity> repository, IMapper mapper)
+        public DeleteActivityFormHandler(IGenericRepository<ActivityFormEntity> repository)
         {
             _repository = repository;
-            _Mapper = mapper;
         }
+
         public async Task<CustomActionResult<bool>> Handle(DeleteActivityFormCommand request, CancellationToken cancellationToken)
         {
-            var res = new CustomActionResult<bool>
-            {
-                IsSuccess = false,
-                ResponseType = -2,
-            };
+            var entity = await _repository.GetByIdAsync(request.Id);
+            if (entity == null)
+                return new CustomActionResult<bool> { Data = false, ResponseType = 404, ResponseDesc = "Activity form not found", IsSuccess = false };
 
-            await _repository.DeleteAsync(request.RequestModel.Id);
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = true;
-            return res;
+            await _repository.DeleteAsync(request.Id);
+            return Result.Ok<bool>(true, "Activity form deleted successfully");
         }
     }
     #endregion
-
 }

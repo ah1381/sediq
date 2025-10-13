@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonMicroServices", "Comm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{F3A3BBAB-A2B5-4725-8104-F05F8E2E40B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raya.Hrm.Shared.Library", "Source\Shared\raya.hrm.shared.library\Raya.Hrm.Shared.Library.csproj", "{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{79F32F67-C7D5-473E-BBF6-0E68ED9FA312}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Domain", "Source\MicroService\Example\Example.Domain\Example.Domain.csproj", "{710DD7F4-5991-6BB1-75F6-30A6EA805EC5}"
@@ -25,16 +23,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raya.CommonMicroServices.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sediq.Web.Api", "Sediq.Web.Api\Sediq.Web.Api.csproj", "{DE0BE059-4D53-2959-3CA9-43B115B9A14D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raya.Hrm.Shared.Library", "Source\Shared\raya.hrm.shared.library\Raya.Hrm.Shared.Library.csproj", "{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}.Release|Any CPU.Build.0 = Release|Any CPU
 		{710DD7F4-5991-6BB1-75F6-30A6EA805EC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{710DD7F4-5991-6BB1-75F6-30A6EA805EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{710DD7F4-5991-6BB1-75F6-30A6EA805EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,12 +55,15 @@ Global
 		{DE0BE059-4D53-2959-3CA9-43B115B9A14D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE0BE059-4D53-2959-3CA9-43B115B9A14D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE0BE059-4D53-2959-3CA9-43B115B9A14D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70} = {F3A3BBAB-A2B5-4725-8104-F05F8E2E40B1}
 		{79F32F67-C7D5-473E-BBF6-0E68ED9FA312} = {546BD583-00A7-4829-9ECB-9361A9624AED}
 		{710DD7F4-5991-6BB1-75F6-30A6EA805EC5} = {79F32F67-C7D5-473E-BBF6-0E68ED9FA312}
 		{78757A33-1315-192C-F33A-521B9EAB87C8} = {79F32F67-C7D5-473E-BBF6-0E68ED9FA312}
@@ -72,6 +71,7 @@ Global
 		{AD9E3BAC-6046-E514-A8AA-445F83E0369E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{1887B40B-18E2-BBA5-51EF-18BBEC68774B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{DE0BE059-4D53-2959-3CA9-43B115B9A14D} = {79F32F67-C7D5-473E-BBF6-0E68ED9FA312}
+		{FDC9EA77-0B40-028B-96E5-8B6B2DB8EF70} = {F3A3BBAB-A2B5-4725-8104-F05F8E2E40B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C26554A-0982-406F-80A2-59EC8B822D12}

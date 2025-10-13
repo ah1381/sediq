@@ -1,4 +1,6 @@
-﻿namespace Raya.Hrm.Shared.Library.Models
+﻿using Raya.Hrm.Shared.Library.Models.Exception;
+
+namespace Raya.Hrm.Shared.Library.Models
 {
     using MongoDB.Bson;
     using MongoDB.Bson.Serialization.Attributes;
@@ -12,66 +14,65 @@
             [BsonRepresentation(BsonType.ObjectId)]
             public string? Id { get; set; }
 
-            [BsonElement("RequestId")]
+            [BsonElement("request_id")]
             public Guid? RequestId { get; set; }
 
-            [BsonElement("Message")]
-            public string? Message { get; set; }
-
-            [BsonElement("StackTrace")]
-            public string? StackTrace { get; set; }
-
-            [BsonElement("InnerException")]
-            public string? InnerException { get; set; }
-
-            [BsonElement("AppName")]
+            [BsonElement("app_name")]
             public string? AppName { get; set; }
 
-            [BsonElement("Ip")]
+            [BsonElement("message")]
+            public string? Message { get; set; }
+
+            [BsonElement("stack_trace")]
+            public string? StackTrace { get; set; }
+
+            [BsonElement("inner_exception")]
+            public string? InnerException { get; set; }
+
+            [BsonElement("ip")]
             public string? Ip { get; set; }
 
-            [BsonElement("ProjectName")]
+            [BsonElement("project_name")]
             public string? ProjectName { get; set; }
 
-            [BsonElement("ServiceName")]
+            [BsonElement("service_name")]
             public string? ServiceName { get; set; }
 
-            [BsonElement("LogType")]
+            [BsonElement("log_type")]
             public string? LogType { get; set; }
 
-            [BsonElement("EntityType")]
+            [BsonElement("entity_type")]
             public string? EntityType { get; set; }
 
-            [BsonElement("EntityId")]
+            [BsonElement("entity_id")]
             public string? EntityId { get; set; }
 
-            [BsonElement("EntityRandId")]
+            [BsonElement("entity_rand_id")]
             public string? EntityRandId { get; set; }
 
-            [BsonElement("Title")]
+            [BsonElement("title")]
             public string? Title { get; set; }
 
-            [BsonElement("CreatedBy")]
+            [BsonElement("created_by")]
             public string? CreatedBy { get; set; }
 
-            [BsonElement("DateTime")]
+            [BsonElement("datetime")]
             public DateTime? DateTime { get; set; }
 
-            [BsonElement("DeviceInfo")]
+            [BsonElement("device_info")]
             public string? DeviceInfo { get; set; }
 
-            [BsonElement("Request")]
+            [BsonElement("request")]
             public string? Request { get; set; }
 
-            [BsonElement("Response")]
+            [BsonElement("response")]
             public string? Response { get; set; }
 
-            [BsonElement("Status")]
+            [BsonElement("status")]
             public string? Status { get; set; }
 
-            // Not stored in Mongo
             [BsonIgnore]
-            public Exception? Ex { get; set; }
+            public BpcValidationException? Ex { get; set; }
 
             [BsonIgnore]
             public string? ConnectionType { get; set; }

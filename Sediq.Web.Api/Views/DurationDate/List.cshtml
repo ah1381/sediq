@@ -1,0 +1,146 @@
+@model List<Example.Service.Models.DTOs.DurationDateEntityResponseDto>
+@{
+    ViewData["Title"] = "لیست بازه‌های زمانی";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">لیست بازه‌های زمانی</h3>
+                    <a href="@Url.Action("Create")" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> افزودن بازه زمانی جدید
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>شناسه</th>
+                                    <th>نام بازه</th>
+                                    <th>تاریخ شروع</th>
+                                    <th>تاریخ پایان</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.RowId</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.StartDur.ToString("yyyy/MM/dd")</td>
+                                            <td>@item.EndDur.ToString("yyyy/MM/dd")</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning" onclick="editDuration(@item.RowId)">
+                                                    <i class="fas fa-edit"></i> ویرایش
+                                                </button>
+                                                <button class="btn btn-sm btn-danger" onclick="deleteDuration(@item.RowId)">
+                                                    <i class="fas fa-trash"></i> حذف
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">هیچ بازه زمانی یافت نشد</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ویرایش بازه زمانی</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editForm">
+                <div class="modal-body">
+                    <input type="hidden" id="editRowId" />
+                    <div class="mb-3">
+                        <label class="form-label">نام بازه</label>
+                        <input type="text" class="form-control" id="editName" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">تاریخ شروع</label>
+                        <input type="date" class="form-control" id="editStartDur" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">تاریخ پایان</label>
+                        <input type="date" class="form-control" id="editEndDur" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function editDuration(id) {
+            $.get('@Url.Action("GetById")', { id: id }, function(data) {
+                $('#editRowId').val(data.rowId);
+                $('#editName').val(data.name);
+                $('#editStartDur').val(data.startDur);
+                $('#editEndDur').val(data.endDur);
+                $('#editModal').modal('show');
+            });
+        }
+
+        function deleteDuration(id) {
+            if (confirm('آیا از حذف این بازه زمانی اطمینان دارید؟')) {
+                $.post('@Url.Action("Delete")', { id: id }, function(result) {
+                    if (result.success) {
+                        location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                });
+            }
+        }
+
+        $('#editForm').submit(function(e) {
+            e.preventDefault();
+            var data = {
+                RowId: $('#editRowId').val(),
+                Name: $('#editName').val(),
+                StartDur: $('#editStartDur').val(),
+                EndDur: $('#editEndDur').val()
+            };
+
+            $.ajax({
+                url: '@Url.Action("Update")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(result) {
+                    if (result.success) {
+                        $('#editModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            });
+        });
+    </script>
+}

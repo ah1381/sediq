@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Raya.Hrm.Shared.Library.Consts;
-using Raya.Hrm.Shared.Library.GeneralErrorService;
 using Raya.Hrm.Shared.Library.Kafka;
 using Raya.Hrm.Shared.Library.Models;
 using Raya.Hrm.Shared.Library.Models.Configs;
@@ -19,9 +18,9 @@ namespace Raya.Hrm.Shared.Library.GeneralErrorService
         IKafkaErrorService kafkaErrorService,
         IErrorLogInDbService errorInDbService,
         IErrorLogToFIle errorToFile,
-        //IErrorMongoService errorMongoService,
-        IOptions<ErrorConfig> errorConfig
-        //IOptions<MongoDbConfig> mongoConfig,
+        IErrorMongoService errorMongoService,
+        IOptions<ErrorConfig> errorConfig,
+        IOptions<MongoDbConfig> mongoConfig
         //LoggingDbContext loggingDbContext // Added DbContext for separate DB
         ) : IErrorService
     {
@@ -78,7 +77,7 @@ namespace Raya.Hrm.Shared.Library.GeneralErrorService
                     Ex = model.Ex
                 };
 
-                //await errorMongoService.LogErrorAsync(mongoModel);
+                await errorMongoService.LogErrorAsync(mongoModel);
             }
 
             //// 🔹 Insert into separate PostgreSQL DB

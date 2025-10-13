@@ -22,7 +22,7 @@ namespace Raya.Hrm.Shared.Library.GeneralHistoryUpdateService
     {
 
         public HistoryTableService(IOptions<ServicesDbConfig> dbSettings, IOptions<RequestConfig> requestSettings)
-            : base(dbSettings.Value.DefaultConnection)
+            : base(dbSettings.Value.DefaultConnection, dbSettings.Value.ConnectionType)
         {
         }
 

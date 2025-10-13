@@ -3,12 +3,11 @@ using FluentValidation;
 
 namespace Example.Web.Api.Validations
 {
-    public class StudentCreateValidator : AbstractValidator<StudentCreateDto>
+    public class StudentCreateValidator : AbstractValidator<StudentCreateModel>
     {
         public StudentCreateValidator()
         {
-            RuleFor(x => x.StudentCode)
-                .GreaterThan(0).WithMessage("کد دانش‌آموز باید بزرگتر از صفر باشد.");
+
 
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("وارد کردن نام الزامی است.")
@@ -25,8 +24,6 @@ namespace Example.Web.Api.Validations
             RuleFor(x => x.BirthDate)
                 .LessThan(DateTime.Now).WithMessage("تاریخ تولد نمی‌تواند بعد از امروز باشد.");
 
-            RuleFor(x => x.MembershipDate)
-                .LessThanOrEqualTo(DateTime.Now).WithMessage("تاریخ عضویت نمی‌تواند بعد از امروز باشد.");
 
             RuleFor(x => x.Gender)
                 .IsInEnum().WithMessage("جنسیت معتبر نیست.");
@@ -38,11 +35,11 @@ namespace Example.Web.Api.Validations
         }
     }
 
-    public class StudentEditValidator : AbstractValidator<StudentEditDto>
+    public class StudentEditValidator : AbstractValidator<StudentUpdateModel>
     {
         public StudentEditValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.RowId)
                 .GreaterThan(0).WithMessage("شناسه دانش‌آموز معتبر نیست.");
 
             RuleFor(x => x.FirstName)
@@ -60,24 +57,17 @@ namespace Example.Web.Api.Validations
             RuleFor(x => x.BirthDate)
                 .LessThan(DateTime.Now).WithMessage("تاریخ تولد نمی‌تواند بعد از امروز باشد.");
 
-            RuleFor(x => x.MembershipDate)
-                .LessThanOrEqualTo(DateTime.Now).WithMessage("تاریخ عضویت نمی‌تواند بعد از امروز باشد.");
-
 
             RuleFor(x => x.Gender)
                 .IsInEnum().WithMessage("جنسیت معتبر نیست.");
-
-          
-            RuleForEach(x => x.PhoneNumbers)
-                .SetValidator(new PhoneNumberEditValidator());
         }
     }
 
-    public class StudentDeleteValidator : AbstractValidator<StudentDeleteDto>
+    public class StudentDeleteValidator : AbstractValidator<StudentDeleteModel>
     {
         public StudentDeleteValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.RowId)
                 .GreaterThan(0).WithMessage("شناسه دانش‌آموز معتبر نیست.");
         }
     }

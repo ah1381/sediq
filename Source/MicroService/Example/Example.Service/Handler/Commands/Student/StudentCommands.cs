@@ -1,130 +1,111 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Example.Domain.Entities;
 using Example.Service.Models.DTOs;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Raya.Hrm.Shared.Library.GeneralRepository;
 using Raya.Hrm.Shared.Library.Models.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Raya.Hrm.Shared.Library.Utilities;
 
 namespace Example.Service.Handler.Commands.Student
 {
-    #region Create
-    public class CreateStudentCommand : IRequest<CustomActionResult<long>>
+    #region create
+    public class CreateStudentCommand : IRequest<CustomActionResult<StudentResponseDto>>
     {
-        public StudentCreateDto RequestModel { get; set; }
+        public StudentCreateModel RequestModel { get; set; }
     }
 
-    public class CreateStudentCommandHandler : IRequestHandler<CreateStudentCommand, CustomActionResult<long>>
+    public class CreateStudentHandler : IRequestHandler<CreateStudentCommand, CustomActionResult<StudentResponseDto>>
     {
         private readonly IGenericRepository<StudentEntity> _repository;
-        private readonly IMapper _Mapper;
+        private readonly IGenericRepository<SediqEntity> _sediqRepository;
+        private readonly IMapper _mapper;
 
-
-        public CreateStudentCommandHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
+        public CreateStudentHandler(IGenericRepository<StudentEntity> repository, IMapper mapper, IGenericRepository<SediqEntity> sediqRepository)
         {
             _repository = repository;
-            _Mapper = mapper;
-
-
+            _mapper = mapper;
+            _sediqRepository = sediqRepository;
         }
-        public async Task<CustomActionResult<long>> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
+
+        public async Task<CustomActionResult<StudentResponseDto>> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
         {
-            var res = new CustomActionResult<long>
-            {
-                IsSuccess = false,
-                ResponseType = -2,
-
-            };
-
-            var result = await _repository.AddAsync(_Mapper.Map<StudentEntity>(request.RequestModel));
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = result;
-            return res;
+            var entity = _mapper.Map<StudentEntity>(request.RequestModel);
+            var sediq = await _sediqRepository.GetByIdAsync(entity.SediqCode);
+            var sediqs = await _sediqRepository.GetQueryable().Include(x => x.Students).Where(x => x.RowId == entity.SediqCode).ToListAsync();
+            entity.StudentCode = sediq.SediqCode.ToString() + entity.MembershipDate.Value.Year.ToString() + sediq.Students.Count.ToString();
+            var saveEntity = await _repository.AddAsync(entity);
+            var result = _mapper.Map<StudentResponseDto>(saveEntity);
+            return Result.Created(result, "Student created successfully");
         }
     }
     #endregion
 
-    #region Edit
-    public class EditStudentCommand : IRequest<CustomActionResult<StudentResponseDto>>
+    #region update
+    public class UpdateStudentCommand : IRequest<CustomActionResult<StudentResponseDto>>
     {
-        public StudentEditDto RequestModel { get; set; }
+        public StudentUpdateModel Student { get; set; }
+
+        public UpdateStudentCommand()
+        {
+        }
+
+        public UpdateStudentCommand(StudentUpdateModel student)
+        {
+            Student = student;
+        }
     }
 
-    public class EditStudentCommandHandler : IRequestHandler<EditStudentCommand, CustomActionResult<StudentResponseDto>>
+    public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, CustomActionResult<StudentResponseDto>>
     {
         private readonly IGenericRepository<StudentEntity> _repository;
-        private readonly IMapper _Mapper;
+        private readonly IMapper _mapper;
 
-
-        public EditStudentCommandHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
+        public UpdateStudentCommandHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
         {
             _repository = repository;
-            _Mapper = mapper;
-
-
+            _mapper = mapper;
         }
-        public async Task<CustomActionResult<StudentResponseDto>> Handle(EditStudentCommand request, CancellationToken cancellationToken)
-        {
-            var res = new CustomActionResult<StudentResponseDto>
-            {
-                IsSuccess = false,
-                ResponseType = -2,
-            };
 
-            var entity = await _repository.GetByIdAsync(request.RequestModel.Id);
-            if (entity == null)
+        public async Task<CustomActionResult<StudentResponseDto>> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
+        {
+            var entity = await _repository.GetByIdAsync(request.Student.RowId.Value);
+            if (entity.IsNull())
             {
-                res.ResponseType = -1; // Not found
-                return res;
+                return Result.NotFound<StudentResponseDto>($"Student with RowId {request.Student.RowId} not found.");
             }
 
-            // Map fields from DTO to entity
-            _Mapper.Map(request.RequestModel, entity); // Mapping existing entity
+            _mapper.Map(request.Student, entity);
             await _repository.UpdateAsync(entity);
-
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = _Mapper.Map<StudentResponseDto>(entity);
-            return res;
+            var result = _mapper.Map<StudentResponseDto>(entity);
+            return Result.Ok(result, "Student updated successfully");
         }
     }
     #endregion
 
-    #region Delete
+    #region delete
     public class DeleteStudentCommand : IRequest<CustomActionResult<bool>>
     {
-        public StudentDeleteDto RequestModel { get; set; }
+        public int Id { get; set; }
     }
 
-    public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentCommand, CustomActionResult<bool>>
+    public class DeleteStudentHandler : IRequestHandler<DeleteStudentCommand, CustomActionResult<bool>>
     {
         private readonly IGenericRepository<StudentEntity> _repository;
-        private readonly IMapper _Mapper;
 
-
-        public DeleteStudentCommandHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
+        public DeleteStudentHandler(IGenericRepository<StudentEntity> repository)
         {
             _repository = repository;
-            _Mapper = mapper;
         }
+
         public async Task<CustomActionResult<bool>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
         {
-            var res = new CustomActionResult<bool>
-            {
-                IsSuccess = false,
-                ResponseType = -2,
-            };
+            var entity = await _repository.GetByIdAsync(request.Id);
+            if (entity == null)
+                return new CustomActionResult<bool> { Data = false, ResponseType = 404, ResponseDesc = "Student not found", IsSuccess = false };
 
-            await _repository.DeleteAsync(request.RequestModel.Id);
-            res.IsSuccess = true;
-            res.ResponseType = 0;
-            res.Data = true;
-            return res;
+            await _repository.DeleteAsync(request.Id);
+            return Result.Ok<bool>(true, "Student deleted successfully");
         }
     }
     #endregion

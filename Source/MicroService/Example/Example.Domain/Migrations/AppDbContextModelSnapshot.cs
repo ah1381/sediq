@@ -32,11 +32,19 @@ namespace Example.Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
 
-                    b.Property<DateTime>("ActivityDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("ActivityDate")
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RandId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<short>("RevSeq")
                         .HasColumnType("smallint");
@@ -50,7 +58,7 @@ namespace Example.Domain.Migrations
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("RowId");
@@ -60,6 +68,50 @@ namespace Example.Domain.Migrations
                     b.HasIndex("SelectedStudentId");
 
                     b.ToTable("ActivityForms");
+                });
+
+            modelBuilder.Entity("Example.Domain.Entities.DurationDateEntity", b =>
+                {
+                    b.Property<long>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("EndDur")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RandId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("RevSeq")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateOnly>("StartDur")
+                        .HasColumnType("date");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("RowId");
+
+                    b.ToTable("DurationDateEntitys");
                 });
 
             modelBuilder.Entity("Example.Domain.Entities.ImagesEntity", b =>
@@ -74,11 +126,19 @@ namespace Example.Domain.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RandId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -91,7 +151,7 @@ namespace Example.Domain.Migrations
                     b.Property<long>("StudentId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("RowId");
@@ -113,12 +173,20 @@ namespace Example.Domain.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Ownership")
                         .HasColumnType("int");
+
+                    b.Property<string>("RandId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<short>("RevSeq")
                         .HasColumnType("smallint");
@@ -129,7 +197,7 @@ namespace Example.Domain.Migrations
                     b.Property<long>("StudentId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("RowId");
@@ -151,10 +219,18 @@ namespace Example.Domain.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("From")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RandId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -167,12 +243,116 @@ namespace Example.Domain.Migrations
                     b.Property<DateTime?>("To")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("RowId");
 
                     b.ToTable("Programs");
+                });
+
+            modelBuilder.Entity("Example.Domain.Entities.ScoreFormEntity", b =>
+                {
+                    b.Property<long>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
+
+                    b.Property<long>("ActivityDurId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RandId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("RevSeq")
+                        .HasColumnType("smallint");
+
+                    b.Property<decimal>("Score")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<long>("SelectedProgramId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SelectedStudentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("RowId");
+
+                    b.HasIndex("ActivityDurId");
+
+                    b.HasIndex("SelectedProgramId");
+
+                    b.HasIndex("SelectedStudentId");
+
+                    b.ToTable("ScoreForms");
+                });
+
+            modelBuilder.Entity("Example.Domain.Entities.SediqEntity", b =>
+                {
+                    b.Property<long>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RandId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("RevSeq")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("sediqName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("SediqCode")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("RowId");
+
+                    b.ToTable("sediqs");
                 });
 
             modelBuilder.Entity("Example.Domain.Entities.StudentEntity", b =>
@@ -192,6 +372,10 @@ namespace Example.Domain.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EducationStatus")
                         .HasColumnType("nvarchar(max)");
@@ -227,22 +411,43 @@ namespace Example.Domain.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RandId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<short>("RevSeq")
                         .HasColumnType("smallint");
+
+                    b.Property<long>("sediqRowId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SediqCode")
+                        .HasColumnType("bigint");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("StudentCode")
-                        .HasColumnType("int");
+                    b.Property<string>("StudentCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("YearStudy")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RowId");
+
+                    b.HasIndex("sediqRowId");
 
                     b.ToTable("Students");
                 });
@@ -295,6 +500,114 @@ namespace Example.Domain.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.Permission", b =>
+                {
+                    b.Property<long>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
+
+                    b.Property<string>("ActionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ControllerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("RoleRowId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("RowId");
+
+                    b.HasIndex("RoleRowId");
+
+                    b.ToTable("Permission");
+                });
+
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.PermissionRole", b =>
+                {
+                    b.Property<long>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("PermissionID")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RoleID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("RowId");
+
+                    b.ToTable("PermissionRole");
+                });
+
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.Role", b =>
+                {
+                    b.Property<long>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
+
+                    b.Property<long?>("AuthenticationRowId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RowId");
+
+                    b.HasIndex("AuthenticationRowId");
+
+                    b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.UserRole", b =>
+                {
+                    b.Property<long>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowId"));
+
+                    b.Property<long>("AuthenticationOrMemberID")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("RoleID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("RowId");
+
+                    b.ToTable("UserRole");
+                });
+
             modelBuilder.Entity("Example.Domain.Entities.ActivityFormEntity", b =>
                 {
                     b.HasOne("Example.Domain.Entities.ProgramEntity", "SelectedProgram")
@@ -336,9 +649,73 @@ namespace Example.Domain.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("Example.Domain.Entities.ScoreFormEntity", b =>
+                {
+                    b.HasOne("Example.Domain.Entities.DurationDateEntity", "ActivityDur")
+                        .WithMany("ScoreForm")
+                        .HasForeignKey("ActivityDurId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Example.Domain.Entities.ProgramEntity", "SelectedProgram")
+                        .WithMany("ScoreForms")
+                        .HasForeignKey("SelectedProgramId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Example.Domain.Entities.StudentEntity", "SelectedStudent")
+                        .WithMany("ScoreForms")
+                        .HasForeignKey("SelectedStudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ActivityDur");
+
+                    b.Navigation("SelectedProgram");
+
+                    b.Navigation("SelectedStudent");
+                });
+
+            modelBuilder.Entity("Example.Domain.Entities.StudentEntity", b =>
+                {
+                    b.HasOne("Example.Domain.Entities.SediqEntity", "sediq")
+                        .WithMany("Students")
+                        .HasForeignKey("sediqRowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("sediq");
+                });
+
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.Permission", b =>
+                {
+                    b.HasOne("Raya.Hrm.Shared.Library.Models.Auth.Role", null)
+                        .WithMany("Permissions")
+                        .HasForeignKey("RoleRowId");
+                });
+
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.Role", b =>
+                {
+                    b.HasOne("Raya.Hrm.Shared.Library.Models.Auth.Authentication", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("AuthenticationRowId");
+                });
+
+            modelBuilder.Entity("Example.Domain.Entities.DurationDateEntity", b =>
+                {
+                    b.Navigation("ScoreForm");
+                });
+
             modelBuilder.Entity("Example.Domain.Entities.ProgramEntity", b =>
                 {
+                    b.Navigation("ScoreForms");
+
                     b.Navigation("activityForms");
+                });
+
+            modelBuilder.Entity("Example.Domain.Entities.SediqEntity", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("Example.Domain.Entities.StudentEntity", b =>
@@ -348,6 +725,18 @@ namespace Example.Domain.Migrations
                     b.Navigation("PhoneNumbers");
 
                     b.Navigation("Photos");
+
+                    b.Navigation("ScoreForms");
+                });
+
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.Authentication", b =>
+                {
+                    b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("Raya.Hrm.Shared.Library.Models.Auth.Role", b =>
+                {
+                    b.Navigation("Permissions");
                 });
 #pragma warning restore 612, 618
         }

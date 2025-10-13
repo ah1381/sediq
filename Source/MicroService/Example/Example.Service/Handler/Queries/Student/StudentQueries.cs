@@ -1,90 +1,105 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Example.Domain.Entities;
 using Example.Service.Models.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Raya.Hrm.Shared.Library.GeneralRepository;
+using Raya.Hrm.Shared.Library.Models;
+using Raya.Hrm.Shared.Library.Models.Base;
+using Raya.Hrm.Shared.Library.Utilities;
 
 namespace Example.Service.Handler.Queries.Student
 {
-        public class GetStudentQuery : IRequest<StudentResponseDto?>
+    public class GetStudentById : IRequest<StudentResponseDto?>
+    {
+        public int Id { get; set; }
+    }
+
+    public class GetStudentByIdHandler : IRequestHandler<GetStudentById, StudentResponseDto?>
+    {
+        private readonly IGenericRepository<StudentEntity> _repository;
+        private readonly IMapper _mapper;
+
+        public GetStudentByIdHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
         {
-            public int Id { get; set; }
+            _repository = repository;
+            _mapper = mapper;
         }
 
-        public class GetStudentHandler : IRequestHandler<GetStudentQuery, StudentResponseDto?>
+        public async Task<StudentResponseDto?> Handle(GetStudentById request, CancellationToken cancellationToken)
         {
-            private readonly IGenericRepository<StudentEntity> _repository;
-            private readonly IMapper _mapper;
+            var entity = await _repository.GetByIdAsync(request.Id);
+            if (entity == null)
+                return null;
 
-            public GetStudentHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
-            {
-                _repository = repository;
-                _mapper = mapper;
-            }
+            return _mapper.Map<StudentResponseDto>(entity);
+        }
+    }
 
-            public async Task<StudentResponseDto?> Handle(GetStudentQuery request, CancellationToken cancellationToken)
-            {
-                var entity = await _repository.GetByIdAsync(request.Id);
-                if (entity == null)
-                    return null;
+    public class GetAllStudentsQuery : IRequest<CustomActionResult<List<StudentResponseDto>>>
+    {
+    }
 
-                return _mapper.Map<StudentResponseDto>(entity);
-            }
+    public class GetAllStudentsHandler : IRequestHandler<GetAllStudentsQuery, CustomActionResult<List<StudentResponseDto>>>
+    {
+        private readonly IGenericRepository<StudentEntity> _repository;
+        private readonly IMapper _mapper;
+
+        public GetAllStudentsHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
         }
 
-        public class GetAllStudentsQuery : IRequest<IEnumerable<StudentResponseDto>>
+        public async Task<CustomActionResult<List<StudentResponseDto>>> Handle(GetAllStudentsQuery request, CancellationToken cancellationToken)
         {
-            public int PageNumber { get; set; } = 1;
-            public int PageSize { get; set; } = 10;
+            var entities = await _repository.GetAllAsync();
+            var result = _mapper.Map<List<StudentResponseDto>>(entities);
+            return Result.Ok(result, "Students retrieved successfully").WithTotalCount(result.Count);
+        }
+    }
+
+    public class GetFilteredStudentsQuery : IRequest<CustomActionResult<List<StudentResponseDto>>>
+    {
+        public FilterPagedListParameter<StudentEntity>? Filters { get; set; }
+
+        public GetFilteredStudentsQuery()
+        {
         }
 
-        public class GetAllStudentsHandler : IRequestHandler<GetAllStudentsQuery, IEnumerable<StudentResponseDto>>
+        public GetFilteredStudentsQuery(FilterPagedListParameter<StudentEntity>? filters)
         {
-            private readonly IGenericRepository<StudentEntity> _repository;
-            private readonly IMapper _mapper;
+            Filters = filters;
+        }
+    }
 
-            public GetAllStudentsHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
-            {
-                _repository = repository;
-                _mapper = mapper;
-            }
+    public class GetFilteredStudentsHandler : IRequestHandler<GetFilteredStudentsQuery, CustomActionResult<List<StudentResponseDto>>>
+    {
+        private readonly IGenericRepository<StudentEntity> _repository;
+        private readonly IMapper _mapper;
 
-            public async Task<IEnumerable<StudentResponseDto>> Handle(GetAllStudentsQuery request, CancellationToken cancellationToken)
-            {
-                var entities = await _repository.GetQueryable()
-                    .Include(s => s.PhoneNumbers)
-                    .Include(s => s.Photos)
-                    .ToListAsync(cancellationToken);
-                return _mapper.Map<IEnumerable<StudentResponseDto>>(entities);
-            }
+        public GetFilteredStudentsHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
         }
 
-        public class GetStudentByCodeQuery : IRequest<StudentResponseDto?>
+        public async Task<CustomActionResult<List<StudentResponseDto>>> Handle(GetFilteredStudentsQuery request, CancellationToken cancellationToken)
         {
-            public int StudentCode { get; set; }
-        }
-
-        public class GetStudentByCodeHandler : IRequestHandler<GetStudentByCodeQuery, StudentResponseDto?>
-        {
-            private readonly IGenericRepository<StudentEntity> _repository;
-            private readonly IMapper _mapper;
-
-            public GetStudentByCodeHandler(IGenericRepository<StudentEntity> repository, IMapper mapper)
+            IEnumerable<StudentEntity> entities;
+            if (request.Filters.IsNull())
             {
-                _repository = repository;
-                _mapper = mapper;
+                var all = await _repository.GetAllAsync();
+                var dto = _mapper.Map<List<StudentResponseDto>>(all);
+                return Result.Ok(dto, "Students retrieved successfully").WithTotalCount(dto.Count);
             }
-
-            public async Task<StudentResponseDto?> Handle(GetStudentByCodeQuery request, CancellationToken cancellationToken)
+            else
             {
-                var entity = await _repository.GetQueryable()
-                    .Include(s => s.PhoneNumbers)
-                    .Include(s => s.Photos)
-                    .FirstOrDefaultAsync(s => s.StudentCode == request.StudentCode, cancellationToken);
-                
-                return entity == null ? null : _mapper.Map<StudentResponseDto>(entity);
+                var filtered = await _repository.GetFilteredAsync(request.Filters);
+                var dto = _mapper.Map<List<StudentResponseDto>>(filtered);
+                return Result.Ok(dto, "Students retrieved successfully").WithTotalCount(dto.Count);
             }
         }
     }
+}
 

@@ -10,9 +10,9 @@
     public enum VariableScalesOfMeasurement
     {
         Nominal = 1,       // Categories without any order (e.g., gender, colors) اسمی
-              // Categories with a meaningful order, but not evenly spaced (e.g., rankings) ترتیبی
+                           // Categories with a meaningful order, but not evenly spaced (e.g., rankings) ترتیبی
         Interval = 2,      // Ordered, evenly spaced, but no true zero (e.g., temperature in Celsius) فاصله ای 
-                  // Ordered, evenly spaced, with a meaningful zero (e.g., height, weight, age)
+                           // Ordered, evenly spaced, with a meaningful zero (e.g., height, weight, age)
     }
     public enum ScoreSom
     {
@@ -35,6 +35,12 @@
     {
         NotPercent = 0,
         Percent = 1
+    }
+
+    public enum FundMemeberType
+    {
+        UserMember = 0,
+        OperationalMember = 1
     }
 
 

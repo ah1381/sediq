@@ -1,8 +1,11 @@
 ﻿
 using Microsoft.Extensions.Options;
 using Raya.Hrm.Shared.Library.Consts;
+using Raya.Hrm.Shared.Library.GeneralErrorService;
+using Raya.Hrm.Shared.Library.GeneralRequestService;
 using Raya.Hrm.Shared.Library.Models;
 using Raya.Hrm.Shared.Library.Models.Configs;
+using Raya.Hrm.Shared.Library.Models.Exception;
 using System.Text.Json;
 
 namespace Example.Web.Api.Middleware
@@ -37,37 +40,53 @@ namespace Example.Web.Api.Middleware
             }
             catch (Exception ex)
             {
-                using var scope = _serviceProvider.CreateScope(); // 🔹 create scope
-                //var errorLogger = scope.ServiceProvider.GetRequiredService<IErrorService>();
+                using var scope = _serviceProvider.CreateScope();
+                var errorLogger = scope.ServiceProvider.GetRequiredService<IErrorService>();
 
                 string? clientIp = $"{context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}";
-                string? serverIp = $"{context.Connection.LocalIpAddress}:{context.Connection.LocalPort}";
-
                 var requestId = context.Items["RequestId"] as Guid? ?? Guid.NewGuid();
+
+                if (ex is BpcValidationException bpcEx)
+                {
+                    context.Response.StatusCode = bpcEx.StatusCode;
+                    context.Response.ContentType = "application/json";
+
+                    var response = new
+                    {
+                        IsSuccess = false,
+                        ResponseType = bpcEx.StatusCode,
+                        ResponseDesc = "خطای اعتبارسنجی",
+                        Errors = bpcEx.CustomErrors,
+                        ValidationErrors = bpcEx.ValidationErrors
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                    return;
+                }
 
                 var error = new ErrorModel
                 {
                     RequestId = requestId,
-                    AppName = "Example",
+                    AppName = "LoanManagement",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace,
                     InnerException = ex.InnerException?.Message,
                     Ip = clientIp,
-
-                    ProjectName = "Example",
+                    ProjectName = "LoanManagement",
                     ServiceName = "WebApi",
                     LogType = "Error",
-                    EntityType = "LoanRequest",
+                    EntityType = "Exception",
                     Title = "Unhandled Exception",
                     CreatedBy = "System",
                     DateTime = DateTime.UtcNow,
                     DeviceInfo = context.Request.Headers["User-Agent"],
                     Request = requestBody,
                     Response = responseBody,
-                    Status = "Failed"
+                    Status = "Failed",
+                    Ex = ex as BpcValidationException
                 };
 
-                //await errorLogger.ErrorLog(error);
+                await errorLogger.ErrorLog(error);
 
                 context.Response.StatusCode = 500;
                 await context.Response.WriteAsync("Internal server error");
@@ -81,7 +100,7 @@ namespace Example.Web.Api.Middleware
             context.Request.Body.Position = 0;
 
             using var scope = _serviceProvider.CreateScope(); // 🔹 create scope
-            //var requestDataLogger = scope.ServiceProvider.GetRequiredService<IRequestDataService>();
+            var requestDataLogger = scope.ServiceProvider.GetRequiredService<IRequestDataService>();
 
             var log = new RequestDataModel
             {
@@ -116,7 +135,7 @@ namespace Example.Web.Api.Middleware
                 status = "Pending"
             };
 
-            //await requestDataLogger.RequestLog(log);
+            await requestDataLogger.RequestLog(log);
             context.Items["RequestId"] = log.request_id;
 
             return body; // return requestBody for error logging

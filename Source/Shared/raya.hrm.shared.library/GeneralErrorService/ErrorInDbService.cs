@@ -22,7 +22,7 @@ namespace Raya.Hrm.Shared.Library.GeneralErrorService
     {
 
         public ErrorLogInDbService(IOptions<ServicesDbConfig> dbSettings, IOptions<ErrorConfig> errorSettings)
-            : base(dbSettings.Value.DefaultConnection)
+            : base(dbSettings.Value.DefaultConnection,dbSettings.Value.ConnectionType)
         {
 
 
@@ -38,7 +38,7 @@ namespace Raya.Hrm.Shared.Library.GeneralErrorService
         {
             try
             {
-                using var connection = CreateConnection(model.ConnectionType);
+                using var connection = CreateConnection();
                 _ = await connection.ExecuteAsync(
                     $"""
                     INSERT INTO error.error_logs

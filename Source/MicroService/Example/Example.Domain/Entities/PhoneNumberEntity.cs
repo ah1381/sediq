@@ -28,7 +28,7 @@ namespace Example.Domain.Entities
         [Display(Name = "مالکیت")]
         public PhoneOwnership Ownership { get; set; }
 
-        [Display(Name = "کد دانش آموزی")]
+        [Display(Name = "کد شرکت کنندهی")]
         public long StudentId { get; set; }
         public StudentEntity Student { get; set; }
     }
