@@ -191,6 +191,13 @@ namespace Example.Domain.Data
             modelBuilder.Entity<ScoreFormEntity>()
                 .Property(s => s.Score)
                 .HasPrecision(5, 2); // 5 رقم کل، 2 رقم اعشار
+
+            // Student ↔ Sediq (چند به یک)
+            modelBuilder.Entity<StudentEntity>()
+                .HasOne(s => s.sediq)
+                .WithMany()
+                .HasForeignKey(s => s.sediqRowId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

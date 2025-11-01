@@ -12,8 +12,8 @@ namespace Example.Service.Handler.Commands.Program
     public class CreateProgramCommand : IRequest<CustomActionResult<ProgramResponseDto>>
     {
         public string Name { get; set; } = string.Empty;
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public DateTime? From { get; set; }
+        public DateTime? To { get; set; }
     }
 
     public class CreateProgramHandler : IRequestHandler<CreateProgramCommand, CustomActionResult<ProgramResponseDto>>

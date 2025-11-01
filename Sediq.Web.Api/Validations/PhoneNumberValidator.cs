@@ -27,7 +27,7 @@ namespace Sediq.Web.Api.Validations
                 .Matches(@"^09\d{9}$").WithMessage("شماره تلفن باید با 09 شروع شده و 11 رقم باشد");
 
             RuleFor(x => x.StudentId)
-                .GreaterThan(0).WithMessage("شناسه دانشآموز معتبر نیست");
+                .GreaterThan(0).WithMessage("شناسه دانش آموز معتبر نیست");
         }
     }
 }

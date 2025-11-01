@@ -9,15 +9,15 @@ namespace Sediq.Web.Api.Validations
         {
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("نام برنامه الزامی است")
-                .MaximumLength(200).WithMessage("نام برنامه نمی‌تواند بیش از 200 کاراکتر باشد");
+                .MaximumLength(200).WithMessage("نام برنامه نمیتواند بیش از 200 کاراکتر باشد");
 
             RuleFor(x => x.From)
-                .NotNull().WithMessage("تاریخ شروع الزامی است")
-                .LessThanOrEqualTo(x => x.To).WithMessage("تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد");
+                .LessThanOrEqualTo(x => x.To).When(x => x.From.HasValue && x.To.HasValue)
+                .WithMessage("تاریخ شروع نمیتواند بعد از تاریخ پایان باشد");
 
             RuleFor(x => x.To)
-                .NotNull().WithMessage("تاریخ پایان الزامی است")
-                .GreaterThanOrEqualTo(x => x.From).WithMessage("تاریخ پایان نمی‌تواند قبل از تاریخ شروع باشد");
+                .GreaterThanOrEqualTo(x => x.From).When(x => x.From.HasValue && x.To.HasValue)
+                .WithMessage("تاریخ پایان نمیتواند قبل از تاریخ شروع باشد");
         }
     }
 
@@ -30,15 +30,15 @@ namespace Sediq.Web.Api.Validations
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("نام برنامه الزامی است")
-                .MaximumLength(200).WithMessage("نام برنامه نمی‌تواند بیش از 200 کاراکتر باشد");
+                .MaximumLength(200).WithMessage("نام برنامه نمیتواند بیش از 200 کاراکتر باشد");
 
             RuleFor(x => x.From)
-                .NotNull().WithMessage("تاریخ شروع الزامی است")
-                .LessThanOrEqualTo(x => x.To).WithMessage("تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد");
+                .LessThanOrEqualTo(x => x.To).When(x => x.From.HasValue && x.To.HasValue)
+                .WithMessage("تاریخ شروع نمیتواند بعد از تاریخ پایان باشد");
 
             RuleFor(x => x.To)
-                .NotNull().WithMessage("تاریخ پایان الزامی است")
-                .GreaterThanOrEqualTo(x => x.From).WithMessage("تاریخ پایان نمی‌تواند قبل از تاریخ شروع باشد");
+                .GreaterThanOrEqualTo(x => x.From).When(x => x.From.HasValue && x.To.HasValue)
+                .WithMessage("تاریخ پایان نمیتواند قبل از تاریخ شروع باشد");
         }
     }
 }

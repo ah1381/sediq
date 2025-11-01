@@ -32,7 +32,7 @@ namespace Sediq.Web.Api.Validations
                 .MaximumLength(200).WithMessage("توضیحات عکس نمیتواند بیش از 200 کاراکتر باشد");
 
             RuleFor(x => x.StudentId)
-                .GreaterThan(0).WithMessage("شناسه دانشآموز معتبر نیست");
+                .GreaterThan(0).WithMessage("شناسه دانش آموز معتبر نیست");
         }
     }
 }

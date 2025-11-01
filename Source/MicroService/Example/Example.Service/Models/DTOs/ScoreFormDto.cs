@@ -8,11 +8,11 @@ namespace Example.Service.Models.DTOs
         [Display(Name = "شناسه برنامه انتخابی")]
         public long SelectedProgramId { get; set; }
 
-        [Display(Name = "شناسه دانشآموز انتخابی")]
+        [Display(Name = "شناسه دانش آموز انتخابی")]
         public long SelectedStudentId { get; set; }
 
         [Display(Name = "توضیحات")]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
         [Display(Name = "نمره")]
         [Range(0, 20, ErrorMessage = "نمره باید بین 0 تا 20 باشد")]
@@ -50,7 +50,7 @@ namespace Example.Service.Models.DTOs
         [Display(Name = "نام برنامه")]
         public string ProgramName { get; set; } = string.Empty;
 
-        [Display(Name = "نام دانشآموز")]
+        [Display(Name = "نام دانش آموز")]
         public string StudentName { get; set; } = string.Empty;
 
         [Display(Name = "نام بازه زمانی")]

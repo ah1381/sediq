@@ -96,7 +96,7 @@ namespace Example.Domain.Migrations
                 {
                     RowId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    sediqCode = table.Column<long>(type: "bigint", nullable: false),
+                    SediqCode = table.Column<long>(type: "bigint", nullable: false),
                     sediqName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -157,9 +157,8 @@ namespace Example.Domain.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StudentCode = table.Column<int>(type: "int", nullable: false),
-                    sediqCode = table.Column<long>(type: "bigint", nullable: false),
+                    StudentCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SediqCode = table.Column<long>(type: "bigint", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NationalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -173,7 +172,8 @@ namespace Example.Domain.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EducationStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    sediqRowId = table.Column<long>(type: "bigint", nullable: false),
+                    sediqRowId = table.Column<long>(type: "bigint", nullable: true),
+                    SediqEntityRowId = table.Column<long>(type: "bigint", nullable: true),
                     RandId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -185,11 +185,16 @@ namespace Example.Domain.Migrations
                 {
                     table.PrimaryKey("PK_Students", x => x.RowId);
                     table.ForeignKey(
+                        name: "FK_Students_sediqs_SediqEntityRowId",
+                        column: x => x.SediqEntityRowId,
+                        principalTable: "sediqs",
+                        principalColumn: "RowId");
+                    table.ForeignKey(
                         name: "FK_Students_sediqs_sediqRowId",
                         column: x => x.sediqRowId,
                         principalTable: "sediqs",
                         principalColumn: "RowId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -390,6 +395,11 @@ namespace Example.Domain.Migrations
                 name: "IX_ScoreForms_SelectedStudentId",
                 table: "ScoreForms",
                 column: "SelectedStudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_SediqEntityRowId",
+                table: "Students",
+                column: "SediqEntityRowId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_sediqRowId",

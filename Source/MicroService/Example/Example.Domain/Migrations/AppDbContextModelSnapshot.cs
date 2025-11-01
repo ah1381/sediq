@@ -334,10 +334,6 @@ namespace Example.Domain.Migrations
                     b.Property<short>("RevSeq")
                         .HasColumnType("smallint");
 
-                    b.Property<string>("sediqName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<long>("SediqCode")
                         .HasColumnType("bigint");
 
@@ -349,6 +345,10 @@ namespace Example.Domain.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("sediqName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RowId");
 
@@ -422,10 +422,10 @@ namespace Example.Domain.Migrations
                     b.Property<short>("RevSeq")
                         .HasColumnType("smallint");
 
-                    b.Property<long>("sediqRowId")
+                    b.Property<long>("SediqCode")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("SediqCode")
+                    b.Property<long?>("SediqEntityRowId")
                         .HasColumnType("bigint");
 
                     b.Property<short>("Status")
@@ -445,7 +445,12 @@ namespace Example.Domain.Migrations
                     b.Property<string>("YearStudy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("sediqRowId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("RowId");
+
+                    b.HasIndex("SediqEntityRowId");
 
                     b.HasIndex("sediqRowId");
 
@@ -678,11 +683,14 @@ namespace Example.Domain.Migrations
 
             modelBuilder.Entity("Example.Domain.Entities.StudentEntity", b =>
                 {
-                    b.HasOne("Example.Domain.Entities.SediqEntity", "sediq")
+                    b.HasOne("Example.Domain.Entities.SediqEntity", null)
                         .WithMany("Students")
+                        .HasForeignKey("SediqEntityRowId");
+
+                    b.HasOne("Example.Domain.Entities.SediqEntity", "sediq")
+                        .WithMany()
                         .HasForeignKey("sediqRowId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("sediq");
                 });

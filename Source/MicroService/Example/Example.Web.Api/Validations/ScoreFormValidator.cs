@@ -11,7 +11,7 @@ namespace Example.Web.Api.Validations
                 .GreaterThan(0).WithMessage("شناسه برنامه انتخابی معتبر نیست.");
 
             RuleFor(x => x.SelectedStudentId)
-                .GreaterThan(0).WithMessage("شناسه دانشآموز انتخابی معتبر نیست.");
+                .GreaterThan(0).WithMessage("شناسه دانش آموز انتخابی معتبر نیست.");
 
             RuleFor(x => x.Score)
                 .GreaterThanOrEqualTo(0).WithMessage("نمره نمیتواند منفی باشد.")
@@ -36,7 +36,7 @@ namespace Example.Web.Api.Validations
                 .GreaterThan(0).WithMessage("شناسه برنامه انتخابی معتبر نیست.");
 
             RuleFor(x => x.SelectedStudentId)
-                .GreaterThan(0).WithMessage("شناسه دانشآموز انتخابی معتبر نیست.");
+                .GreaterThan(0).WithMessage("شناسه دانش آموز انتخابی معتبر نیست.");
 
             RuleFor(x => x.Score)
                 .GreaterThanOrEqualTo(0).WithMessage("نمره نمیتواند منفی باشد.")

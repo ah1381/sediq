@@ -11,7 +11,7 @@ namespace Sediq.Web.Api.Validations
                 .GreaterThan(0).WithMessage("انتخاب برنامه الزامی است");
 
             RuleFor(x => x.SelectedStudentId)
-                .GreaterThan(0).WithMessage("انتخاب دانشآموز الزامی است");
+                .GreaterThan(0).WithMessage("انتخاب دانش آموز الزامی است");
 
             RuleFor(x => x.Score)
                 .GreaterThanOrEqualTo(0).WithMessage("نمره نمیتواند منفی باشد")
@@ -36,7 +36,7 @@ namespace Sediq.Web.Api.Validations
                 .GreaterThan(0).WithMessage("انتخاب برنامه الزامی است");
 
             RuleFor(x => x.SelectedStudentId)
-                .GreaterThan(0).WithMessage("انتخاب دانشآموز الزامی است");
+                .GreaterThan(0).WithMessage("انتخاب دانش آموز الزامی است");
 
             RuleFor(x => x.Score)
                 .GreaterThanOrEqualTo(0).WithMessage("نمره نمیتواند منفی باشد")

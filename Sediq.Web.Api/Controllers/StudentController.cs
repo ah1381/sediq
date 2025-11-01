@@ -30,14 +30,6 @@ namespace Sediq.Web.Api.Controllers
             return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] StudentCreateModel dto)
-        {
-            var command = new CreateStudentCommand { RequestModel = dto };
-            var result = await _mediator.Send(command);
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
-        }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] StudentUpdateModel dto)
         {
@@ -51,6 +43,80 @@ namespace Sediq.Web.Api.Controllers
         {
             var result = await _mediator.Send(new DeleteStudentCommand { Id = id });
             return result.IsSuccess ? Ok(result) : BadRequest(result);
+        }
+
+        // MVC Actions
+        public async Task<IActionResult> List()
+        {
+            var result = await _mediator.Send(new GetAllStudentsQuery());
+            return View(result.IsSuccess ? result.Data : new List<StudentResponseDto>());
+        }
+
+        public IActionResult Create()
+        {
+            return View(new StudentCreateModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(StudentCreateModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var command = new CreateStudentCommand { RequestModel = model };
+            var result = await _mediator.Send(command);
+            
+            if (result.IsSuccess)
+            {
+                TempData["Success"] = "دانش آموز با موفقیت ثبت شد";
+                return RedirectToAction(nameof(List));
+            }
+            
+            ModelState.AddModelError("", result.ResponseDesc);
+            return View(model);
+        }
+
+        public async Task<IActionResult> Edit(long id)
+        {
+            var result = await _mediator.Send(new GetStudentById { Id = (int)id });
+            if (result == null)
+                return NotFound();
+
+            var model = new StudentUpdateModel
+            {
+                RowId = result.RowId,
+                StudentCode = result.StudentCode,
+                FirstName = result.FirstName,
+                LastName = result.LastName,
+                NationalCode = result.NationalCode
+            };
+            
+            return PartialView("_EditPartial", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(StudentUpdateModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
+
+            var result = await _mediator.Send(new UpdateStudentCommand(model));
+            
+            if (result.IsSuccess)
+                return Json(new { success = true });
+            
+            return Json(new { success = false, message = result.ResponseDesc });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var result = await _mediator.Send(new DeleteStudentCommand { Id = (int)id });
+            
+            if (result.IsSuccess)
+                return Json(new { success = true });
+            
+            return Json(new { success = false, message = result.ResponseDesc });
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Example.Service.Models.DTOs
         [Display(Name = "نام برنامه انتخابی")]
         public string SelectedProgramName { get; set; } = string.Empty;
 
-        [Display(Name = "نام دانشآموزان")]
+        [Display(Name = "نام دانش آموزان")]
         public List<string> StudentNames { get; set; } = new List<string>();
     }
 }

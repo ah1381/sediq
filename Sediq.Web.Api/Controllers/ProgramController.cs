@@ -37,16 +37,27 @@ namespace Sediq.Web.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ProgramCreateModel dto)
+        public async Task<IActionResult> Create(ProgramCreateModel model)
         {
+            if (!ModelState.IsValid)
+                return View(model);
+
             var command = new CreateProgramCommand
             {
-                Name = dto.Name,
-                From = dto.From,
-                To = dto.To
+                Name = model.Name,
+                From = model.From,
+                To = model.To
             };
             var result = await _mediator.Send(command);
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
+            
+            if (result.IsSuccess)
+            {
+                TempData["Success"] = "برنامه با موفقیت ثبت شد";
+                return RedirectToAction(nameof(List));
+            }
+            
+            ModelState.AddModelError("", result.ResponseDesc);
+            return View(model);
         }
 
         [HttpDelete("{id}")]
@@ -79,6 +90,30 @@ namespace Sediq.Web.Api.Controllers
             return PartialView("_EditPartial", model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProgramUpdateModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
+
+            var result = await _mediator.Send(new UpdateProgramCommand(model));
+            
+            if (result.IsSuccess)
+                return Json(new { success = true });
+            
+            return Json(new { success = false, message = result.ResponseDesc });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var result = await _mediator.Send(new DeleteProgramCommand { Id = (int)id });
+            
+            if (result.IsSuccess)
+                return Json(new { success = true });
+            
+            return Json(new { success = false, message = result.ResponseDesc });
+        }
 
     }
 }

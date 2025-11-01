@@ -10,11 +10,11 @@ namespace Example.Service.Models.DTOs
 
         [Display(Name = "تاریخ شروع")]
         [DataType(DataType.Date)]
-        public DateTime From { get; set; }
+        public DateTime? From { get; set; }
 
         [Display(Name = "تاریخ پایان")]
         [DataType(DataType.Date)]
-        public DateTime To { get; set; }
+        public DateTime? To { get; set; }
     }
 
     public class ProgramCreateModel : ProgramBase

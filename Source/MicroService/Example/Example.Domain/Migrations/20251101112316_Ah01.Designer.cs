@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Example.Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251013125415_Ah02")]
-    partial class Ah02
+    [Migration("20251101112316_Ah01")]
+    partial class Ah01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -340,10 +340,6 @@ namespace Example.Domain.Migrations
                     b.Property<long>("SediqCode")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("sediqName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
@@ -352,6 +348,10 @@ namespace Example.Domain.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("sediqName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RowId");
 
@@ -377,10 +377,6 @@ namespace Example.Domain.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -432,7 +428,7 @@ namespace Example.Domain.Migrations
                     b.Property<long>("SediqCode")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("sediqRowId")
+                    b.Property<long?>("SediqEntityRowId")
                         .HasColumnType("bigint");
 
                     b.Property<short>("Status")
@@ -452,7 +448,12 @@ namespace Example.Domain.Migrations
                     b.Property<string>("YearStudy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("sediqRowId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("RowId");
+
+                    b.HasIndex("SediqEntityRowId");
 
                     b.HasIndex("sediqRowId");
 
@@ -685,11 +686,14 @@ namespace Example.Domain.Migrations
 
             modelBuilder.Entity("Example.Domain.Entities.StudentEntity", b =>
                 {
+                    b.HasOne("Example.Domain.Entities.SediqEntity", null)
+                        .WithMany("Students")
+                        .HasForeignKey("SediqEntityRowId");
+
                     b.HasOne("Example.Domain.Entities.SediqEntity", "sediq")
                         .WithMany()
                         .HasForeignKey("sediqRowId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("sediq");
                 });
@@ -718,6 +722,11 @@ namespace Example.Domain.Migrations
                     b.Navigation("ScoreForms");
 
                     b.Navigation("activityForms");
+                });
+
+            modelBuilder.Entity("Example.Domain.Entities.SediqEntity", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("Example.Domain.Entities.StudentEntity", b =>

@@ -10,7 +10,7 @@ namespace Example.Service.Models.DTOs
         public string PhotoUrl { get; set; } = string.Empty;
 
         [Display(Name = "توضیحات عکس")]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
 
     }
@@ -23,7 +23,7 @@ namespace Example.Service.Models.DTOs
     {
         public long? RowId { get; set; }
         public string? RandId { get; set; }
-        [Display(Name = "شناسه دانشآموز")]
+        [Display(Name = "شناسه دانش آموز")]
         public long StudentId { get; set; }
     }
 
@@ -41,7 +41,7 @@ namespace Example.Service.Models.DTOs
         public short? RevSeq { get; set; }
         public short? Status { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
-        [Display(Name = "شناسه دانشآموز")]
+        [Display(Name = "شناسه دانش آموز")]
         public long StudentId { get; set; }
     }
 }

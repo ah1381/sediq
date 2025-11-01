@@ -74,6 +74,7 @@ namespace Example.Domain.Entities
         public virtual List<PhoneNumberEntity?> PhoneNumbers { get; set; } = new();
 
         [Display(Name = "صدیق")]
+        public long? sediqRowId { get; set; }
         public virtual SediqEntity sediq { get; set; }
         public virtual List<ActivityFormEntity> ActivityForms { get; set; } = new();
         public virtual List<ScoreFormEntity> ScoreForms { get; set; } = new();

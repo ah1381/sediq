@@ -79,7 +79,7 @@ namespace Sediq.Web.Api.Controllers
         }
 
 
-        public async Task<IActionResult> Update(long id)
+        public async Task<IActionResult> Edit(long id)
         {
             var result = await _mediator.Send(new GetActivityFormById { Id = (int)id });
             if (result == null)
@@ -94,6 +94,31 @@ namespace Sediq.Web.Api.Controllers
             };
             
             return PartialView("_EditPartial", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ActivityFormUpdateModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
+
+            var result = await _mediator.Send(new UpdateActivityFormCommand(model));
+            
+            if (result.IsSuccess)
+                return Json(new { success = true });
+            
+            return Json(new { success = false, message = result.ResponseDesc });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var result = await _mediator.Send(new DeleteActivityFormCommand { Id = (int)id });
+            
+            if (result.IsSuccess)
+                return Json(new { success = true });
+            
+            return Json(new { success = false, message = result.ResponseDesc });
         }
 
     }

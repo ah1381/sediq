@@ -49,7 +49,7 @@ namespace Sediq.Web.Api.Validations
         public StudentUpdateValidator()
         {
             RuleFor(x => x.RowId)
-                .GreaterThan(0).WithMessage("شناسه دانشآموز معتبر نیست");
+                .GreaterThan(0).WithMessage("شناسه دانش آموز معتبر نیست");
 
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("نام الزامی است")
