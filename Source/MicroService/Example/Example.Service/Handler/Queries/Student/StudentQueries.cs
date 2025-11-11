@@ -53,7 +53,31 @@ namespace Example.Service.Handler.Queries.Student
 
         public async Task<CustomActionResult<List<StudentResponseDto>>> Handle(GetAllStudentsQuery request, CancellationToken cancellationToken)
         {
-            var entities = await _repository.GetAllAsync();
+            var entities = await _repository.GetQueryable()
+                .Where(e => e.Status != 0)
+                .Select(s => new StudentEntity
+                {
+                    RowId = s.RowId,
+                    StudentCode = s.StudentCode,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    NationalCode = s.NationalCode,
+                    MembershipDate = s.MembershipDate,
+                    FatherName = s.FatherName,
+                    FatherJob = s.FatherJob,
+                    BirthDate = s.BirthDate,
+                    FieldOfStudy = s.FieldOfStudy,
+                    YearStudy = s.YearStudy,
+                    Gender = s.Gender,
+                    Address = s.Address,
+                    EducationStatus = s.EducationStatus,
+                    Notes = s.Notes,
+                    CreatedAt = s.CreatedAt,
+                    UpdatedAt = s.UpdatedAt,
+                    Status = s.Status,
+                    CreatedBy = s.CreatedBy
+                })
+                .ToListAsync();
             var result = _mapper.Map<List<StudentResponseDto>>(entities);
             return Result.Ok(result, "Students retrieved successfully").WithTotalCount(result.Count);
         }

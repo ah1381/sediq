@@ -15,10 +15,6 @@ namespace Sediq.Web.Api.Validations
             RuleFor(x => x.SelectedProgramId)
                 .GreaterThan(0).WithMessage("انتخاب برنامه الزامی است");
 
-            RuleFor(x => x.SelectedStudentIds)
-                .NotEmpty().WithMessage("انتخاب حداقل یک دانش آموز الزامی است")
-                .Must(list => list != null && list.Any())
-                .WithMessage("لیست دانش آموزان نمیتواند خالی باشد");
         }
     }
 
@@ -37,10 +33,6 @@ namespace Sediq.Web.Api.Validations
             RuleFor(x => x.SelectedProgramId)
                 .GreaterThan(0).WithMessage("انتخاب برنامه الزامی است");
 
-            RuleFor(x => x.SelectedStudentIds)
-                .NotEmpty().WithMessage("انتخاب حداقل یک دانش آموز الزامی است")
-                .Must(list => list != null && list.Any())
-                .WithMessage("لیست دانش آموزان نمیتواند خالی باشد");
         }
     }
 }

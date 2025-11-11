@@ -24,9 +24,6 @@ namespace Example.Domain.Entities
         [Display(Name = "کد شرکت کننده")]
         public string StudentCode { get; set; }
 
-        [Display(Name = "صدیق")]
-        public long SediqCode{ get; set; }
-
         [Display(Name = "نام")]
         public string FirstName { get; set; } = string.Empty;
 
@@ -67,6 +64,7 @@ namespace Example.Domain.Entities
 
         [Display(Name = "توضیحات اضافی")]
         public string? Notes { get; set; } = string.Empty;
+        public long? sediqRowId { get; set; }
         
         [Display(Name = "عکس ها")]
         public List<ImagesEntity?> Photos { get; set; } = new();
@@ -74,7 +72,6 @@ namespace Example.Domain.Entities
         public virtual List<PhoneNumberEntity?> PhoneNumbers { get; set; } = new();
 
         [Display(Name = "صدیق")]
-        public long? sediqRowId { get; set; }
         public virtual SediqEntity sediq { get; set; }
         public virtual List<ActivityFormEntity> ActivityForms { get; set; } = new();
         public virtual List<ScoreFormEntity> ScoreForms { get; set; } = new();

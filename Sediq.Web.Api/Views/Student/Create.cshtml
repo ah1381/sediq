@@ -1,135 +1,119 @@
 @model Example.Service.Models.DTOs.StudentCreateModel
-
 @{
-    ViewData["Title"] = "ثبت شرکت کننده جدید";
+    ViewData["Title"] = "ثبت شرکت کننده";
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card fade-in-up">
-                <div class="card-header">
-                    <i class="fas fa-user-plus"></i>
-                    ثبت شرکت کننده جدید
-                </div>
-                <div class="card-body">
-                    <form asp-action="Create" method="post">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="NationalCode" class="form-label">کد ملی</label>
-                                    <input asp-for="NationalCode" class="form-control" placeholder="کد ملی" />
-                                    <span asp-validation-for="NationalCode" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="FirstName" class="form-label">نام</label>
-                                    <input asp-for="FirstName" class="form-control" placeholder="نام" />
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="LastName" class="form-label">نام خانوادگی</label>
-                                    <input asp-for="LastName" class="form-control" placeholder="نام خانوادگی" />
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="FatherName" class="form-label">نام پدر</label>
-                                    <input asp-for="FatherName" class="form-control" placeholder="نام پدر" />
-                                    <span asp-validation-for="FatherName" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="FatherJob" class="form-label">شغل پدر</label>
-                                    <input asp-for="FatherJob" class="form-control" placeholder="شغل پدر" />
-                                    <span asp-validation-for="FatherJob" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label asp-for="BirthDate" class="form-label">تاریخ تولد</label>
-                                    <input asp-for="BirthDate" type="date" class="form-control" />
-                                    <span asp-validation-for="BirthDate" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label asp-for="MembershipDate" class="form-label">تاریخ عضویت</label>
-                                    <input asp-for="MembershipDate" type="date" class="form-control" />
-                                    <span asp-validation-for="MembershipDate" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label asp-for="Gender" class="form-label">جنسیت</label>
-                                    <select asp-for="Gender" class="form-select">
-                                        <option value="0">مرد</option>
-                                        <option value="1">زن</option>
-                                    </select>
-                                    <span asp-validation-for="Gender" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="FieldOfStudy" class="form-label">رشته تحصیلی</label>
-                                    <input asp-for="FieldOfStudy" class="form-control" placeholder="رشته تحصیلی" />
-                                    <span asp-validation-for="FieldOfStudy" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="YearStudy" class="form-label">پایه تحصیلی</label>
-                                    <input asp-for="YearStudy" class="form-control" placeholder="پایه تحصیلی" />
-                                    <span asp-validation-for="YearStudy" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label asp-for="Address" class="form-label">آدرس</label>
-                            <textarea asp-for="Address" class="form-control" rows="3" placeholder="آدرس کامل"></textarea>
-                            <span asp-validation-for="Address" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label asp-for="Notes" class="form-label">توضیحات</label>
-                            <textarea asp-for="Notes" class="form-control" rows="3" placeholder="توضیحات اضافی"></textarea>
-                            <span asp-validation-for="Notes" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a asp-action="List" class="btn btn-secondary me-md-2">
-                                <i class="fas fa-list"></i>
-                                لیست شرکت کنندگان
-                            </a>
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save"></i>
-                                ثبت شرکت کننده
-                            </button>
-                        </div>
-                    </form>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="fas fa-user-plus"></i>
+            ثبت شرکت کننده جدید
+        </h4>
+    </div>
+    <div class="card-body">
+        <form asp-controller="Student" asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NationalCode" class="form-label">کد ملی</label>
+                    <input asp-for="NationalCode" class="form-control" maxlength="10" />
+                    <span asp-validation-for="NationalCode" class="text-danger"></span>
                 </div>
             </div>
-        </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FirstName" class="form-label">نام</label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="LastName" class="form-label">نام خانوادگی</label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FatherName" class="form-label">نام پدر</label>
+                    <input asp-for="FatherName" class="form-control" />
+                    <span asp-validation-for="FatherName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FatherJob" class="form-label">شغل پدر</label>
+                    <input asp-for="FatherJob" class="form-control" />
+                    <span asp-validation-for="FatherJob" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="BirthDate" class="form-label">تاریخ تولد</label>
+                    <input asp-for="BirthDate" class="form-control" type="date" />
+                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MembershipDate" class="form-label">تاریخ عضویت</label>
+                    <input asp-for="MembershipDate" class="form-control" type="date" />
+                    <span asp-validation-for="MembershipDate" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Gender" class="form-label">جنسیت</label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="0">مرد</option>
+                        <option value="1">زن</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FieldOfStudy" class="form-label">رشته تحصیلی</label>
+                    <input asp-for="FieldOfStudy" class="form-control" />
+                    <span asp-validation-for="FieldOfStudy" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="YearStudy" class="form-label">پایه تحصیلی</label>
+                    <input asp-for="YearStudy" class="form-control" />
+                    <span asp-validation-for="YearStudy" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label asp-for="Address" class="form-label">آدرس</label>
+                    <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="EducationStatus" class="form-label">وضعیت تحصیلی</label>
+                    <input asp-for="EducationStatus" class="form-control" />
+                    <span asp-validation-for="EducationStatus" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Notes" class="form-label">توضیحات</label>
+                    <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-3">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i>
+                    ذخیره
+                </button>
+                <a asp-action="List" class="btn btn-secondary">
+                    <i class="fas fa-arrow-right"></i>
+                    بازگشت به لیست
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 

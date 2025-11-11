@@ -1,12 +1,12 @@
-@model List<Example.Service.Models.DTOs.ActivityFormResponseDto>
+@model List<Example.Service.Models.DTOs.sediqResponseDto>
 @{
-    ViewData["Title"] = "لیست فعالیتها";
+    ViewData["Title"] = "لیست صدیق";
 }
 
 <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>لیست فعالیتها</h2>
-        <a asp-action="Create" class="btn btn-primary">افزودن فعالیت جدید</a>
+        <h2>لیست صدیق</h2>
+        <a asp-action="Create" class="btn btn-primary">افزودن صدیق جدید</a>
     </div>
 
     @if (TempData["Success"] != null)
@@ -22,9 +22,9 @@
             <thead class="table-dark">
                 <tr>
                     <th>ردیف</th>
-                    <th>تاریخ فعالیت</th>
-                    <th>نام برنامه</th>
-                    <th>نام شرکت کننده</th>
+                    <th>کد صدیق</th>
+                    <th>نام صدیق</th>
+                    <th>تاریخ شروع</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
@@ -36,9 +36,9 @@
                     {
                         <tr>
                             <td>@counter</td>
-                            <td>@item.ActivityDate.ToString("yyyy/MM/dd")</td>
-                            <td>@item.ProgramName</td>
-                            <td>@item.StudentName</td>
+                            <td>@item.sediqCode</td>
+                            <td>@item.sediqName</td>
+                            <td>@item.StartDate.ToString("yyyy/MM/dd")</td>
                             <td>
                                 <button class="btn btn-sm btn-info" onclick="showDetails(@item.RowId)">جزئیات</button>
                                 <button class="btn btn-sm btn-warning" onclick="showEdit(@item.RowId)">ویرایش</button>
@@ -51,7 +51,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="5" class="text-center">فعالیتی یافت نشد</td>
+                        <td colspan="5" class="text-center">صدیقی یافت نشد</td>
                     </tr>
                 }
             </tbody>
@@ -63,7 +63,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">جزئیات فعالیت</h5>
+                <h5 class="modal-title">جزئیات صدیق</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="detailsContent"></div>
@@ -75,7 +75,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">ویرایش فعالیت</h5>
+                <h5 class="modal-title">ویرایش صدیق</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="editContent"></div>
@@ -87,11 +87,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">حذف فعالیت</h5>
+                <h5 class="modal-title">حذف صدیق</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>آیا از حذف این فعالیت اطمینان دارید؟</p>
+                <p>آیا از حذف این صدیق اطمینان دارید؟</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
@@ -105,13 +105,13 @@
     <script>
         let currentId = 0;
         function showDetails(id) {
-            $.get('@Url.Action("Details", "Activity")/' + id, function(data) {
+            $.get('@Url.Action("Details", "Sediq")/' + id, function(data) {
                 $('#detailsContent').html(data);
                 $('#detailsModal').modal('show');
             });
         }
         function showEdit(id) {
-            $.get('@Url.Action("Edit", "Activity")/' + id, function(data) {
+            $.get('@Url.Action("Edit", "Sediq")/' + id, function(data) {
                 $('#editContent').html(data);
                 $('#editModal').modal('show');
             });
@@ -121,7 +121,7 @@
             $('#deleteModal').modal('show');
         }
         $('#confirmDelete').click(function() {
-            $.post('@Url.Action("Delete", "Activity")/' + currentId, function(response) {
+            $.post('@Url.Action("Delete", "Sediq")/' + currentId, function(response) {
                 if (response.success) {
                     location.reload();
                 } else {

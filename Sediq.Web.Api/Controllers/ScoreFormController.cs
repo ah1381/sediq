@@ -1,12 +1,8 @@
 using Example.Service.Handler.Commands.ScoreForm;
 using Example.Service.Handler.Queries.ScoreForm;
-using Example.Service.Handler.Queries.Program;
-using Example.Service.Handler.Queries.Student;
-using Example.Service.Handler.Queries.DurationDate;
 using Example.Service.Models.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sediq.Web.Api.Controllers
 {
@@ -22,66 +18,51 @@ namespace Sediq.Web.Api.Controllers
         public async Task<IActionResult> List()
         {
             var result = await _mediator.Send(new GetAllScoreFormsQuery());
-            return View(result.Data);
+            return View(result.IsSuccess ? result.Data : new List<ScoreFormResponseDto>());
         }
 
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            await LoadSelectLists();
-            return View();
+            return View(new ScoreFormCreateModel());
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ScoreFormCreateModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var command = new CreateScoreFormCommand
             {
-                var command = new CreateScoreFormCommand
-                {
-                    SelectedProgramId = model.SelectedProgramId,
-                    SelectedStudentId = model.SelectedStudentId,
-                    Description = model.Description,
-                    Score = model.Score,
-                    ActivityDurId = model.ActivityDurId
-                };
-                var result = await _mediator.Send(command);
-                if (result.IsSuccess)
-                {
-                    TempData["Success"] = "فرم نمره با موفقیت ایجاد شد";
-                    return RedirectToAction("List");
-                }
-                ModelState.AddModelError("", "خطا در ایجاد فرم نمره");
+                SelectedProgramId = model.SelectedProgramId,
+                SelectedStudentId = model.SelectedStudentId,
+                Description = model.Description,
+                Score = model.Score,
+                ActivityDurId = model.ActivityDurId
+            };
+            var result = await _mediator.Send(command);
+            
+            if (result.IsSuccess)
+            {
+                TempData["Success"] = "نمره با موفقیت ثبت شد";
+                return RedirectToAction(nameof(List));
             }
-            await LoadSelectLists();
+            
+            ModelState.AddModelError("", result.ResponseDesc ?? "خطا در ثبت نمره");
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> Details(long id)
         {
-            var result = await _mediator.Send(new GetScoreFormById { Id = id });
-            return Json(result);
+            var result = await _mediator.Send(new GetScoreFormById { Id = (int)id });
+            if (result == null)
+                return NotFound();
+            
+            return PartialView("_DetailsPartial", result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update([FromBody] ScoreFormUpdateModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _mediator.Send(new UpdateScoreFormCommand(model));
-                return Json(new { success = result.IsSuccess, message = result.IsSuccess ? "فرم نمره با موفقیت ویرایش شد" : "خطا در ویرایش فرم نمره" });
-            }
-            return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _mediator.Send(new DeleteScoreFormCommand { Id = id });
-            return Json(new { success = result.IsSuccess, message = result.IsSuccess ? "فرم نمره با موفقیت حذف شد" : "خطا در حذف فرم نمره" });
-        }
-
-        public async Task<IActionResult> Update(long id)
+        public async Task<IActionResult> Edit(long id)
         {
             var result = await _mediator.Send(new GetScoreFormById { Id = (int)id });
             if (result == null)
@@ -100,16 +81,29 @@ namespace Sediq.Web.Api.Controllers
             return PartialView("_EditPartial", model);
         }
 
-
-        private async Task LoadSelectLists()
+        [HttpPost]
+        public async Task<IActionResult> Edit(ScoreFormUpdateModel model)
         {
-            var programs = await _mediator.Send(new GetAllProgramsQuery());
-            var students = await _mediator.Send(new GetAllStudentsQuery());
-            var durations = await _mediator.Send(new GetAllDurationDatesQuery());
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
 
-            ViewBag.Programs = new SelectList(programs.Data, "RowId", "Name");
-            ViewBag.Students = new SelectList(students.Data, "RowId", "FullName");
-            ViewBag.Durations = new SelectList(durations.Data, "RowId", "Name");
+            var result = await _mediator.Send(new UpdateScoreFormCommand(model));
+            
+            if (result.IsSuccess)
+                return Json(new { success = true, message = "نمره با موفقیت به روز شد" });
+            
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در به روز رسانی" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var result = await _mediator.Send(new DeleteScoreFormCommand { Id = (int)id });
+            
+            if (result.IsSuccess)
+                return Json(new { success = true, message = "نمره با موفقیت حذف شد" });
+            
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در حذف" });
         }
     }
 }

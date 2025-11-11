@@ -55,7 +55,7 @@ namespace Example.Service.Handler.Commands.sediq
 
         public UpdatesediqCommand(sediqUpdateModel sediq)
         {
-            sediq = sediq;
+            this.sediq = sediq;
         }
     }
 

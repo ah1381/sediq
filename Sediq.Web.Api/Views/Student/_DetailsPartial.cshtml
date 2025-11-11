@@ -1,0 +1,78 @@
+@model Example.Service.Models.DTOs.StudentResponseDto
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <strong>کد شرکت کننده:</strong>
+        <p>@Model.StudentCode</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>کد ملی:</strong>
+        <p>@Model.NationalCode</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <strong>نام:</strong>
+        <p>@Model.FirstName</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>نام خانوادگی:</strong>
+        <p>@Model.LastName</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <strong>نام پدر:</strong>
+        <p>@Model.FatherName</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>شغل پدر:</strong>
+        <p>@Model.FatherJob</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <strong>تاریخ تولد:</strong>
+        <p>@Model.BirthDate.ToString("yyyy/MM/dd")</p>
+    </div>
+    <div class="col-md-4 mb-3">
+        <strong>تاریخ عضویت:</strong>
+        <p>@Model.MembershipDate?.ToString("yyyy/MM/dd")</p>
+    </div>
+    <div class="col-md-4 mb-3">
+        <strong>جنسیت:</strong>
+        <p>@(Model.Gender == Example.Domain.Entities.Gender.Male ? "مرد" : "زن")</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <strong>رشته تحصیلی:</strong>
+        <p>@Model.FieldOfStudy</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>پایه تحصیلی:</strong>
+        <p>@Model.YearStudy</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <strong>آدرس:</strong>
+        <p>@Model.Address</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <strong>وضعیت تحصیلی:</strong>
+        <p>@Model.EducationStatus</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>توضیحات:</strong>
+        <p>@Model.Notes</p>
+    </div>
+</div>

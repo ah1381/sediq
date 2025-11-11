@@ -18,63 +18,50 @@ namespace Sediq.Web.Api.Controllers
         public async Task<IActionResult> List()
         {
             var result = await _mediator.Send(new GetAllsediqsQuery());
-            return View(result.Data);
+            return View(result.IsSuccess ? result.Data : new List<sediqResponseDto>());
         }
 
         public IActionResult Create()
         {
-            return View();
+            return View(new sediqCreateModel());
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(sediqCreateModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var command = new CreatesediqCommand
             {
-                var command = new CreatesediqCommand
-                {
-                    sediqCode = model.sediqCode,
-                    sediqName = model.sediqName,
-                    StartDate = model.StartDate,
-                    Description = model.Description
-                };
-                var result = await _mediator.Send(command);
-                if (result.IsSuccess)
-                {
-                    TempData["Success"] = "صدیق با موفقیت ایجاد شد";
-                    return RedirectToAction("List");
-                }
-                ModelState.AddModelError("", "خطا در ایجاد صدیق");
+                sediqCode = model.sediqCode,
+                sediqName = model.sediqName,
+                StartDate = model.StartDate,
+                Description = model.Description
+            };
+            var result = await _mediator.Send(command);
+            
+            if (result.IsSuccess)
+            {
+                TempData["Success"] = "صدیق با موفقیت ثبت شد";
+                return RedirectToAction(nameof(List));
             }
+            
+            ModelState.AddModelError("", result.ResponseDesc ?? "خطا در ثبت صدیق");
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> Details(long id)
         {
-            var result = await _mediator.Send(new GetsediqById { Id = id });
-            return Json(result);
+            var result = await _mediator.Send(new GetsediqById { Id = (int)id });
+            if (result == null)
+                return NotFound();
+            
+            return PartialView("_DetailsPartial", result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update([FromBody] sediqUpdateModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _mediator.Send(new UpdatesediqCommand(model));
-                return Json(new { success = result.IsSuccess, message = result.IsSuccess ? "صدیق با موفقیت ویرایش شد" : "خطا در ویرایش صدیق" });
-            }
-            return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _mediator.Send(new DeletesediqCommand { Id = id });
-            return Json(new { success = result.IsSuccess, message = result.IsSuccess ? "صدیق با موفقیت حذف شد" : "خطا در حذف صدیق" });
-        }
-
-        public async Task<IActionResult> Update(long id)
+        public async Task<IActionResult> Edit(long id)
         {
             var result = await _mediator.Send(new GetsediqById { Id = (int)id });
             if (result == null)
@@ -90,6 +77,31 @@ namespace Sediq.Web.Api.Controllers
             };
             
             return PartialView("_EditPartial", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(sediqUpdateModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
+
+            var result = await _mediator.Send(new UpdatesediqCommand(model));
+            
+            if (result.IsSuccess)
+                return Json(new { success = true, message = "صدیق با موفقیت به روز شد" });
+            
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در به روز رسانی" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var result = await _mediator.Send(new DeletesediqCommand { Id = (int)id });
+            
+            if (result.IsSuccess)
+                return Json(new { success = true, message = "صدیق با موفقیت حذف شد" });
+            
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در حذف" });
         }
 
     }

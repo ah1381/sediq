@@ -3,11 +3,9 @@ using Example.Service.Handler.Queries.Program;
 using Example.Service.Models.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Sediq.Web.Api.Controllers;
 
 namespace Sediq.Web.Api.Controllers
 {
-
     public class ProgramController : BaseController
     {
         private readonly IMediator _mediator;
@@ -17,26 +15,19 @@ namespace Sediq.Web.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var result = await _mediator.Send(new GetProgramById { Id = id });
-            return result != null ? Ok(result) : NotFound();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> List()
         {
             var result = await _mediator.Send(new GetAllProgramsQuery());
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
+            return View(result.IsSuccess ? result.Data : new List<ProgramResponseDto>());
         }
 
         public IActionResult Create()
         {
-            return View();
+            return View(new ProgramCreateModel());
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProgramCreateModel model)
         {
             if (!ModelState.IsValid)
@@ -56,21 +47,17 @@ namespace Sediq.Web.Api.Controllers
                 return RedirectToAction(nameof(List));
             }
             
-            ModelState.AddModelError("", result.ResponseDesc);
+            ModelState.AddModelError("", result.ResponseDesc ?? "خطا در ثبت برنامه");
             return View(model);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Details(long id)
         {
-            var result = await _mediator.Send(new DeleteProgramCommand { Id = id });
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
-        }
-
-        public async Task<IActionResult> List()
-        {
-            var result = await _mediator.Send(new GetAllProgramsQuery());
-            return View(result.IsSuccess ? result.Data : new List<ProgramResponseDto>());
+            var result = await _mediator.Send(new GetProgramById { Id = (int)id });
+            if (result == null)
+                return NotFound();
+            
+            return PartialView("_DetailsPartial", result);
         }
 
         public async Task<IActionResult> Edit(long id)
@@ -99,9 +86,9 @@ namespace Sediq.Web.Api.Controllers
             var result = await _mediator.Send(new UpdateProgramCommand(model));
             
             if (result.IsSuccess)
-                return Json(new { success = true });
+                return Json(new { success = true, message = "برنامه با موفقیت به روز شد" });
             
-            return Json(new { success = false, message = result.ResponseDesc });
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در به روز رسانی" });
         }
 
         [HttpPost]
@@ -110,12 +97,9 @@ namespace Sediq.Web.Api.Controllers
             var result = await _mediator.Send(new DeleteProgramCommand { Id = (int)id });
             
             if (result.IsSuccess)
-                return Json(new { success = true });
+                return Json(new { success = true, message = "برنامه با موفقیت حذف شد" });
             
-            return Json(new { success = false, message = result.ResponseDesc });
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در حذف" });
         }
-
     }
 }
-
-

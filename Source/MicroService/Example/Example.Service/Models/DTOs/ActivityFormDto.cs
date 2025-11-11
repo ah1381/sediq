@@ -12,8 +12,8 @@ namespace Example.Service.Models.DTOs
         [Display(Name = "شناسه برنامه انتخابی")]
         public long SelectedProgramId { get; set; }
 
-        [Display(Name = "لیست دانش آموزان انتخاب شده")]
-        public List<long> SelectedStudentIds { get; set; } = new List<long>();
+        [Display(Name = "شرکت کننده انتخاب شده")]
+        public long SelectedStudentId { get; set; }
     }
 
     public class ActivityFormCreateModel : ActivityFormBase
@@ -41,10 +41,10 @@ namespace Example.Service.Models.DTOs
         public short? Status { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
 
-        [Display(Name = "نام برنامه انتخابی")]
-        public string SelectedProgramName { get; set; } = string.Empty;
+        [Display(Name = "نام برنامه")]
+        public string ProgramName { get; set; } = string.Empty;
 
-        [Display(Name = "نام دانش آموزان")]
-        public List<string> StudentNames { get; set; } = new List<string>();
+        [Display(Name = "نام شرکت کننده")]
+        public string StudentName { get; set; } = string.Empty;
     }
 }

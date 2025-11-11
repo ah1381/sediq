@@ -15,8 +15,6 @@ namespace Example.Web.Api.Validations
             RuleFor(x => x.SelectedProgramId)
                 .GreaterThan(0).WithMessage("شناسه برنامه انتخابی معتبر نیست.");
 
-            RuleFor(x => x.SelectedStudentIds)
-                .NotEmpty().WithMessage("حداقل یک دانش آموز باید انتخاب شود.");
         }
     }
 
@@ -34,8 +32,6 @@ namespace Example.Web.Api.Validations
             RuleFor(x => x.SelectedProgramId)
                 .GreaterThan(0).WithMessage("شناسه برنامه انتخابی معتبر نیست.");
 
-            RuleFor(x => x.SelectedStudentIds)
-                .NotEmpty().WithMessage("حداقل یک دانش آموز باید انتخاب شود.");
         }
     }
 

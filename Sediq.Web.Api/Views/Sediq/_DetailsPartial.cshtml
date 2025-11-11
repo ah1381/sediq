@@ -1,0 +1,28 @@
+@model Example.Service.Models.DTOs.sediqResponseDto
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <strong>کد صدیق:</strong>
+        <p>@Model.sediqCode</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>نام صدیق:</strong>
+        <p>@Model.sediqName</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>تاریخ شروع:</strong>
+        <p>@Model.StartDate.ToString("yyyy/MM/dd")</p>
+    </div>
+    <div class="col-md-12 mb-3">
+        <strong>توضیحات:</strong>
+        <p>@Model.Description</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>تاریخ ایجاد:</strong>
+        <p>@Model.CreatedAt?.ToString("yyyy/MM/dd HH:mm")</p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <strong>ایجاد شده توسط:</strong>
+        <p>@Model.CreatedBy</p>
+    </div>
+</div>

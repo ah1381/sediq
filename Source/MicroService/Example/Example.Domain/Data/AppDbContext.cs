@@ -16,7 +16,7 @@ namespace Example.Domain.Data
         public DbSet<PhoneNumberEntity> PhoneNumbers { get; set; }
         public DbSet<ProgramEntity> Programs { get; set; }
         public DbSet<ScoreFormEntity> ScoreForms { get; set; }
-        public DbSet<SediqEntity> sediqs { get; set; }
+        public DbSet<SediqEntity> Sediqs { get; set; }
         public DbSet<StudentEntity> Students { get; set; }
 
         public DbSet<Authentication> Authentications { get; set; }
@@ -25,45 +25,25 @@ namespace Example.Domain.Data
         public DbSet<Permission> Permission { get; set; }
         public DbSet<PermissionRole> PermissionRole { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // Authentication configuration
             modelBuilder.Entity<Authentication>(entity =>
             {
                 entity.ToTable("authentication", "auth");
                 entity.HasKey(e => e.RowId);
-
-                entity.Property(e => e.RowId)
-                    .HasColumnName("RowId")
-                    .UseIdentityAlwaysColumn();
-
-                entity.Property(e => e.Username)
-                    .HasColumnName("Username")
-                    .IsRequired();
-
-                entity.Property(e => e.Password)
-                    .HasColumnName("Password")
-                    .IsRequired();
-
-                entity.Property(e => e.Description)
-                    .HasColumnName("Description")
-                    .IsRequired(false);
-
-                entity.Property(e => e.OwnerProject)
-                    .HasColumnName("OwnerProject")
-                    .IsRequired(false);
-
-                entity.Property(e => e.UserType)
-                    .HasColumnName("UserType")
-                    .IsRequired(false);
-
-
+                entity.Property(e => e.RowId).HasColumnName("RowId").UseIdentityAlwaysColumn();
+                entity.Property(e => e.Username).HasColumnName("Username").IsRequired();
+                entity.Property(e => e.Password).HasColumnName("Password").IsRequired();
+                entity.Property(e => e.Description).HasColumnName("Description").IsRequired(false);
+                entity.Property(e => e.OwnerProject).HasColumnName("OwnerProject").IsRequired(false);
+                entity.Property(e => e.UserType).HasColumnName("UserType").IsRequired(false);
 
                 entity.HasData(new Authentication
                 {
-                    RowId = 1, // میتونی 1 هم بذاری اگر دیتابیس خالیه
+                    RowId = 1,
                     Username = "ADMIN",
                     Password = "bJKg0LB4QfRPW8dIbQqLyg==",
                     Description = "1",
@@ -72,58 +52,7 @@ namespace Example.Domain.Data
                 });
             });
 
-
-
-        modelBuilder.Entity<PhoneNumberEntity>()
-              .HasOne(p => p.Student)
-              .WithMany(s => s.PhoneNumbers)
-              .HasForeignKey(p => p.StudentId)
-              .OnDelete(DeleteBehavior.Cascade);
-
-            // Student ↔ Images (یک به چند)
-            modelBuilder.Entity<ImagesEntity>()
-                .HasOne(i => i.Student)
-                .WithMany(s => s.Photos)
-                .HasForeignKey(i => i.StudentId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // ActivityForm ↔ Student (چند به یک)
-            modelBuilder.Entity<ActivityFormEntity>()
-                .HasOne(a => a.Student)
-                .WithMany(s => s.ActivityForms)
-                .HasForeignKey(a => a.SelectedStudentId)
-                .OnDelete(DeleteBehavior.Restrict); // هر فرم فقط یک دانش‌آموز
-
-            // ActivityForm ↔ Program (چند به یک)
-            modelBuilder.Entity<ActivityFormEntity>()
-                .HasOne(a => a.SelectedProgram)
-                .WithMany(p => p.activityForms)
-                .HasForeignKey(a => a.SelectedProgramId)
-                .OnDelete(DeleteBehavior.Restrict); // هر فرم فقط یک برنامه
-
-            // تنظیمات کلید اصلی و Identity برای BaseEntity
-            modelBuilder.Entity<StudentEntity>()
-                .Property(s => s.RowId)
-                .UseIdentityAlwaysColumn();
-
-            modelBuilder.Entity<ProgramEntity>()
-                .Property(p => p.RowId)
-                .UseIdentityAlwaysColumn();
-
-            modelBuilder.Entity<ActivityFormEntity>()
-                .Property(a => a.RowId)
-                .UseIdentityAlwaysColumn();
-
-            modelBuilder.Entity<PhoneNumberEntity>()
-                .Property(p => p.RowId)
-                .UseIdentityAlwaysColumn();
-
-            modelBuilder.Entity<ImagesEntity>()
-                .Property(i => i.RowId)
-                .UseIdentityAlwaysColumn();
-
-
-            // تعریف کلیدهای اصلی برای همه انتیتی‌ها
+            // Primary Keys
             modelBuilder.Entity<StudentEntity>().HasKey(s => s.RowId);
             modelBuilder.Entity<ProgramEntity>().HasKey(p => p.RowId);
             modelBuilder.Entity<ActivityFormEntity>().HasKey(a => a.RowId);
@@ -137,34 +66,54 @@ namespace Example.Domain.Data
             modelBuilder.Entity<Permission>().HasKey(p => p.RowId);
             modelBuilder.Entity<PermissionRole>().HasKey(pr => pr.RowId);
 
-            // تنظیم Identity برای کلیدهای اصلی
-            modelBuilder.Entity<DurationDateEntity>()
-                .Property(d => d.RowId)
-                .UseIdentityAlwaysColumn();
+            // Identity Columns
+            modelBuilder.Entity<StudentEntity>().Property(s => s.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<ProgramEntity>().Property(p => p.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<ActivityFormEntity>().Property(a => a.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<PhoneNumberEntity>().Property(p => p.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<ImagesEntity>().Property(i => i.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<DurationDateEntity>().Property(d => d.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<ScoreFormEntity>().Property(s => s.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<SediqEntity>().Property(s => s.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<Role>().Property(r => r.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<UserRole>().Property(ur => ur.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<Permission>().Property(p => p.RowId).UseIdentityAlwaysColumn();
+            modelBuilder.Entity<PermissionRole>().Property(pr => pr.RowId).UseIdentityAlwaysColumn();
 
-            modelBuilder.Entity<ScoreFormEntity>()
-                .Property(s => s.RowId)
-                .UseIdentityAlwaysColumn();
+            // Student ↔ PhoneNumber (یک به چند)
+            modelBuilder.Entity<PhoneNumberEntity>()
+                .HasOne(p => p.Student)
+                .WithMany(s => s.PhoneNumbers)
+                .HasForeignKey(p => p.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<SediqEntity>()
-                .Property(s => s.RowId)
-                .UseIdentityAlwaysColumn();
+            // Student ↔ Images (یک به چند)
+            modelBuilder.Entity<ImagesEntity>()
+                .HasOne(i => i.Student)
+                .WithMany(s => s.Photos)
+                .HasForeignKey(i => i.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Role>()
-                .Property(r => r.RowId)
-                .UseIdentityAlwaysColumn();
+            // Student ↔ Sediq (چند به یک)
+            modelBuilder.Entity<StudentEntity>()
+                .HasOne(s => s.sediq)
+                .WithMany()
+                .HasForeignKey(s => s.sediqRowId)
+                .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<UserRole>()
-                .Property(ur => ur.RowId)
-                .UseIdentityAlwaysColumn();
+            // ActivityForm ↔ Student (چند به یک)
+            modelBuilder.Entity<ActivityFormEntity>()
+                .HasOne(a => a.Student)
+                .WithMany(s => s.ActivityForms)
+                .HasForeignKey(a => a.SelectedStudentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Permission>()
-                .Property(p => p.RowId)
-                .UseIdentityAlwaysColumn();
-
-            modelBuilder.Entity<PermissionRole>()
-                .Property(pr => pr.RowId)
-                .UseIdentityAlwaysColumn();
+            // ActivityForm ↔ Program (چند به یک)
+            modelBuilder.Entity<ActivityFormEntity>()
+                .HasOne(a => a.SelectedProgram)
+                .WithMany(p => p.activityForms)
+                .HasForeignKey(a => a.SelectedProgramId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // ScoreForm ↔ Program (چند به یک)
             modelBuilder.Entity<ScoreFormEntity>()
@@ -187,17 +136,10 @@ namespace Example.Domain.Data
                 .HasForeignKey(s => s.ActivityDurId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // تنظیم precision برای فیلد Score
+            // Precision Settings
             modelBuilder.Entity<ScoreFormEntity>()
                 .Property(s => s.Score)
-                .HasPrecision(5, 2); // 5 رقم کل، 2 رقم اعشار
-
-            // Student ↔ Sediq (چند به یک)
-            modelBuilder.Entity<StudentEntity>()
-                .HasOne(s => s.sediq)
-                .WithMany()
-                .HasForeignKey(s => s.sediqRowId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasPrecision(5, 2);
         }
     }
 }

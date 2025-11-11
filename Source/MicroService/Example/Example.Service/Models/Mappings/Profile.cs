@@ -16,33 +16,37 @@ namespace Example.Service.Models.Mappings
 
             #region ActivityForm maps
             CreateMap<ActivityFormEntity, ActivityFormResponseDto>()
-                .ForMember(dest => dest.RowId, opt => opt.MapFrom(src => src.RowId))
-                .ForMember(dest => dest.SelectedProgramName, opt => opt.MapFrom(src => src.SelectedProgram != null ? src.SelectedProgram.Name : string.Empty))
-                .ForMember(dest => dest.StudentNames, opt => opt.MapFrom(src => src.Student != null ? new List<string> { src.Student.FirstName + " " + src.Student.LastName } : new List<string>()))
-                .ForMember(dest => dest.SelectedStudentIds, opt => opt.MapFrom(src => src.Student != null ? new List<long> { src.Student.RowId } : new List<long>()));
-
+                .ForMember(dest => dest.ProgramName, opt => opt.MapFrom(src => src.SelectedProgram != null ? src.SelectedProgram.Name : string.Empty))
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student != null ? src.Student.FirstName + " " + src.Student.LastName : string.Empty));
             CreateMap<ActivityFormCreateModel, ActivityFormEntity>()
-                .ForMember(dest => dest.SelectedStudentId, opt => opt.MapFrom(src => src.SelectedStudentIds.FirstOrDefault()));
+                .ForMember(dest => dest.SelectedProgram, opt => opt.Ignore())
+                .ForMember(dest => dest.Student, opt => opt.Ignore());
             CreateMap<ActivityFormUpdateModel, ActivityFormEntity>()
-                .ForMember(dest => dest.SelectedStudentId, opt => opt.MapFrom(src => src.SelectedStudentIds.FirstOrDefault()));
-            CreateMap<ActivityFormEntity, ActivityFormUpdateModel>()
-                .ForMember(dest => dest.SelectedStudentIds, opt => opt.MapFrom(src => new List<long> { src.SelectedStudentId }));
+                .ForMember(dest => dest.SelectedProgram, opt => opt.Ignore())
+                .ForMember(dest => dest.Student, opt => opt.Ignore());
+            CreateMap<ActivityFormEntity, ActivityFormUpdateModel>();
             #endregion
 
             #region Student maps
             CreateMap<StudentEntity, StudentResponseDto>()
                 .ForMember(dest => dest.RowId, opt => opt.MapFrom(src => src.RowId))
-                .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos.Where(p => p != null).ToList()))
-                .ForMember(dest => dest.PhoneNumbers, opt => opt.MapFrom(src => src.PhoneNumbers.Where(p => p != null).ToList()));
+                .ForMember(dest => dest.Photos, opt => opt.Ignore())
+                .ForMember(dest => dest.PhoneNumbers, opt => opt.Ignore());
             CreateMap<StudentCreateModel, StudentEntity>()
                 .ForMember(dest => dest.Photos, opt => opt.Ignore())
-                .ForMember(dest => dest.PhoneNumbers, opt => opt.MapFrom(src => src.PhoneNumbers.Where(p => p != null).Select(p => new PhoneNumberEntity { Number = p.Number, Ownership = p.Ownership, StudentId = 0 }).ToList()));
+                .ForMember(dest => dest.PhoneNumbers, opt => opt.Ignore())
+                .ForMember(dest => dest.sediq, opt => opt.Ignore())
+                .ForMember(dest => dest.ActivityForms, opt => opt.Ignore())
+                .ForMember(dest => dest.ScoreForms, opt => opt.Ignore());
             CreateMap<StudentUpdateModel, StudentEntity>()
                 .ForMember(dest => dest.Photos, opt => opt.Ignore())
-                .ForMember(dest => dest.PhoneNumbers, opt => opt.MapFrom(src => src.PhoneNumbers.Where(p => p != null).Select(p => new PhoneNumberEntity { Number = p.Number, Ownership = p.Ownership, StudentId = src.RowId ?? 0 }).ToList()));
+                .ForMember(dest => dest.PhoneNumbers, opt => opt.Ignore())
+                .ForMember(dest => dest.sediq, opt => opt.Ignore())
+                .ForMember(dest => dest.ActivityForms, opt => opt.Ignore())
+                .ForMember(dest => dest.ScoreForms, opt => opt.Ignore());
             CreateMap<StudentEntity, StudentUpdateModel>()
-                .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos.Where(p => p != null).ToList()))
-                .ForMember(dest => dest.PhoneNumbers, opt => opt.MapFrom(src => src.PhoneNumbers.Where(p => p != null).ToList()));
+                .ForMember(dest => dest.Photos, opt => opt.Ignore())
+                .ForMember(dest => dest.PhoneNumbers, opt => opt.Ignore());
             #endregion
 
             #region Program maps

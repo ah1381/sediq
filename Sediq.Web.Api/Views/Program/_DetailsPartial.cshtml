@@ -1,0 +1,6 @@
+@model Example.Service.Models.DTOs.ProgramResponseDto
+<div class="row">
+    <div class="col-md-12 mb-3"><strong>نام برنامه:</strong><p>@Model.Name</p></div>
+    <div class="col-md-6 mb-3"><strong>تاریخ شروع:</strong><p>@Model.From?.ToString("yyyy/MM/dd")</p></div>
+    <div class="col-md-6 mb-3"><strong>تاریخ پایان:</strong><p>@Model.To?.ToString("yyyy/MM/dd")</p></div>
+</div>

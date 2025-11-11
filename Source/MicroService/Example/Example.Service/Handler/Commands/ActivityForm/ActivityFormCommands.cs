@@ -13,7 +13,7 @@ namespace Example.Service.Handler.Commands.ActivityForm
     {
         public DateOnly ActivityDate { get; set; }
         public long SelectedProgramId { get; set; }
-        public List<long> SelectedStudentIds { get; set; } = new();
+        public long SelectedStudentId { get; set; }
     }
 
     public class CreateActivityFormHandler : IRequestHandler<CreateActivityFormCommand, CustomActionResult<ActivityFormResponseDto>>
@@ -29,15 +29,15 @@ namespace Example.Service.Handler.Commands.ActivityForm
 
         public async Task<CustomActionResult<ActivityFormResponseDto>> Handle(CreateActivityFormCommand request, CancellationToken cancellationToken)
         {
-            var entities = request.SelectedStudentIds.Select(studentId => new ActivityFormEntity
+            var entity = new ActivityFormEntity
             {
                 ActivityDate = request.ActivityDate,
                 SelectedProgramId = request.SelectedProgramId,
-                SelectedStudentId = studentId
-            }).ToList();
+                SelectedStudentId = request.SelectedStudentId
+            };
 
-            var results = await _repository.AddListAsync(entities);
-            var result = _mapper.Map<ActivityFormResponseDto>(results.FirstOrDefault());
+            var savedEntity = await _repository.AddAsync(entity);
+            var result = _mapper.Map<ActivityFormResponseDto>(savedEntity);
             return Result.Created(result, "Activity form created successfully");
         }
     }

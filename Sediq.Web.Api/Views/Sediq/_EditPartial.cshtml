@@ -1,0 +1,34 @@
+@model Example.Service.Models.DTOs.sediqUpdateModel
+
+<form id="editForm" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="RowId" />
+    
+    <div class="mb-3">
+        <label asp-for="sediqCode" class="form-label">کد صدیق</label>
+        <input asp-for="sediqCode" class="form-control" type="number" />
+        <span asp-validation-for="sediqCode" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="sediqName" class="form-label">نام صدیق</label>
+        <input asp-for="sediqName" class="form-control" />
+        <span asp-validation-for="sediqName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StartDate" class="form-label">تاریخ شروع</label>
+        <input asp-for="StartDate" class="form-control" type="date" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">توضیحات</label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+    </div>
+</form>

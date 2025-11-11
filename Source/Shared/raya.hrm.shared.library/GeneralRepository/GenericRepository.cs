@@ -25,7 +25,6 @@ namespace Raya.Hrm.Shared.Library.GeneralRepository
             _connection = context.Database.GetDbConnection();
             _httpContextAccessor = httpContextAccessor;
             username = _httpContextAccessor.HttpContext?.User?.FindFirst("Username")?.Value ?? "System";
-
         }
         public static string GenerateRandId(int bais, int randLength, string separator)
         {

@@ -6,13 +6,13 @@ namespace Example.Service.Models.DTOs
 {
     public class StudentBase
     {
-
         public string Username { get; set; }
         public string Password { get; set; }
 
 
+
         [Display(Name = "صدیق")]
-        public long SediqCode { get; set; }
+        public long? sediqRowId { get; set; }
 
         [Display(Name = "نام")]
         public string FirstName { get; set; } = string.Empty;
@@ -71,7 +71,6 @@ namespace Example.Service.Models.DTOs
     {
         public long? RowId { get; set; }
         public string? RandId { get; set; }
-        public string StudentCode { get; set; }
     }
 
     public class StudentDeleteModel
@@ -88,7 +87,8 @@ namespace Example.Service.Models.DTOs
         public short? RevSeq { get; set; }
         public short? Status { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
-        public string StudentCode { get; set; }
+        [Display(Name = "کد شرکت کننده")]
+        public string StudentCode { get; set; } = string.Empty;
 
         [Display(Name = "نام کامل")]
         public string FullName => $"{FirstName} {LastName}";

@@ -1,178 +1,143 @@
 @model List<Example.Service.Models.DTOs.ScoreFormResponseDto>
 @{
-    ViewData["Title"] = "لیست فرم‌های نمره";
+    ViewData["Title"] = "لیست نمرات";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">لیست فرم‌های نمره</h3>
-                    <a href="@Url.Action("Create")" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> افزودن فرم نمره جدید
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>شناسه</th>
-                                    <th>برنامه</th>
-                                    <th>دانش آموز</th>
-                                    <th>نمره</th>
-                                    <th>بازه فعالیت</th>
-                                    <th>توضیحات</th>
-                                    <th>عملیات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null && Model.Any())
-                                {
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <td>@item.RowId</td>
-                                            <td>@item.ProgramName</td>
-                                            <td>@item.StudentName</td>
-                                            <td><span class="badge bg-info">@item.Score</span></td>
-                                            <td>@item.DurationName</td>
-                                            <td>@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-warning" onclick="editScoreForm(@item.RowId)">
-                                                    <i class="fas fa-edit"></i> ویرایش
-                                                </button>
-                                                <button class="btn btn-sm btn-danger" onclick="deleteScoreForm(@item.RowId)">
-                                                    <i class="fas fa-trash"></i> حذف
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="7" class="text-center">هیچ فرم نمره‌ای یافت نشد</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>لیست نمرات</h2>
+        <a asp-action="Create" class="btn btn-primary">افزودن نمره جدید</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ردیف</th>
+                    <th>نام برنامه</th>
+                    <th>نام شرکت کننده</th>
+                    <th>نمره</th>
+                    <th>بازه زمانی</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    int counter = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@counter</td>
+                            <td>@item.ProgramName</td>
+                            <td>@item.StudentName</td>
+                            <td>@item.Score</td>
+                            <td>@item.DurationName</td>
+                            <td>
+                                <button class="btn btn-sm btn-info" onclick="showDetails(@item.RowId)">جزئیات</button>
+                                <button class="btn btn-sm btn-warning" onclick="showEdit(@item.RowId)">ویرایش</button>
+                                <button class="btn btn-sm btn-danger" onclick="showDelete(@item.RowId)">حذف</button>
+                            </td>
+                        </tr>
+                        counter++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center">نمره‌ای یافت نشد</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">جزئیات نمره</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+            <div class="modal-body" id="detailsContent"></div>
         </div>
     </div>
 </div>
 
-<!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">ویرایش فرم نمره</h5>
+                <h5 class="modal-title">ویرایش نمره</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form id="editForm">
-                <div class="modal-body">
-                    <input type="hidden" id="editRowId" />
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">برنامه</label>
-                                <select class="form-control" id="editSelectedProgramId" required>
-                                    <option value="">انتخاب برنامه</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">دانش آموز</label>
-                                <select class="form-control" id="editSelectedStudentId" required>
-                                    <option value="">انتخاب دانش آموز</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">نمره</label>
-                                <input type="number" class="form-control" id="editScore" min="0" max="100" step="0.01" required />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">بازه فعالیت</label>
-                                <select class="form-control" id="editActivityDurId" required>
-                                    <option value="">انتخاب بازه فعالیت</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">توضیحات</label>
-                        <textarea class="form-control" id="editDescription" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
-                </div>
-            </form>
+            <div class="modal-body" id="editContent"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">حذف نمره</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>آیا از حذف این نمره اطمینان دارید؟</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">حذف</button>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
-        function editScoreForm(id) {
-            $.get('@Url.Action("GetById")', { id: id }, function(data) {
-                $('#editRowId').val(data.rowId);
-                $('#editSelectedProgramId').val(data.selectedProgramId);
-                $('#editSelectedStudentId').val(data.selectedStudentId);
-                $('#editScore').val(data.score);
-                $('#editActivityDurId').val(data.activityDurId);
-                $('#editDescription').val(data.description);
+        let currentId = 0;
+        function showDetails(id) {
+            $.get('@Url.Action("Details", "ScoreForm")/' + id, function(data) {
+                $('#detailsContent').html(data);
+                $('#detailsModal').modal('show');
+            });
+        }
+        function showEdit(id) {
+            $.get('@Url.Action("Edit", "ScoreForm")/' + id, function(data) {
+                $('#editContent').html(data);
                 $('#editModal').modal('show');
             });
         }
-
-        function deleteScoreForm(id) {
-            if (confirm('آیا از حذف این فرم نمره اطمینان دارید؟')) {
-                $.post('@Url.Action("Delete")', { id: id }, function(result) {
-                    if (result.success) {
-                        location.reload();
-                    } else {
-                        alert(result.message);
-                    }
-                });
-            }
+        function showDelete(id) {
+            currentId = id;
+            $('#deleteModal').modal('show');
         }
-
-        $('#editForm').submit(function(e) {
+        $('#confirmDelete').click(function() {
+            $.post('@Url.Action("Delete", "ScoreForm")/' + currentId, function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert(response.message);
+                }
+            });
+        });
+        $(document).on('submit', '#editForm', function(e) {
             e.preventDefault();
-            var data = {
-                RowId: $('#editRowId').val(),
-                SelectedProgramId: $('#editSelectedProgramId').val(),
-                SelectedStudentId: $('#editSelectedStudentId').val(),
-                Score: $('#editScore').val(),
-                ActivityDurId: $('#editActivityDurId').val(),
-                Description: $('#editDescription').val()
-            };
-
-            $.ajax({
-                url: '@Url.Action("Update")',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function(result) {
-                    if (result.success) {
-                        $('#editModal').modal('hide');
-                        location.reload();
-                    } else {
-                        alert(result.message);
-                    }
+            $.post($(this).attr('action'), $(this).serialize(), function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert(response.message);
                 }
             });
         });

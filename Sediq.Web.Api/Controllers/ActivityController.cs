@@ -1,11 +1,8 @@
 using Example.Service.Handler.Commands.ActivityForm;
 using Example.Service.Handler.Queries.ActivityForm;
-using Example.Service.Handler.Queries.Program;
-using Example.Service.Handler.Queries.Student;
 using Example.Service.Models.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sediq.Web.Api.Controllers
 {
@@ -18,66 +15,50 @@ namespace Sediq.Web.Api.Controllers
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> Create()
-        {
-            await LoadSelectLists();
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(ActivityFormCreateModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var command = new CreateActivityFormCommand
-                {
-                    ActivityDate = model.ActivityDate,
-                    SelectedProgramId = model.SelectedProgramId,
-                    SelectedStudentIds = model.SelectedStudentIds
-                };
-                var result = await _mediator.Send(command);
-                if (result.IsSuccess)
-                {
-                    TempData["Success"] = "فعالیت با موفقیت ایجاد شد";
-                    return RedirectToAction("Create");
-                }
-                ModelState.AddModelError("", "خطا در ایجاد فعالیت");
-            }
-            await LoadSelectLists();
-            return View(model);
-        }
-
         public async Task<IActionResult> List()
         {
             var result = await _mediator.Send(new GetAllActivityFormsQuery());
-            return View(result);
+            return View(result.IsSuccess ? result.Data : new List<ActivityFormResponseDto>());
         }
 
-        private async Task LoadSelectLists()
+        public IActionResult Create()
         {
-            var programs = await _mediator.Send(new GetAllProgramsQuery());
-            var students = await _mediator.Send(new GetAllStudentsQuery());
-
-            ViewBag.Programs = new SelectList(programs.Data, "RowId", "Name");
-            ViewBag.Students = new SelectList(students.Data, "RowId", "FullName");
+            return View(new ActivityFormCreateModel());
         }
 
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ActivityFormUpdateModel dto)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ActivityFormCreateModel model)
         {
-            dto.RowId = id;
-            var result = await _mediator.Send(new UpdateActivityFormCommand(dto));
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var command = new CreateActivityFormCommand
+            {
+                ActivityDate = model.ActivityDate,
+                SelectedProgramId = model.SelectedProgramId,
+                SelectedStudentId = model.SelectedStudentId
+            };
+            var result = await _mediator.Send(command);
+            
+            if (result.IsSuccess)
+            {
+                TempData["Success"] = "فعالیت با موفقیت ثبت شد";
+                return RedirectToAction(nameof(List));
+            }
+            
+            ModelState.AddModelError("", result.ResponseDesc ?? "خطا در ثبت فعالیت");
+            return View(model);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Details(long id)
         {
-            var result = await _mediator.Send(new DeleteActivityFormCommand { Id = id });
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
+            var result = await _mediator.Send(new GetActivityFormById { Id = (int)id });
+            if (result == null)
+                return NotFound();
+            
+            return PartialView("_DetailsPartial", result);
         }
-
 
         public async Task<IActionResult> Edit(long id)
         {
@@ -90,7 +71,7 @@ namespace Sediq.Web.Api.Controllers
                 RowId = result.RowId,
                 ActivityDate = result.ActivityDate,
                 SelectedProgramId = result.SelectedProgramId,
-                SelectedStudentIds = result.SelectedStudentIds
+                SelectedStudentId = result.SelectedStudentId
             };
             
             return PartialView("_EditPartial", model);
@@ -105,9 +86,9 @@ namespace Sediq.Web.Api.Controllers
             var result = await _mediator.Send(new UpdateActivityFormCommand(model));
             
             if (result.IsSuccess)
-                return Json(new { success = true });
+                return Json(new { success = true, message = "فعالیت با موفقیت به روز شد" });
             
-            return Json(new { success = false, message = result.ResponseDesc });
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در به روز رسانی" });
         }
 
         [HttpPost]
@@ -116,10 +97,9 @@ namespace Sediq.Web.Api.Controllers
             var result = await _mediator.Send(new DeleteActivityFormCommand { Id = (int)id });
             
             if (result.IsSuccess)
-                return Json(new { success = true });
+                return Json(new { success = true, message = "فعالیت با موفقیت حذف شد" });
             
-            return Json(new { success = false, message = result.ResponseDesc });
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در حذف" });
         }
-
     }
 }

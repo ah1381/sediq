@@ -1,0 +1,40 @@
+@model Example.Service.Models.DTOs.ScoreFormUpdateModel
+
+<form id="editForm" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="RowId" />
+    
+    <div class="mb-3">
+        <label asp-for="SelectedProgramId" class="form-label">برنامه</label>
+        <input asp-for="SelectedProgramId" class="form-control" type="number" />
+        <span asp-validation-for="SelectedProgramId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SelectedStudentId" class="form-label">شرکت کننده</label>
+        <input asp-for="SelectedStudentId" class="form-control" type="number" />
+        <span asp-validation-for="SelectedStudentId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Score" class="form-label">نمره</label>
+        <input asp-for="Score" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Score" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ActivityDurId" class="form-label">بازه زمانی</label>
+        <input asp-for="ActivityDurId" class="form-control" type="number" />
+        <span asp-validation-for="ActivityDurId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">توضیحات</label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+    </div>
+</form>

@@ -158,7 +158,6 @@ namespace Example.Domain.Migrations
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SediqCode = table.Column<long>(type: "bigint", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NationalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),

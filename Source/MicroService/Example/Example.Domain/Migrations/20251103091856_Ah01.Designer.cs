@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Example.Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251101112316_Ah01")]
+    [Migration("20251103091856_Ah01")]
     partial class Ah01
     {
         /// <inheritdoc />
@@ -424,9 +424,6 @@ namespace Example.Domain.Migrations
 
                     b.Property<short>("RevSeq")
                         .HasColumnType("smallint");
-
-                    b.Property<long>("SediqCode")
-                        .HasColumnType("bigint");
 
                     b.Property<long?>("SediqEntityRowId")
                         .HasColumnType("bigint");

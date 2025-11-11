@@ -18,62 +18,49 @@ namespace Sediq.Web.Api.Controllers
         public async Task<IActionResult> List()
         {
             var result = await _mediator.Send(new GetAllDurationDatesQuery());
-            return View(result.Data);
+            return View(result.IsSuccess ? result.Data : new List<DurationDateEntityResponseDto>());
         }
 
         public IActionResult Create()
         {
-            return View();
+            return View(new DurationDateEntityCreateModel());
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DurationDateEntityCreateModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var command = new CreateDurationDateCommand
             {
-                var command = new CreateDurationDateCommand
-                {
-                    Name = model.Name,
-                    StartDur = model.StartDur,
-                    EndDur = model.EndDur
-                };
-                var result = await _mediator.Send(command);
-                if (result.IsSuccess)
-                {
-                    TempData["Success"] = "بازه زمانی با موفقیت ایجاد شد";
-                    return RedirectToAction("List");
-                }
-                ModelState.AddModelError("", "خطا در ایجاد بازه زمانی");
+                Name = model.Name,
+                StartDur = model.StartDur,
+                EndDur = model.EndDur
+            };
+            var result = await _mediator.Send(command);
+            
+            if (result.IsSuccess)
+            {
+                TempData["Success"] = "بازه زمانی با موفقیت ثبت شد";
+                return RedirectToAction(nameof(List));
             }
+            
+            ModelState.AddModelError("", result.ResponseDesc ?? "خطا در ثبت بازه زمانی");
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> Details(long id)
         {
-            var result = await _mediator.Send(new GetDurationDateById { Id = id });
-            return Json(result);
+            var result = await _mediator.Send(new GetDurationDateById { Id = (int)id });
+            if (result == null)
+                return NotFound();
+            
+            return PartialView("_DetailsPartial", result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update([FromBody] DurationDateEntityUpdateModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _mediator.Send(new UpdateDurationDateCommand(model));
-                return Json(new { success = result.IsSuccess, message = result.IsSuccess ? "بازه زمانی با موفقیت ویرایش شد" : "خطا در ویرایش بازه زمانی" });
-            }
-            return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _mediator.Send(new DeleteDurationDateCommand { Id = id });
-            return Json(new { success = result.IsSuccess, message = result.IsSuccess ? "بازه زمانی با موفقیت حذف شد" : "خطا در حذف بازه زمانی" });
-        }
-
-        public async Task<IActionResult> Update(long id)
+        public async Task<IActionResult> Edit(long id)
         {
             var result = await _mediator.Send(new GetDurationDateById { Id = (int)id });
             if (result == null)
@@ -90,5 +77,29 @@ namespace Sediq.Web.Api.Controllers
             return PartialView("_EditPartial", model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(DurationDateEntityUpdateModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "اطلاعات وارد شده معتبر نیست" });
+
+            var result = await _mediator.Send(new UpdateDurationDateCommand(model));
+            
+            if (result.IsSuccess)
+                return Json(new { success = true, message = "بازه زمانی با موفقیت به روز شد" });
+            
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در به روز رسانی" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var result = await _mediator.Send(new DeleteDurationDateCommand { Id = (int)id });
+            
+            if (result.IsSuccess)
+                return Json(new { success = true, message = "بازه زمانی با موفقیت حذف شد" });
+            
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در حذف" });
+        }
     }
 }

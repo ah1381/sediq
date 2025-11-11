@@ -3,7 +3,6 @@ using Example.Service.Handler.Queries.Student;
 using Example.Service.Models.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Sediq.Web.Api.Controllers;
 
 namespace Sediq.Web.Api.Controllers
 {
@@ -16,36 +15,6 @@ namespace Sediq.Web.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var result = await _mediator.Send(new GetStudentById { Id = id });
-            return result != null ? Ok(result) : NotFound();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _mediator.Send(new GetAllStudentsQuery());
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] StudentUpdateModel dto)
-        {
-            dto.RowId = id;
-            var result = await _mediator.Send(new UpdateStudentCommand(dto));
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _mediator.Send(new DeleteStudentCommand { Id = id });
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
-        }
-
-        // MVC Actions
         public async Task<IActionResult> List()
         {
             var result = await _mediator.Send(new GetAllStudentsQuery());
@@ -60,20 +29,27 @@ namespace Sediq.Web.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(StudentCreateModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
 
             var command = new CreateStudentCommand { RequestModel = model };
             var result = await _mediator.Send(command);
             
             if (result.IsSuccess)
             {
-                TempData["Success"] = "دانش آموز با موفقیت ثبت شد";
+                TempData["Success"] = "شرکت کننده با موفقیت ثبت شد";
                 return RedirectToAction(nameof(List));
             }
             
-            ModelState.AddModelError("", result.ResponseDesc);
+            ModelState.AddModelError("", result.ResponseDesc ?? "خطا در ثبت شرکت کننده");
             return View(model);
+        }
+
+        public async Task<IActionResult> Details(long id)
+        {
+            var result = await _mediator.Send(new GetStudentById { Id = (int)id });
+            if (result == null)
+                return NotFound();
+            
+            return PartialView("_DetailsPartial", result);
         }
 
         public async Task<IActionResult> Edit(long id)
@@ -85,10 +61,19 @@ namespace Sediq.Web.Api.Controllers
             var model = new StudentUpdateModel
             {
                 RowId = result.RowId,
-                StudentCode = result.StudentCode,
                 FirstName = result.FirstName,
                 LastName = result.LastName,
-                NationalCode = result.NationalCode
+                NationalCode = result.NationalCode,
+                MembershipDate = result.MembershipDate,
+                FatherName = result.FatherName,
+                FatherJob = result.FatherJob,
+                BirthDate = result.BirthDate,
+                FieldOfStudy = result.FieldOfStudy,
+                YearStudy = result.YearStudy,
+                Gender = result.Gender,
+                Address = result.Address,
+                EducationStatus = result.EducationStatus,
+                Notes = result.Notes
             };
             
             return PartialView("_EditPartial", model);
@@ -103,9 +88,9 @@ namespace Sediq.Web.Api.Controllers
             var result = await _mediator.Send(new UpdateStudentCommand(model));
             
             if (result.IsSuccess)
-                return Json(new { success = true });
+                return Json(new { success = true, message = "شرکت کننده با موفقیت به روز شد" });
             
-            return Json(new { success = false, message = result.ResponseDesc });
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در به روز رسانی" });
         }
 
         [HttpPost]
@@ -114,11 +99,9 @@ namespace Sediq.Web.Api.Controllers
             var result = await _mediator.Send(new DeleteStudentCommand { Id = (int)id });
             
             if (result.IsSuccess)
-                return Json(new { success = true });
+                return Json(new { success = true, message = "شرکت کننده با موفقیت حذف شد" });
             
-            return Json(new { success = false, message = result.ResponseDesc });
+            return Json(new { success = false, message = result.ResponseDesc ?? "خطا در حذف" });
         }
     }
 }
-
-
