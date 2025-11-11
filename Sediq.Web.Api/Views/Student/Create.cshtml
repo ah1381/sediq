@@ -20,6 +20,13 @@
                     <input asp-for="NationalCode" class="form-control" maxlength="10" />
                     <span asp-validation-for="NationalCode" class="text-danger"></span>
                 </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="sediqRowId" class="form-label">صدیق</label>
+                    <select asp-for="sediqRowId" class="form-select" asp-items="ViewBag.Sediqs">
+                        <option value="">صدیق را انتخاب کنید</option>
+                    </select>
+                    <span asp-validation-for="sediqRowId" class="text-danger"></span>
+                </div>
             </div>
 
             <div class="row">
@@ -51,12 +58,12 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label asp-for="BirthDate" class="form-label">تاریخ تولد</label>
-                    <input asp-for="BirthDate" class="form-control" type="date" />
+                    <input asp-for="BirthDate" class="form-control" type="date" value="@DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd")" />
                     <span asp-validation-for="BirthDate" class="text-danger"></span>
                 </div>
                 <div class="col-md-4 mb-3">
                     <label asp-for="MembershipDate" class="form-label">تاریخ عضویت</label>
-                    <input asp-for="MembershipDate" class="form-control" type="date" />
+                    <input asp-for="MembershipDate" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                     <span asp-validation-for="MembershipDate" class="text-danger"></span>
                 </div>
                 <div class="col-md-4 mb-3">

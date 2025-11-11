@@ -64,6 +64,8 @@ namespace Example.Domain.Entities
 
         [Display(Name = "توضیحات اضافی")]
         public string? Notes { get; set; } = string.Empty;
+        
+        [Display(Name = "کد صدیق")]
         public long? sediqRowId { get; set; }
         
         [Display(Name = "عکس ها")]

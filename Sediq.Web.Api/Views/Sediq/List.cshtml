@@ -38,7 +38,7 @@
                             <td>@counter</td>
                             <td>@item.sediqCode</td>
                             <td>@item.sediqName</td>
-                            <td>@item.StartDate.ToString("yyyy/MM/dd")</td>
+                            <td>@item.StartDate.ToPersianDate()</td>
                             <td>
                                 <button class="btn btn-sm btn-info" onclick="showDetails(@item.RowId)">جزئیات</button>
                                 <button class="btn btn-sm btn-warning" onclick="showEdit(@item.RowId)">ویرایش</button>

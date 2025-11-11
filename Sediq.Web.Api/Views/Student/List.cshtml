@@ -37,7 +37,7 @@
                                 <td>@item.FullName</td>
                                 <td>@item.NationalCode</td>
                                 <td>@(item.Gender == Example.Domain.Entities.Gender.Male ? "مرد" : "زن")</td>
-                                <td>@item.MembershipDate?.ToString("yyyy/MM/dd")</td>
+                                <td>@item.MembershipDate.ToPersianDate()</td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-info" onclick="showDetails(@item.RowId)" title="جزئیات">

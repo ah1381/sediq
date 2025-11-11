@@ -25,14 +25,14 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label asp-for="StartDur" class="form-label">تاریخ شروع</label>
-                                    <input asp-for="StartDur" type="date" class="form-control" />
+                                    <input asp-for="StartDur" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                                     <span asp-validation-for="StartDur" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label asp-for="EndDur" class="form-label">تاریخ پایان</label>
-                                    <input asp-for="EndDur" type="date" class="form-control" />
+                                    <input asp-for="EndDur" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                                     <span asp-validation-for="EndDur" class="text-danger"></span>
                                 </div>
                             </div>

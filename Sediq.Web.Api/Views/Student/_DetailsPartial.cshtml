@@ -36,11 +36,11 @@
 <div class="row">
     <div class="col-md-4 mb-3">
         <strong>تاریخ تولد:</strong>
-        <p>@Model.BirthDate.ToString("yyyy/MM/dd")</p>
+        <p>@Model.BirthDate.ToPersianDate()</p>
     </div>
     <div class="col-md-4 mb-3">
         <strong>تاریخ عضویت:</strong>
-        <p>@Model.MembershipDate?.ToString("yyyy/MM/dd")</p>
+        <p>@Model.MembershipDate.ToPersianDate()</p>
     </div>
     <div class="col-md-4 mb-3">
         <strong>جنسیت:</strong>

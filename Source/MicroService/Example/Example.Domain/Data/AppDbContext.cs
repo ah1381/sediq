@@ -61,6 +61,10 @@ namespace Example.Domain.Data
             modelBuilder.Entity<DurationDateEntity>().HasKey(d => d.RowId);
             modelBuilder.Entity<ScoreFormEntity>().HasKey(s => s.RowId);
             modelBuilder.Entity<SediqEntity>().HasKey(s => s.RowId);
+
+            // Unique Constraints
+            modelBuilder.Entity<SediqEntity>().HasIndex(s => s.SediqCode).IsUnique();
+            modelBuilder.Entity<SediqEntity>().Property(s => s.SediqCode).IsRequired();
             modelBuilder.Entity<Role>().HasKey(r => r.RowId);
             modelBuilder.Entity<UserRole>().HasKey(ur => ur.RowId);
             modelBuilder.Entity<Permission>().HasKey(p => p.RowId);
@@ -80,6 +84,16 @@ namespace Example.Domain.Data
             modelBuilder.Entity<Permission>().Property(p => p.RowId).UseIdentityAlwaysColumn();
             modelBuilder.Entity<PermissionRole>().Property(pr => pr.RowId).UseIdentityAlwaysColumn();
 
+            // RandId nullable configuration
+            modelBuilder.Entity<SediqEntity>().Property(s => s.RandId).IsRequired(false);
+            modelBuilder.Entity<StudentEntity>().Property(s => s.RandId).IsRequired(false);
+            modelBuilder.Entity<ProgramEntity>().Property(p => p.RandId).IsRequired(false);
+            modelBuilder.Entity<ActivityFormEntity>().Property(a => a.RandId).IsRequired(false);
+            modelBuilder.Entity<ScoreFormEntity>().Property(s => s.RandId).IsRequired(false);
+            modelBuilder.Entity<DurationDateEntity>().Property(d => d.RandId).IsRequired(false);
+            modelBuilder.Entity<PhoneNumberEntity>().Property(p => p.RandId).IsRequired(false);
+            modelBuilder.Entity<ImagesEntity>().Property(i => i.RandId).IsRequired(false);
+
             // Student ↔ PhoneNumber (یک به چند)
             modelBuilder.Entity<PhoneNumberEntity>()
                 .HasOne(p => p.Student)
@@ -94,11 +108,12 @@ namespace Example.Domain.Data
                 .HasForeignKey(i => i.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Student ↔ Sediq (چند به یک)
+            // Student ↔ Sediq (چند به یک) - based on SediqCode
             modelBuilder.Entity<StudentEntity>()
                 .HasOne(s => s.sediq)
-                .WithMany()
+                .WithMany(sd => sd.Students)
                 .HasForeignKey(s => s.sediqRowId)
+                .HasPrincipalKey(sd => sd.SediqCode)
                 .OnDelete(DeleteBehavior.SetNull);
 
             // ActivityForm ↔ Student (چند به یک)

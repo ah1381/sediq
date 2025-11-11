@@ -11,7 +11,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <strong>تاریخ شروع:</strong>
-        <p>@Model.StartDate.ToString("yyyy/MM/dd")</p>
+        <p>@Model.StartDate.ToPersianDate()</p>
     </div>
     <div class="col-md-12 mb-3">
         <strong>توضیحات:</strong>
@@ -19,7 +19,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <strong>تاریخ ایجاد:</strong>
-        <p>@Model.CreatedAt?.ToString("yyyy/MM/dd HH:mm")</p>
+        <p>@Model.CreatedAt.ToPersianDate()</p>
     </div>
     <div class="col-md-6 mb-3">
         <strong>ایجاد شده توسط:</strong>

@@ -78,7 +78,10 @@ namespace Example.Service.Handler.Commands.sediq
                 return Result.NotFound<sediqResponseDto>($"sediq with RowId {request.sediq.RowId} not found.");
             }
 
-            _mapper.Map(request.sediq, entity);
+            entity.SediqCode = request.sediq.sediqCode;
+            entity.sediqName = request.sediq.sediqName; 
+            entity.Description = request.sediq.Description;
+            entity.StartDate = request.sediq.StartDate;
             await _repository.UpdateAsync(entity);
             var result = _mapper.Map<sediqResponseDto>(entity);
             return Result.Ok(result, "sediq updated successfully");

@@ -21,14 +21,26 @@ namespace Sediq.Web.Api.Controllers
             return View(result.IsSuccess ? result.Data : new List<StudentResponseDto>());
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var sediqs = await _mediator.Send(new Example.Service.Handler.Queries.sediq.GetAllsediqsQuery());
+            ViewBag.Sediqs = sediqs.Data?.Select(s => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = s.sediqCode.ToString(),
+                Text = s.sediqName
+            }).ToList();
             return View(new StudentCreateModel());
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(StudentCreateModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                var sediqs = await _mediator.Send(new Example.Service.Handler.Queries.sediq.GetAllsediqsQuery());
+                ViewBag.Sediqs = sediqs.Data?.Select(s => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = s.sediqCode.ToString(), Text = s.sediqName }).ToList();
+                return View(model);
+            }
 
             var command = new CreateStudentCommand { RequestModel = model };
             var result = await _mediator.Send(command);

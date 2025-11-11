@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-6 mb-3">
         <strong>تاریخ فعالیت:</strong>
-        <p>@Model.ActivityDate.ToString("yyyy/MM/dd")</p>
+        <p>@Model.ActivityDate.ToPersianDate()</p>
     </div>
     <div class="col-md-6 mb-3">
         <strong>نام برنامه:</strong>
@@ -15,7 +15,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <strong>تاریخ ایجاد:</strong>
-        <p>@Model.CreatedAt?.ToString("yyyy/MM/dd HH:mm")</p>
+        <p>@Model.CreatedAt.ToPersianDate()</p>
     </div>
     <div class="col-md-6 mb-3">
         <strong>ایجاد شده توسط:</strong>

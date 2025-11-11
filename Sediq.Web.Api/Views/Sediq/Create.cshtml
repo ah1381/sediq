@@ -24,7 +24,7 @@
 
         <div class="mb-3">
             <label asp-for="StartDate" class="form-label">تاریخ شروع</label>
-            <input asp-for="StartDate" class="form-control" type="date" />
+            <input asp-for="StartDate" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             <span asp-validation-for="StartDate" class="text-danger"></span>
         </div>
 

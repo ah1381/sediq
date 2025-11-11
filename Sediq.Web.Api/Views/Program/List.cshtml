@@ -1,3 +1,4 @@
+@using Sediq.Web.Api.Helpers
 @model IEnumerable<Example.Service.Models.DTOs.ProgramResponseDto>
 @{
     ViewData["Title"] = "لیست برنامه‌ها";
@@ -20,12 +21,12 @@
                     {
                         <tr>
                             <td>@item.Name</td>
-                            <td>@item.From?.ToString("yyyy/MM/dd")</td>
-                            <td>@item.To?.ToString("yyyy/MM/dd")</td>
+                            <td>@item.From.ToPersianDate()</td>
+                            <td>@item.To.ToPersianDate()</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-info" onclick="showDetails(@item.RowId)"><i class="fas fa-eye"></i></button>
-                                <button class="btn btn-sm btn-outline-primary" onclick="editItem(@item.RowId)"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(@item.RowId)"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-sm btn-info" onclick="showDetails(@item.RowId)">جزئیات</button>
+                                <button class="btn btn-sm btn-warning" onclick="editItem(@item.RowId)">ویرایش</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteItem(@item.RowId)">حذف</button>
                             </td>
                         </tr>
                     }

@@ -12,7 +12,7 @@
 
         <div class="mb-3">
             <label asp-for="ActivityDate" class="form-label">تاریخ فعالیت</label>
-            <input asp-for="ActivityDate" class="form-control" type="date" />
+            <input asp-for="ActivityDate" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             <span asp-validation-for="ActivityDate" class="text-danger"></span>
         </div>
 
