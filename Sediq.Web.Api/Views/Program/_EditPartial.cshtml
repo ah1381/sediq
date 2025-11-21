@@ -1,10 +1,11 @@
+@using Sediq.Web.Api.Helpers
 @model Example.Service.Models.DTOs.ProgramUpdateModel
 <form id="editForm" asp-action="Edit" method="post">
     <input type="hidden" asp-for="RowId" />
     <div class="mb-3"><label asp-for="Name" class="form-label">نام برنامه</label><input asp-for="Name" class="form-control" /></div>
     <div class="row">
-        <div class="col-md-6 mb-3"><label asp-for="From" class="form-label">تاریخ شروع</label><input asp-for="From" class="form-control" type="date" /></div>
-        <div class="col-md-6 mb-3"><label asp-for="To" class="form-label">تاریخ پایان</label><input asp-for="To" class="form-control" type="date" /></div>
+        <div class="col-md-6 mb-3"><label asp-for="From" class="form-label">تاریخ شروع</label><input asp-for="From" class="form-control" type="date" value="@Model.From.ToPersianDate()" /></div>
+        <div class="col-md-6 mb-3"><label asp-for="To" class="form-label">تاریخ پایان</label><input asp-for="To" class="form-control" type="date" value="@Model.To.ToPersianDate()" /></div>
     </div>
     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> ذخیره</button>
 </form>

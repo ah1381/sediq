@@ -43,10 +43,10 @@
                                         <button type="button" class="btn btn-sm btn-outline-info" onclick="showDetails(@item.RowId)" title="جزئیات">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="editStudent(@item.RowId)" title="ویرایش">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="showEdit(@item.RowId)" title="ویرایش">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteStudent(@item.RowId)" title="حذف">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="showDelete(@item.RowId)" title="حذف">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -74,7 +74,7 @@
                 <h5 class="modal-title">جزئیات شرکت کننده</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="detailsModalBody">
+            <div class="modal-body" id="detailsContent">
             </div>
         </div>
     </div>
@@ -88,7 +88,7 @@
                 <h5 class="modal-title">ویرایش شرکت کننده</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="editModalBody">
+            <div class="modal-body" id="editContent">
             </div>
         </div>
     </div>
@@ -107,7 +107,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">حذف</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">حذف</button>
             </div>
         </div>
     </div>
@@ -115,46 +115,44 @@
 
 @section Scripts {
     <script>
-        let deleteId = 0;
+        let currentId = 0;
 
         function showDetails(id) {
-            $.get('/Student/Details/' + id, function(data) {
-                $('#detailsModalBody').html(data);
+            $.get('@Url.Action("Details", "Student")/' + id, function(data) {
+                $('#detailsContent').html(data);
                 $('#detailsModal').modal('show');
             });
         }
 
-        function editStudent(id) {
-            $.get('/Student/Edit/' + id, function(data) {
-                $('#editModalBody').html(data);
+        function showEdit(id) {
+            $.get('@Url.Action("Edit", "Student")/' + id, function(data) {
+                $('#editContent').html(data);
                 $('#editModal').modal('show');
             });
         }
 
-        function deleteStudent(id) {
-            deleteId = id;
+        function showDelete(id) {
+            currentId = id;
             $('#deleteModal').modal('show');
         }
 
-        $('#confirmDeleteBtn').click(function() {
-            $.post('/Student/Delete', { id: deleteId }, function(result) {
-                if (result.success) {
-                    $('#deleteModal').modal('hide');
+        $('#confirmDelete').click(function() {
+            $.post('@Url.Action("Delete", "Student")/' + currentId, function(response) {
+                if (response.success) {
                     location.reload();
                 } else {
-                    alert('خطا: ' + result.message);
+                    alert(response.message);
                 }
             });
         });
 
         $(document).on('submit', '#editForm', function(e) {
             e.preventDefault();
-            $.post($(this).attr('action'), $(this).serialize(), function(result) {
-                if (result.success) {
-                    $('#editModal').modal('hide');
+            $.post($(this).attr('action'), $(this).serialize(), function(response) {
+                if (response.success) {
                     location.reload();
                 } else {
-                    alert('خطا: ' + result.message);
+                    alert(response.message);
                 }
             });
         });

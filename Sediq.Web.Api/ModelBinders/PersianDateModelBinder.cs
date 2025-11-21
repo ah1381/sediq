@@ -31,6 +31,21 @@ namespace Sediq.Web.Api.ModelBinders
                     int month = int.Parse(parts[1]);
                     int day = int.Parse(parts[2]);
                     
+                    // بررسی محدوده ماه
+                    if (month < 1 || month > 12)
+                    {
+                        bindingContext.ModelState.AddModelError(bindingContext.ModelName, $"ماه باید بین 1 تا 12 باشد");
+                        return Task.CompletedTask;
+                    }
+                    
+                    // بررسی تعداد روزهای ماه
+                    int daysInMonth = persianCalendar.GetDaysInMonth(year, month);
+                    if (day < 1 || day > daysInMonth)
+                    {
+                        bindingContext.ModelState.AddModelError(bindingContext.ModelName, $"ماه {month} سال {year} فقط {daysInMonth} روز دارد");
+                        return Task.CompletedTask;
+                    }
+                    
                     var gregorianDate = persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
                     
                     if (bindingContext.ModelType == typeof(DateTime) || bindingContext.ModelType == typeof(DateTime?))
@@ -45,7 +60,7 @@ namespace Sediq.Web.Api.ModelBinders
             }
             catch (Exception ex)
             {
-                bindingContext.ModelState.AddModelError(bindingContext.ModelName, $"فرمت تاریخ نامعتبر است: {value}");
+                bindingContext.ModelState.AddModelError(bindingContext.ModelName, $"فرمت تاریخ نامعتبر است: {value} - {ex.Message}");
             }
 
             return Task.CompletedTask;

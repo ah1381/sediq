@@ -25,8 +25,8 @@
                             <td>@item.To.ToPersianDate()</td>
                             <td>
                                 <button class="btn btn-sm btn-info" onclick="showDetails(@item.RowId)">جزئیات</button>
-                                <button class="btn btn-sm btn-warning" onclick="editItem(@item.RowId)">ویرایش</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteItem(@item.RowId)">حذف</button>
+                                <button class="btn btn-sm btn-warning" onclick="showEdit(@item.RowId)">ویرایش</button>
+                                <button class="btn btn-sm btn-danger" onclick="showDelete(@item.RowId)">حذف</button>
                             </td>
                         </tr>
                     }
@@ -40,17 +40,85 @@
     </div>
 </div>
 
-<div class="modal fade" id="detailsModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header bg-info text-white"><h5 class="modal-title">جزئیات</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body" id="detailsModalBody"></div></div></div></div>
-<div class="modal fade" id="editModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header bg-warning text-dark"><h5 class="modal-title">ویرایش</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body" id="editModalBody"></div></div></div></div>
-<div class="modal fade" id="deleteModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-danger text-white"><h5 class="modal-title">تایید حذف</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>آیا از حذف اطمینان دارید؟</p></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button><button type="button" class="btn btn-danger" id="confirmDeleteBtn">حذف</button></div></div></div></div>
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">جزئیات برنامه</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detailsContent"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ویرایش برنامه</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="editContent"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">حذف برنامه</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>آیا از حذف این برنامه اطمینان دارید؟</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">حذف</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
-<script>
-let deleteId=0;
-function showDetails(id){$.get('/Program/Details/'+id,function(data){$('#detailsModalBody').html(data);$('#detailsModal').modal('show');});}
-function editItem(id){$.get('/Program/Edit/'+id,function(data){$('#editModalBody').html(data);$('#editModal').modal('show');});}
-function deleteItem(id){deleteId=id;$('#deleteModal').modal('show');}
-$('#confirmDeleteBtn').click(function(){$.post('/Program/Delete',{id:deleteId},function(result){if(result.success){$('#deleteModal').modal('hide');location.reload();}else{alert('خطا: '+result.message);}});});
-$(document).on('submit','#editForm',function(e){e.preventDefault();$.post($(this).attr('action'),$(this).serialize(),function(result){if(result.success){$('#editModal').modal('hide');location.reload();}else{alert('خطا: '+result.message);}});});
-</script>
+    <script>
+        let currentId = 0;
+        function showDetails(id) {
+            $.get('@Url.Action("Details", "Program")/' + id, function(data) {
+                $('#detailsContent').html(data);
+                $('#detailsModal').modal('show');
+            });
+        }
+        function showEdit(id) {
+            $.get('@Url.Action("Edit", "Program")/' + id, function(data) {
+                $('#editContent').html(data);
+                $('#editModal').modal('show');
+            });
+        }
+        function showDelete(id) {
+            currentId = id;
+            $('#deleteModal').modal('show');
+        }
+        $('#confirmDelete').click(function() {
+            $.post('@Url.Action("Delete", "Program")/' + currentId, function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert(response.message);
+                }
+            });
+        });
+        $(document).on('submit', '#editForm', function(e) {
+            e.preventDefault();
+            $.post($(this).attr('action'), $(this).serialize(), function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert(response.message);
+                }
+            });
+        });
+    </script>
 }

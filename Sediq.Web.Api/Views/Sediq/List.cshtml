@@ -1,3 +1,4 @@
+@using Sediq.Web.Api.Helpers
 @model List<Example.Service.Models.DTOs.sediqResponseDto>
 @{
     ViewData["Title"] = "لیست صدیق";
@@ -136,6 +137,20 @@
                     location.reload();
                 } else {
                     alert(response.message);
+                }
+            });
+        });
+        
+        // Initialize Persian datepicker for edit modal
+        $(document).on('shown.bs.modal', '#editModal', function() {
+            $('.persian-date').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                initialValue: false,
+                autoClose: true,
+                calendar: {
+                    persian: {
+                        locale: 'fa'
+                    }
                 }
             });
         });

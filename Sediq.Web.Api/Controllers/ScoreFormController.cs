@@ -21,8 +21,20 @@ namespace Sediq.Web.Api.Controllers
             return View(result.IsSuccess ? result.Data : new List<ScoreFormResponseDto>());
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var programs = await _mediator.Send(new Example.Service.Handler.Queries.Program.GetAllProgramsQuery());
+            var students = await _mediator.Send(new Example.Service.Handler.Queries.Student.GetAllStudentsQuery());
+            var durations = await _mediator.Send(new Example.Service.Handler.Queries.DurationDate.GetAllDurationDatesQuery());
+            
+            if (programs.Data == null) programs.Data = new List<ProgramResponseDto>();
+            if (students.Data == null) students.Data = new List<StudentResponseDto>();
+            if (durations.Data == null) durations.Data = new List<DurationDateEntityResponseDto>();
+            
+            ViewBag.Programs = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(programs.Data ?? new List<ProgramResponseDto>(), "RowId", "Name");
+            ViewBag.Students = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(students.Data ?? new List<StudentResponseDto>(), "RowId", "FullName");
+            ViewBag.Durations = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(durations.Data ?? new List<DurationDateEntityResponseDto>(), "RowId", "Name");
+            
             return View(new ScoreFormCreateModel());
         }
 

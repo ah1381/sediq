@@ -28,29 +28,29 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                برنامه‌ها
+                                صدیق
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Sediq" asp-action="Create">ثبت صدیق</a></li>
+                                <li><a class="dropdown-item" asp-controller="Sediq" asp-action="List">لیست صدیق</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                برنامهها
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-controller="Program" asp-action="Create">ایجاد برنامه</a></li>
-                                <li><a class="dropdown-item" asp-controller="Program" asp-action="List">لیست برنامه‌ها</a></li>
+                                <li><a class="dropdown-item" asp-controller="Program" asp-action="List">لیست برنامهها</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                دانش‌آموزان
+                                دانشآموزان
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Student" asp-action="Create">ثبت دانش‌آموز</a></li>
-                                <li><a class="dropdown-item" asp-controller="Student" asp-action="List">لیست دانش‌آموزان</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                فعالیت‌ها
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Activity" asp-action="Create">ثبت فعالیت</a></li>
-                                <li><a class="dropdown-item" asp-controller="Activity" asp-action="List">لیست فعالیت‌ها</a></li>
+                                <li><a class="dropdown-item" asp-controller="Student" asp-action="Create">ثبت دانشآموز</a></li>
+                                <li><a class="dropdown-item" asp-controller="Student" asp-action="List">لیست دانشآموزان</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -64,20 +64,20 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                فعالیتها
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Activity" asp-action="Create">ثبت فعالیت</a></li>
+                                <li><a class="dropdown-item" asp-controller="Activity" asp-action="List">لیست فعالیتها</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 نمرات
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-controller="ScoreForm" asp-action="Create">ثبت نمره</a></li>
                                 <li><a class="dropdown-item" asp-controller="ScoreForm" asp-action="List">لیست نمرات</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                صدیق
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Sediq" asp-action="Create">ثبت صدیق</a></li>
-                                <li><a class="dropdown-item" asp-controller="Sediq" asp-action="List">لیست صدیق</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -102,7 +102,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <h5>سیستم مدیریت صدیق</h5>
-                    <p>سیستم جامع مدیریت دانش‌آموزان و فعالیت‌های آموزشی</p>
+                    <p>سیستم جامع مدیریت دانشآموزان و فعالیتهای آموزشی</p>
                 </div>
                 <div class="col-md-6 text-end">
                     <p>&copy; 2025 - تمامی حقوق محفوظ است</p>
@@ -119,17 +119,77 @@
     <script>
         $(document).ready(function() {
             $('input[type="date"]').each(function() {
-                $(this).attr('type', 'text').addClass('persian-datepicker');
+                var $input = $(this);
+                var currentValue = $input.val();
+                $input.attr('type', 'text').addClass('persian-datepicker');
+                if (currentValue) {
+                    $input.val(currentValue);
+                }
             });
+            
             $('.persian-datepicker').persianDatepicker({
                 format: 'YYYY/MM/DD',
                 initialValue: false,
                 autoClose: true,
+                initialValueType: 'persian',
+                observer: true,
                 calendar: {
                     persian: {
                         locale: 'fa'
                     }
+                },
+                navigator: {
+                    enabled: true
+                },
+                toolbox: {
+                    enabled: true
+                },
+                onShow: function() {
+                    this.setDate(new Date());
                 }
+            });
+            
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.persian-datepicker, .pwt-datepicker-input-element, .datepicker-plot-area, .pwt-btn').length) {
+                    $('.persian-datepicker').each(function() {
+                        var picker = $(this).data('datepicker');
+                        if (picker && picker.model && picker.model.state.visible) {
+                            picker.hide();
+                        }
+                    });
+                }
+            });
+        });
+        
+        $(document).on('shown.bs.modal', function() {
+            $('input[type="date"]:not(.persian-datepicker)').each(function() {
+                var $input = $(this);
+                var currentValue = $input.val();
+                $input.attr('type', 'text').addClass('persian-datepicker');
+                if (currentValue) {
+                    $input.val(currentValue);
+                }
+                $input.persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    initialValue: false,
+                    autoClose: true,
+                    initialValueType: 'persian',
+                    observer: true,
+                    calendar: {
+                        persian: {
+                            locale: 'fa'
+                        }
+                    },
+                    navigator: {
+                        enabled: true
+                    },
+                    toolbox: {
+                        enabled: true
+                    },
+                    onShow: function() {
+                        this.setDate(new Date());
+                    }
+                });
             });
         });
     </script>

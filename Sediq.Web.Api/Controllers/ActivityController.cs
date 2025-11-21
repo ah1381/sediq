@@ -21,8 +21,14 @@ namespace Sediq.Web.Api.Controllers
             return View(result.IsSuccess ? result.Data : new List<ActivityFormResponseDto>());
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var programs = await _mediator.Send(new Example.Service.Handler.Queries.Program.GetAllProgramsQuery());
+            var students = await _mediator.Send(new Example.Service.Handler.Queries.Student.GetAllStudentsQuery());
+            
+            ViewBag.Programs = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(programs.Data ?? new List<ProgramResponseDto>(), "RowId", "Name");
+            ViewBag.Students = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(students.Data ?? new List<StudentResponseDto>(), "RowId", "FullName");
+            
             return View(new ActivityFormCreateModel());
         }
 

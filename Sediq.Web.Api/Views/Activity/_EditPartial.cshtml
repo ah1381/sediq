@@ -1,3 +1,4 @@
+@using Sediq.Web.Api.Helpers
 @model Example.Service.Models.DTOs.ActivityFormUpdateModel
 
 <form id="editForm" asp-action="Edit" method="post">
@@ -5,7 +6,7 @@
     
     <div class="mb-3">
         <label asp-for="ActivityDate" class="form-label">تاریخ فعالیت</label>
-        <input asp-for="ActivityDate" class="form-control" type="date" />
+        <input asp-for="ActivityDate" class="form-control" type="date" value="@Model.ActivityDate.ToPersianDate()" />
         <span asp-validation-for="ActivityDate" class="text-danger"></span>
     </div>
 

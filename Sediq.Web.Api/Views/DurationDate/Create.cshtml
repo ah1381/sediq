@@ -1,54 +1,49 @@
+@using Sediq.Web.Api.Helpers
 @model Example.Service.Models.DTOs.DurationDateEntityCreateModel
 @{
     ViewData["Title"] = "افزودن بازه زمانی جدید";
 }
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">افزودن بازه زمانی جدید</h3>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="fas fa-plus"></i>
+            افزودن بازه زمانی جدید
+        </h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Name" class="form-label">نام بازه زمانی</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                <form asp-action="Create" method="post">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group mb-3">
-                                    <label asp-for="Name" class="form-label">نام بازه زمانی</label>
-                                    <input asp-for="Name" class="form-control" placeholder="نام بازه زمانی را وارد کنید" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label asp-for="StartDur" class="form-label">تاریخ شروع</label>
-                                    <input asp-for="StartDur" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                    <span asp-validation-for="StartDur" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label asp-for="EndDur" class="form-label">تاریخ پایان</label>
-                                    <input asp-for="EndDur" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                    <span asp-validation-for="EndDur" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> ذخیره
-                        </button>
-                        <a href="@Url.Action("List")" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> بازگشت
-                        </a>
-                    </div>
-                </form>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="StartDur" class="form-label">تاریخ شروع</label>
+                    <input asp-for="StartDur" type="date" class="form-control" value="@DateTime.Now.ToPersianDate()" />
+                    <span asp-validation-for="StartDur" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="EndDur" class="form-label">تاریخ پایان</label>
+                    <input asp-for="EndDur" type="date" class="form-control" value="@DateTime.Now.ToPersianDate()" />
+                    <span asp-validation-for="EndDur" class="text-danger"></span>
+                </div>
             </div>
-        </div>
+
+            <div class="d-flex justify-content-between mt-3">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i>
+                    ذخیره
+                </button>
+                <a asp-action="List" class="btn btn-secondary">
+                    <i class="fas fa-arrow-right"></i>
+                    بازگشت به لیست
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 

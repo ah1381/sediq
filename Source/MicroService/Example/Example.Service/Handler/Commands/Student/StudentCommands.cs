@@ -31,6 +31,13 @@ namespace Example.Service.Handler.Commands.Student
         public async Task<CustomActionResult<StudentResponseDto>> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<StudentEntity>(request.RequestModel);
+            
+            // رمزنگاری پسورد
+            if (!string.IsNullOrEmpty(entity.Password))
+            {
+                entity.Password = BCrypt.Net.BCrypt.HashPassword(entity.Password);
+            }
+            
             var sediq = await _sediqRepository.GetByIdAsync(entity.sediqRowId.Value);
             var sediqs = await _sediqRepository.GetQueryable().Include(x => x.Students).Where(x => x.RowId == entity.sediqRowId.Value).ToListAsync();
             entity.StudentCode = sediq.SediqCode.ToString() + entity.MembershipDate.Value.Year.ToString() + sediq.Students.Count.ToString();

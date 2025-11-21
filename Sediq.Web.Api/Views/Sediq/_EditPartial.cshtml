@@ -1,3 +1,4 @@
+@using Sediq.Web.Api.Helpers
 @model Example.Service.Models.DTOs.sediqUpdateModel
 
 <form id="editForm" asp-action="Edit" method="post">
@@ -17,7 +18,7 @@
 
     <div class="mb-3">
         <label asp-for="StartDate" class="form-label">تاریخ شروع</label>
-        <input asp-for="StartDate" class="form-control" type="date" />
+        <input asp-for="StartDate" class="form-control" type="date" value="@Model.StartDate.ToPersianDate()" />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
 
