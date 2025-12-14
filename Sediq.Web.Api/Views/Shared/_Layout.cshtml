@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css" />
 </head>
 <body>
     <header>
@@ -109,88 +109,105 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>  
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+    <script src="https://unpkg.com/persian-date@latest/dist/persian-date.min.js"></script>
+    <script src="https://unpkg.com/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        $(document).ready(function() {
-            $('input[type="date"]').each(function() {
+        function initPersianDatePickers(context) {
+            context = context || document;
+            $(context).find('input[type="date"]').each(function () {
                 var $input = $(this);
+                if ($input.hasClass("persian-datepicker")) return;
                 var currentValue = $input.val();
-                $input.attr('type', 'text').addClass('persian-datepicker');
-                if (currentValue) {
-                    $input.val(currentValue);
+                
+                console.log('Current Value:', currentValue);
+                
+                var today = new Date();
+                console.log('Today (Gregorian):', today);
+                
+                var pd = new persianDate();
+                var persianToday = pd.format('YYYY/MM/DD');
+                console.log('Persian Date:', persianToday);
+                
+                if (!currentValue) {
+                    currentValue = persianToday;
                 }
-            });
-            
-            $('.persian-datepicker').persianDatepicker({
-                format: 'YYYY/MM/DD',
-                initialValue: false,
-                autoClose: true,
-                initialValueType: 'persian',
-                observer: true,
-                calendar: {
-                    persian: {
-                        locale: 'fa'
-                    }
-                },
-                navigator: {
-                    enabled: true
-                },
-                toolbox: {
-                    enabled: true
-                },
-                onShow: function() {
-                    this.setDate(new Date());
-                }
-            });
-            
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest('.persian-datepicker, .pwt-datepicker-input-element, .datepicker-plot-area, .pwt-btn').length) {
-                    $('.persian-datepicker').each(function() {
-                        var picker = $(this).data('datepicker');
-                        if (picker && picker.model && picker.model.state.visible) {
-                            picker.hide();
-                        }
-                    });
-                }
-            });
-        });
-        
-        $(document).on('shown.bs.modal', function() {
-            $('input[type="date"]:not(.persian-datepicker)').each(function() {
-                var $input = $(this);
-                var currentValue = $input.val();
-                $input.attr('type', 'text').addClass('persian-datepicker');
-                if (currentValue) {
-                    $input.val(currentValue);
-                }
+                
+                $input.attr("type", "text").addClass("persian-datepicker");
+                $input.val(currentValue);
+                
                 $input.persianDatepicker({
-                    format: 'YYYY/MM/DD',
+                    format: "YYYY/MM/DD",
                     initialValue: false,
-                    autoClose: true,
                     initialValueType: 'persian',
+                    autoClose: true,
                     observer: true,
-                    calendar: {
-                        persian: {
-                            locale: 'fa'
+                    persianDigit: true,
+                    viewMode: 'day',
+                    calendar: { 
+                        persian: { 
+                            locale: "fa",
+                            showHint: true,
+                            leapYearMode: 'algorithmic'
                         }
                     },
-                    navigator: {
-                        enabled: true
+                    navigator: { 
+                        enabled: true,
+                        text: {
+                            btnNextText: ">",
+                            btnPrevText: "<"
+                        }
                     },
-                    toolbox: {
-                        enabled: true
-                    },
-                    onShow: function() {
-                        this.setDate(new Date());
+                    toolbox: { 
+                        enabled: true,
+                        calendarSwitch: {
+                            enabled: false
+                        },
+                        todayButton: {
+                            enabled: true,
+                            text: {
+                                fa: "امروز"
+                            }
+                        },
+                        submitButton: {
+                            enabled: true,
+                            text: {
+                                fa: "تایید"
+                            }
+                        }
                     }
                 });
             });
+        }
+
+        $(document).on("focus", ".persian-datepicker", function () {
+            $(".persian-datepicker").not(this).each(function () {
+                let picker = $(this).data("pDatepicker");
+                if (picker) picker.hide();
+            });
+        });
+
+        $(document).on("click", function (e) {
+            let isInput = $(e.target).hasClass("persian-datepicker");
+            let isPopup = $(e.target).closest(".pdp-container").length > 0;
+            if (!isInput && !isPopup) {
+                $(".persian-datepicker").each(function () {
+                    let picker = $(this).data("pDatepicker");
+                    if (picker) picker.hide();
+                });
+            }
+        });
+
+        $(document).on("shown.bs.modal", function (e) {
+            initPersianDatePickers(e.target);
+        });
+
+        $(document).ready(function () {
+            initPersianDatePickers(document);
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)

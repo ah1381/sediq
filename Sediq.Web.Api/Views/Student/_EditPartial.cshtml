@@ -1,80 +1,140 @@
 @using Sediq.Web.Api.Helpers
 @model Example.Service.Models.DTOs.StudentUpdateModel
 
-<form id="editForm" asp-action="Edit" method="post">
+<form id="editForm" asp-action="Edit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="RowId" />
     
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <label asp-for="NationalCode" class="form-label">کد ملی</label>
-            <input asp-for="NationalCode" class="form-control" maxlength="10" />
+        <div class="col-md-4 text-center mb-4">
+            @if (Model.Photos != null && Model.Photos.Any())
+            {
+                <img src="@Model.Photos.First().PhotoUrl" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;" alt="عکس پروفایل" id="profilePreview" />
+            }
+            else
+            {
+                <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px;" id="profilePreview">
+                    <i class="fas fa-user fa-3x text-white"></i>
+                </div>
+            }
+            <div>
+                <label class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-camera"></i> تغییر عکس
+                    <input type="file" name="PhotoFiles" accept="image/*" class="d-none" onchange="previewImage(this)" />
+                </label>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <h5 class="border-bottom pb-2 mb-3"><i class="fas fa-id-card"></i> اطلاعات شخصی</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FirstName" class="form-label">نام</label>
+                    <input asp-for="FirstName" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="LastName" class="form-label">نام خانوادگی</label>
+                    <input asp-for="LastName" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NationalCode" class="form-label">کد ملی</label>
+                    <input asp-for="NationalCode" class="form-control" maxlength="10" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="BirthDate" class="form-label">تاریخ تولد</label>
+                    <input asp-for="BirthDate" class="form-control" type="date" value="@Model.BirthDate.ToPersianDate()" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FatherName" class="form-label">نام پدر</label>
+                    <input asp-for="FatherName" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FatherJob" class="form-label">شغل پدر</label>
+                    <input asp-for="FatherJob" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Gender" class="form-label">جنسیت</label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="0">مرد</option>
+                        <option value="1">زن</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MembershipDate" class="form-label">تاریخ عضویت</label>
+                    <input asp-for="MembershipDate" class="form-control" type="date" value="@Model.MembershipDate.ToPersianDate()" />
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label asp-for="FirstName" class="form-label">نام</label>
-            <input asp-for="FirstName" class="form-control" />
-        </div>
-        <div class="col-md-6 mb-3">
-            <label asp-for="LastName" class="form-label">نام خانوادگی</label>
-            <input asp-for="LastName" class="form-control" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label asp-for="FatherName" class="form-label">نام پدر</label>
-            <input asp-for="FatherName" class="form-control" />
-        </div>
-        <div class="col-md-6 mb-3">
-            <label asp-for="FatherJob" class="form-label">شغل پدر</label>
-            <input asp-for="FatherJob" class="form-control" />
-        </div>
-    </div>
-
+    <h5 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-graduation-cap"></i> اطلاعات تحصیلی</h5>
     <div class="row">
         <div class="col-md-4 mb-3">
-            <label asp-for="BirthDate" class="form-label">تاریخ تولد</label>
-            <input asp-for="BirthDate" class="form-control" type="date" value="@Model.BirthDate.ToPersianDate()" />
-        </div>
-        <div class="col-md-4 mb-3">
-            <label asp-for="MembershipDate" class="form-label">تاریخ عضویت</label>
-            <input asp-for="MembershipDate" class="form-control" type="date" value="@Model.MembershipDate.ToPersianDate()" />
-        </div>
-        <div class="col-md-4 mb-3">
-            <label asp-for="Gender" class="form-label">جنسیت</label>
-            <select asp-for="Gender" class="form-select">
-                <option value="0">مرد</option>
-                <option value="1">زن</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6 mb-3">
             <label asp-for="FieldOfStudy" class="form-label">رشته تحصیلی</label>
             <input asp-for="FieldOfStudy" class="form-control" />
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-4 mb-3">
             <label asp-for="YearStudy" class="form-label">پایه تحصیلی</label>
             <input asp-for="YearStudy" class="form-control" />
         </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="EducationStatus" class="form-label">وضعیت تحصیلی</label>
+            <input asp-for="EducationStatus" class="form-control" />
+        </div>
     </div>
 
+    <h5 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-phone"></i> شماره تماس</h5>
+    <div id="phoneNumbers">
+        @if (Model.PhoneNumbers != null && Model.PhoneNumbers.Any())
+        {
+            @for (int i = 0; i < Model.PhoneNumbers.Count; i++)
+            {
+                <div class="row phone-row mb-2">
+                    <div class="col-md-5">
+                        <input name="PhoneNumbers[@i].Number" value="@Model.PhoneNumbers[i].Number" class="form-control" placeholder="شماره تلفن" />
+                    </div>
+                    <div class="col-md-5">
+                        <select name="PhoneNumbers[@i].Ownership" class="form-select">
+                            <option value="0">شخصی</option>
+                            <option value="1">پدر</option>
+                            <option value="2">مادر</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removePhone(this)"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="row phone-row mb-2">
+                <div class="col-md-5">
+                    <input name="PhoneNumbers[0].Number" class="form-control" placeholder="شماره تلفن" />
+                </div>
+                <div class="col-md-5">
+                    <select name="PhoneNumbers[0].Ownership" class="form-select">
+                        <option value="0">شخصی</option>
+                        <option value="1">پدر</option>
+                        <option value="2">مادر</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removePhone(this)"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        }
+    </div>
+    <button type="button" class="btn btn-sm btn-outline-success mb-3" onclick="addPhone()">
+        <i class="fas fa-plus"></i> افزودن شماره
+    </button>
+
+    <h5 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-map-marker-alt"></i> آدرس و توضیحات</h5>
     <div class="row">
         <div class="col-md-12 mb-3">
             <label asp-for="Address" class="form-label">آدرس</label>
             <textarea asp-for="Address" class="form-control" rows="2"></textarea>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label asp-for="EducationStatus" class="form-label">وضعیت تحصیلی</label>
-            <input asp-for="EducationStatus" class="form-control" />
-        </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-12 mb-3">
             <label asp-for="Notes" class="form-label">توضیحات</label>
             <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
         </div>
@@ -87,3 +147,30 @@
         </button>
     </div>
 </form>
+
+<script>
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#profilePreview').html('<img src="' + e.target.result + '" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;" />');
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function addPhone() {
+    var index = $('#phoneNumbers .phone-row').length;
+    var html = '<div class="row phone-row mb-2">' +
+        '<div class="col-md-5"><input name="PhoneNumbers[' + index + '].Number" class="form-control" placeholder="شماره تلفن" /></div>' +
+        '<div class="col-md-5"><select name="PhoneNumbers[' + index + '].Ownership" class="form-select">' +
+        '<option value="0">شخصی</option><option value="1">پدر</option><option value="2">مادر</option></select></div>' +
+        '<div class="col-md-2"><button type="button" class="btn btn-danger btn-sm" onclick="removePhone(this)"><i class="fas fa-trash"></i></button></div>' +
+        '</div>';
+    $('#phoneNumbers').append(html);
+}
+
+function removePhone(btn) {
+    $(btn).closest('.phone-row').remove();
+}
+</script>

@@ -1,78 +1,101 @@
 @model Example.Service.Models.DTOs.StudentResponseDto
 
 <div class="row">
-    <div class="col-md-6 mb-3">
-        <strong>کد شرکت کننده:</strong>
-        <p>@Model.StudentCode</p>
+    <div class="col-md-4 text-center mb-4">
+        @if (Model.Photos != null && Model.Photos.Any())
+        {
+            <img src="@Model.Photos.First().PhotoUrl" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;" alt="@Model.FullName" />
+        }
+        else
+        {
+            <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+                <i class="fas fa-user fa-4x text-white"></i>
+            </div>
+        }
+        <h4>@Model.FullName</h4>
+        <p class="text-muted">@Model.StudentCode</p>
+        <span class="badge bg-info">@(Model.Gender == Example.Domain.Entities.Gender.Male ? "مرد" : "زن")</span>
     </div>
-    <div class="col-md-6 mb-3">
-        <strong>کد ملی:</strong>
-        <p>@Model.NationalCode</p>
-    </div>
-</div>
+    
+    <div class="col-md-8">
+        <h5 class="border-bottom pb-2 mb-3"><i class="fas fa-id-card"></i> اطلاعات شخصی</h5>
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <small class="text-muted">کد ملی</small>
+                <p class="mb-0">@Model.NationalCode</p>
+            </div>
+            <div class="col-md-6 mb-2">
+                <small class="text-muted">تاریخ تولد</small>
+                <p class="mb-0">@Model.BirthDate.ToPersianDate()</p>
+            </div>
+            <div class="col-md-6 mb-2">
+                <small class="text-muted">نام پدر</small>
+                <p class="mb-0">@Model.FatherName</p>
+            </div>
+            <div class="col-md-6 mb-2">
+                <small class="text-muted">شغل پدر</small>
+                <p class="mb-0">@Model.FatherJob</p>
+            </div>
+        </div>
 
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <strong>نام:</strong>
-        <p>@Model.FirstName</p>
-    </div>
-    <div class="col-md-6 mb-3">
-        <strong>نام خانوادگی:</strong>
-        <p>@Model.LastName</p>
-    </div>
-</div>
+        <h5 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-graduation-cap"></i> اطلاعات تحصیلی</h5>
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <small class="text-muted">رشته تحصیلی</small>
+                <p class="mb-0">@Model.FieldOfStudy</p>
+            </div>
+            <div class="col-md-6 mb-2">
+                <small class="text-muted">پایه تحصیلی</small>
+                <p class="mb-0">@Model.YearStudy</p>
+            </div>
+            <div class="col-md-6 mb-2">
+                <small class="text-muted">وضعیت تحصیلی</small>
+                <p class="mb-0">@Model.EducationStatus</p>
+            </div>
+            <div class="col-md-6 mb-2">
+                <small class="text-muted">تاریخ عضویت</small>
+                <p class="mb-0">@Model.MembershipDate.ToPersianDate()</p>
+            </div>
+        </div>
 
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <strong>نام پدر:</strong>
-        <p>@Model.FatherName</p>
-    </div>
-    <div class="col-md-6 mb-3">
-        <strong>شغل پدر:</strong>
-        <p>@Model.FatherJob</p>
-    </div>
-</div>
+        <h5 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-phone"></i> شماره تماس</h5>
+        @if (Model.PhoneNumbers != null && Model.PhoneNumbers.Any())
+        {
+            <ul class="list-unstyled">
+                @foreach (var phone in Model.PhoneNumbers)
+                {
+                    <li class="mb-2">
+                        <i class="fas fa-phone-alt text-primary"></i> @phone.Number
+                        <small class="text-muted">(@phone.Ownership)</small>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">شماره تماسی ثبت نشده</p>
+        }
 
-<div class="row">
-    <div class="col-md-4 mb-3">
-        <strong>تاریخ تولد:</strong>
-        <p>@Model.BirthDate.ToPersianDate()</p>
-    </div>
-    <div class="col-md-4 mb-3">
-        <strong>تاریخ عضویت:</strong>
-        <p>@Model.MembershipDate.ToPersianDate()</p>
-    </div>
-    <div class="col-md-4 mb-3">
-        <strong>جنسیت:</strong>
-        <p>@(Model.Gender == Example.Domain.Entities.Gender.Male ? "مرد" : "زن")</p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <strong>رشته تحصیلی:</strong>
-        <p>@Model.FieldOfStudy</p>
-    </div>
-    <div class="col-md-6 mb-3">
-        <strong>پایه تحصیلی:</strong>
-        <p>@Model.YearStudy</p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12 mb-3">
-        <strong>آدرس:</strong>
+        <h5 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-map-marker-alt"></i> آدرس</h5>
         <p>@Model.Address</p>
+
+        @if (!string.IsNullOrEmpty(Model.Notes))
+        {
+            <h5 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-sticky-note"></i> توضیحات</h5>
+            <p>@Model.Notes</p>
+        }
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <strong>وضعیت تحصیلی:</strong>
-        <p>@Model.EducationStatus</p>
+@if (Model.Photos != null && Model.Photos.Count > 1)
+{
+    <h5 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-images"></i> گالری تصاویر</h5>
+    <div class="row g-2">
+        @foreach (var photo in Model.Photos)
+        {
+            <div class="col-md-3">
+                <img src="@photo.PhotoUrl" class="img-fluid rounded" alt="@photo.Description" />
+            </div>
+        }
     </div>
-    <div class="col-md-6 mb-3">
-        <strong>توضیحات:</strong>
-        <p>@Model.Notes</p>
-    </div>
-</div>
+}
